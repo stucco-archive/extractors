@@ -22,3 +22,4 @@ initialCommands in console := """
   |import morph.extractor.Interface._
   |import morph.utils.Utils._
   """.stripMargin
+
