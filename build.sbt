@@ -21,5 +21,6 @@ initialCommands in console := """
   |import morph.parser.Interface._
   |import morph.extractor.Interface._
   |import morph.utils.Utils._
+  |import gov.ornl.stucco.extractors._
   """.stripMargin
 
