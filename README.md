@@ -13,8 +13,5 @@ build status
 ------------
 
 master: [![Build Status]
-(https://travis-ci.org/stucco/rt.png?branch=master)]
-(https://travis-ci.org/stucco/rt)
-dev: [![Build Status]
-(https://travis-ci.org/stucco/rt.png?branch=dev)]
-(https://travis-ci.org/stucco/rt)
+(https://travis-ci.org/stucco/extractors.png?branch=master)]
+(https://travis-ci.org/stucco/extractors)
