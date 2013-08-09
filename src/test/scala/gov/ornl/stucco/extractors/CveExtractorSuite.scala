@@ -17,7 +17,7 @@ class CveExtractorSuite extends FunSuite {
   val S = StringNode
   val N = NumberNode
 
-test("parse one CVE element with one reference") {
+  test("parse one CVE element with one reference") {
     val node = morph.parser.XmlParser("""
       <?xml version="1.0"?>
       <cve xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -64,14 +64,14 @@ test("parse one CVE element with one reference") {
       </cve>
       """)
     val cve = CveExtractor(node)
-    assert( cve ~> "vertices" ~> 0 ~> "_id" === Some(S("CVE-1999-0001")) )
-    assert( cve ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")) )
-    assert( cve ~> "vertices" ~> 0 ~> "source" === Some(S("CVE")) )
-    assert( cve ~> "vertices" ~> 0 ~> "description" === Some(S("ip_input.c in BSD-derived TCP/IP implementations allows remote attackers to cause a denial of service (crash or hang) via crafted packets.")) )
-    assert( cve ~> "vertices" ~> 0 ~> "status" === Some(S("Candidate")) )
-    assert( cve ~> "vertices" ~> 0 ~> "references" ~> 0 === Some(S("CERT:CA-98-13-tcp-denial-of-service")) )
-    assert( (cve get "vertices" get 0 get "phaseDate") === Some(N(20051217)) )
-    assert( (cve get "vertices" get 0 get "phase") === Some(S("Modified")) )
+    assert(cve ~> "vertices" ~> 0 ~> "_id" === Some(S("CVE-1999-0001")))
+    assert(cve ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
+    assert(cve ~> "vertices" ~> 0 ~> "source" === Some(S("CVE")))
+    assert(cve ~> "vertices" ~> 0 ~> "description" === Some(S("ip_input.c in BSD-derived TCP/IP implementations allows remote attackers to cause a denial of service (crash or hang) via crafted packets.")))
+    assert(cve ~> "vertices" ~> 0 ~> "status" === Some(S("Candidate")))
+    assert(cve ~> "vertices" ~> 0 ~> "references" ~> 0 === Some(S("CERT:CA-98-13-tcp-denial-of-service")))
+    assert((cve get "vertices" get 0 get "phaseDate") === Some(N(20051217)))
+    assert((cve get "vertices" get 0 get "phase") === Some(S("Modified")))
   }
 
   test("parse two CVE elements with several references") {
@@ -108,27 +108,25 @@ test("parse one CVE element with one reference") {
       </cve>
       """)
     val cve = CveExtractor(node)
-    assert( cve ~> "vertices" ~> 0 ~> "_id" === Some(S("CVE-1999-0002")) )
-    assert( cve ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")) )
-    assert( cve ~> "vertices" ~> 0 ~> "source" === Some(S("CVE")) )
-    assert( cve ~> "vertices" ~> 0 ~> "description" === Some(S("Buffer overflow in NFS mountd gives root access to remote attackers, mostly in Linux systems.")) )
-    assert( cve ~> "vertices" ~> 0 ~> "status" === Some(S("Entry")) )
-    assert( cve ~> "vertices" ~> 0 ~> "references" ~> 0 === Some(S("ftp://patches.sgi.com/support/free/security/advisories/19981006-01-I")) )
-    assert( cve ~> "vertices" ~> 0 ~> "references" ~> 1 === Some(S("CERT:CA-98.12.mountd")) )
-    assert( cve ~> "vertices" ~> 0 ~> "references" ~> 2 === Some(S("http://www.ciac.org/ciac/bulletins/j-006.shtml")) )
-    assert( cve ~> "vertices" ~> 0 ~> "references" ~> 3 === Some(S("http://www.securityfocus.com/bid/121")) )
-    assert( cve ~> "vertices" ~> 0 ~> "references" ~> 4 === Some(S("XF:linux-mountd-bo")) )
+    assert(cve ~> "vertices" ~> 0 ~> "_id" === Some(S("CVE-1999-0002")))
+    assert(cve ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
+    assert(cve ~> "vertices" ~> 0 ~> "source" === Some(S("CVE")))
+    assert(cve ~> "vertices" ~> 0 ~> "description" === Some(S("Buffer overflow in NFS mountd gives root access to remote attackers, mostly in Linux systems.")))
+    assert(cve ~> "vertices" ~> 0 ~> "status" === Some(S("Entry")))
+    assert(cve ~> "vertices" ~> 0 ~> "references" ~> 0 === Some(S("ftp://patches.sgi.com/support/free/security/advisories/19981006-01-I")))
+    assert(cve ~> "vertices" ~> 0 ~> "references" ~> 1 === Some(S("CERT:CA-98.12.mountd")))
+    assert(cve ~> "vertices" ~> 0 ~> "references" ~> 2 === Some(S("http://www.ciac.org/ciac/bulletins/j-006.shtml")))
+    assert(cve ~> "vertices" ~> 0 ~> "references" ~> 3 === Some(S("http://www.securityfocus.com/bid/121")))
+    assert(cve ~> "vertices" ~> 0 ~> "references" ~> 4 === Some(S("XF:linux-mountd-bo")))
 
-    assert( cve ~> "vertices" ~> 1 ~> "_id" === Some(S("CVE-2011-0528")) )
-    assert( cve ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")) )
-    assert( cve ~> "vertices" ~> 1 ~> "source" === Some(S("CVE")) )
-    assert( cve ~> "vertices" ~> 1 ~> "description" === Some(S("** RESERVED ** This candidate has been reserved by an organization or individual that will use it when announcing a new security problem.  When the candidate has been publicized, the details for this candidate will be provided.")) )
-    assert( (cve get "vertices" get 1 get "phaseDate") === Some(N(20110120)) )
-    assert( (cve get "vertices" get 1 get "phase") === Some(S("Assigned")) )
-    assert( (cve get "vertices" get 1 get "status") === Some(S("Candidate")) )
+    assert(cve ~> "vertices" ~> 1 ~> "_id" === Some(S("CVE-2011-0528")))
+    assert(cve ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
+    assert(cve ~> "vertices" ~> 1 ~> "source" === Some(S("CVE")))
+    assert(cve ~> "vertices" ~> 1 ~> "description" === Some(S("** RESERVED ** This candidate has been reserved by an organization or individual that will use it when announcing a new security problem.  When the candidate has been publicized, the details for this candidate will be provided.")))
+    assert((cve get "vertices" get 1 get "phaseDate") === Some(N(20110120)))
+    assert((cve get "vertices" get 1 get "phase") === Some(S("Assigned")))
+    assert((cve get "vertices" get 1 get "status") === Some(S("Candidate")))
   }
 
 }
-
-
 
