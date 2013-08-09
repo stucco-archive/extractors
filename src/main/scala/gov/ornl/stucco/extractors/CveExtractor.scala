@@ -10,8 +10,8 @@ import morph.extractor.Extractor
  */
 object CveExtractor extends Extractor {
 
-  def extract(node: ValueNode): ValueNode = {
-    ^("vertices" -> ((node ~> "cve" ~> "item" %%-> { item =>
+  def extract(node: ValueNode): ValueNode = ^(
+    "vertices" -> (node ~> "cve" ~> "item" %%-> { item =>
       ^(
         "_id" -> item ~> "@name",
 
@@ -26,25 +26,17 @@ object CveExtractor extends Extractor {
         "phase" -> (item ~> "phase" ~> "#text"),
         "phaseDate" -> (item ~> "phase" ~> "@date"),
 
-        "references" -> ((
+        "references" -> (
           item ~> "refs" ~> "ref" %%-> { obj =>
             obj ~> "@url" orElse Safely {
               (obj ~> "@source").asString + ":" +
-              (obj ~> "#text").asString
+                (obj ~> "#text").asString
             }
           }
-        ) map {
-          case arr: ArrayNode => arr
-          case other => ArrayNode(other)
-        }),
+        ).encapsulate,
 
         "status" -> item ~> "status"
       )
-    })map {
-          case arr: ArrayNode => arr
-          case other => ArrayNode(other)
-    })
-
-    )
-  }
+    }).encapsulate
+  )
 }
