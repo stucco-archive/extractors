@@ -18,7 +18,8 @@ object CpeExtractor extends Extractor {
         "_type" -> "vertex",
         "vertexType" -> "software",
         "source" -> "CPE",
-        "description" -> item ~> "title" ~> "#text",
+        //TODO better handling for multiple lang desc., don't just assume english is first.
+        "description" -> {(item ~> "title" ~> "#text") orElse (item ~> "title" ~> 0 ~> "#text")},
         "nvdId" -> item ~> "meta:item-metadata" ~> "@nvd-id",
         "status" -> item ~> "meta:item-metadata" ~> "@status",
         "modifiedDate" -> item ~> "meta:item-metadata" ~> "@modification-date",
