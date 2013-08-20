@@ -25,12 +25,12 @@ object GeoIPExtractor extends Extractor {
             "_type" -> "vertex",
             "vertexType" -> "addressRange",
             "source" -> "maxmind",
-            "StartIP" -> item ~> 0,
-            "EndIP" -> item ~> 1,
-            "Start IP (int)" -> Safely{(item ~> 2).asString.toInt},
-            "End IP (int)" -> Safely{(item ~> 3).asString.toInt},
-            "Country code" -> item ~> 4,
-            "Country name" -> item ~> 5
+            "startIP" -> item ~> 0,
+            "endIP" -> item ~> 1,
+            "startIPInt" -> Safely{(item ~> 2).asString.toInt},
+            "endIPInt" -> Safely{(item ~> 3).asString.toInt},
+            "countryCode" -> item ~> 4,
+            "countryName" -> item ~> 5
           )
         }
       ).encapsulate
