@@ -9,6 +9,11 @@ object HoneExtractor extends Extractor {
   val S = StringNode
   val N = NumberNode
 
+  //TODO: it would be useful to also check non-strings here.
+  def notEmpty(node: Option[ValueNode]): Boolean = {
+    node != None && node != Some(S(""))
+  }
+
   def extract(node: ValueNode): ValueNode = extract(node, Map[String,String]("hostName" -> ""))
 
   //hostName will come from the metadata, is not included in the data itself
@@ -33,7 +38,7 @@ object HoneExtractor extends Extractor {
               "processPath" -> item ~> h("process_path"),
               "processPid" -> item ~> h("process_pid")
             )
-            if( (n ~> "_id") != None && (n ~> "_id") != Some(S("")) ) n
+            if( notEmpty(n ~> "_id") ) n
             else None
           },
           {
@@ -44,7 +49,7 @@ object HoneExtractor extends Extractor {
               "vertexType" -> "host",
               "hostName" -> hostName
             )
-            if( (n ~> "_id") != None && (n ~> "_id") != Some(S("")) ) n
+            if( notEmpty(n ~> "_id") ) n
             else None
           },
           {
@@ -54,8 +59,7 @@ object HoneExtractor extends Extractor {
               "source" -> "Hone",
               "vertexType" -> "address"
             )
-            if( (item ~> h("source_ip")) != None && (item ~> h("source_ip")) != Some(S("")) && 
-              (item ~> h("source_port")) != None && (item ~> h("source_port")) != Some(S("")) ) n
+            if( notEmpty(n ~> "source_ip") && notEmpty(n ~> "source_port") ) n
             else None
           },
           {
@@ -65,8 +69,7 @@ object HoneExtractor extends Extractor {
               "source" -> "Hone",
               "vertexType" -> "address"
             )
-            if( (item ~> h("dest_ip")) != None && (item ~> h("dest_ip")) != Some(S("")) && 
-              (item ~> h("dest_port")) != None && (item ~> h("dest_port")) != Some(S("")) ) n
+            if( notEmpty(n ~> "dest_ip") && notEmpty(n ~> "dest_port") ) n
             else None
           },
           {
@@ -76,7 +79,7 @@ object HoneExtractor extends Extractor {
               "source" -> "Hone",
               "vertexType" -> "IP"
             )
-            if( (n ~> "_id") != None && (n ~> "_id") != Some(S("")) ) n
+            if( notEmpty(n ~> "_id") ) n
             else None
           },
           {
@@ -86,7 +89,7 @@ object HoneExtractor extends Extractor {
               "source" -> "Hone",
               "vertexType" -> "IP"
             )
-            if( (n ~> "_id") != None && (n ~> "_id") != Some(S("")) ) n
+            if( notEmpty(n ~> "_id") ) n
             else None
           },
           {
@@ -96,7 +99,7 @@ object HoneExtractor extends Extractor {
               "source" -> "Hone",
               "vertexType" -> "port"
             )
-            if( (n ~> "_id") != None && (n ~> "_id") != Some(S("")) ) n
+            if( notEmpty(n ~> "_id") ) n
             else None
           },
           {
@@ -106,7 +109,7 @@ object HoneExtractor extends Extractor {
               "source" -> "Hone",
               "vertexType" -> "port"
             )
-            if( (n ~> "_id") != None && (n ~> "_id") != Some(S("")) ) n
+            if( notEmpty(n ~> "_id") ) n
             else None
           },
           {
@@ -120,10 +123,8 @@ object HoneExtractor extends Extractor {
               "vertexType" -> "flow",
               "startTime" -> item ~> h("timestamp_epoch_ms")
             )
-            if( (item ~> h("source_ip")) != None && (item ~> h("source_ip")) != Some(S("")) && 
-              (item ~> h("source_port")) != None && (item ~> h("source_port")) != Some(S("")) && 
-              (item ~> h("dest_ip")) != None && (item ~> h("dest_ip")) != Some(S("")) && 
-              (item ~> h("dest_port")) != None && (item ~> h("dest_port")) != Some(S("")) ) n
+            if(notEmpty(n ~> "source_ip") && notEmpty(n ~> "source_port") && 
+              notEmpty(n ~> "dest_ip") && notEmpty(n ~> "dest_port") ) n
             else None
           },
           {
@@ -135,7 +136,7 @@ object HoneExtractor extends Extractor {
               "uid" -> item ~> h("uid"),
               "userName" -> item ~> h("user")
             )
-            if( hostName != "" && (item ~> h("uid")) != None && (item ~> h("uid")) != Some(S("")) ) n
+            if( hostName != "" && notEmpty(n ~> "uid") ) n
             else None
           }
         )
@@ -155,7 +156,7 @@ object HoneExtractor extends Extractor {
               "outVType" -> "host",
               "inVType" -> "software"
             )
-            if(hostName != "" && (item ~> h("process_path")) != None && (item ~> h("process_path")) != Some(S("")) ) n
+            if( hostName != "" && notEmpty(item ~> h("process_path")) ) n
             else None
           },
           {
@@ -172,8 +173,7 @@ object HoneExtractor extends Extractor {
               "outVType" -> "host",
               "inVType" -> "address"
             )
-            if(hostName != "" && (item ~> h("source_ip")) != None && (item ~> h("source_ip")) != Some(S("")) && 
-              (item ~> h("source_port")) != None && (item ~> h("source_port")) != Some(S("")) ) n
+            if(hostName != "" && notEmpty(item ~> h("source_ip") ) && notEmpty(item ~> h("source_port") ) ) n
             else None
           },
           {
@@ -190,8 +190,7 @@ object HoneExtractor extends Extractor {
               "outVType" -> "address",
               "inVType" -> "IP"
             )
-            if((item ~> h("source_ip")) != None && (item ~> h("source_ip")) != Some(S("")) && 
-              (item ~> h("source_port")) != None && (item ~> h("source_port")) != Some(S("")) ) n
+            if( notEmpty(item ~> h("source_ip") ) && notEmpty(item ~> h("source_port") ) ) n
             else None
           },
           {
@@ -208,8 +207,7 @@ object HoneExtractor extends Extractor {
               "outVType" -> "address",
               "inVType" -> "IP"
             )
-            if((item ~> h("dest_ip")) != None && (item ~> h("dest_ip")) != Some(S("")) && 
-              (item ~> h("dest_port")) != None && (item ~> h("dest_port")) != Some(S("")) ) n
+            if( notEmpty(item ~> h("dest_ip") ) && notEmpty(item ~> h("dest_port") ) ) n
             else None
           },
           {
@@ -226,8 +224,7 @@ object HoneExtractor extends Extractor {
               "outVType" -> "address",
               "inVType" -> "port"
             )
-            if((item ~> h("source_ip")) != None && (item ~> h("source_ip")) != Some(S("")) && 
-              (item ~> h("source_port")) != None && (item ~> h("source_port")) != Some(S("")) ) n
+            if( notEmpty(item ~> h("source_ip") ) && notEmpty(item ~> h("source_port") ) ) n
             else None
           },
           {
@@ -244,8 +241,7 @@ object HoneExtractor extends Extractor {
               "outVType" -> "address",
               "inVType" -> "port"
             )
-            if((item ~> h("dest_ip")) != None && (item ~> h("dest_ip")) != Some(S("")) && 
-              (item ~> h("dest_port")) != None && (item ~> h("dest_port")) != Some(S("")) ) n
+            if( notEmpty(item ~> h("dest_ip") ) && notEmpty(item ~> h("dest_port") ) ) n
             else None
           },
           {
@@ -266,10 +262,8 @@ object HoneExtractor extends Extractor {
               "outVType" -> "flow",
               "inVType" -> "address"
             )
-            if((item ~> h("source_ip")) != None && (item ~> h("source_ip")) != Some(S("")) && 
-              (item ~> h("source_port")) != None && (item ~> h("source_port")) != Some(S("")) && 
-              (item ~> h("dest_ip")) != None && (item ~> h("dest_ip")) != Some(S("")) && 
-              (item ~> h("dest_port")) != None && (item ~> h("dest_port")) != Some(S("")) ) n
+            if( notEmpty(item ~> h("source_ip") ) && notEmpty(item ~> h("source_port") ) && 
+              notEmpty(item ~> h("dest_ip") ) && notEmpty(item ~> h("dest_port") ) ) n
             else None
           },
           {
@@ -290,10 +284,8 @@ object HoneExtractor extends Extractor {
               "outVType" -> "flow",
               "inVType" -> "address"
             )
-            if((item ~> h("source_ip")) != None && (item ~> h("source_ip")) != Some(S("")) && 
-              (item ~> h("source_port")) != None && (item ~> h("source_port")) != Some(S("")) && 
-              (item ~> h("dest_ip")) != None && (item ~> h("dest_ip")) != Some(S("")) && 
-              (item ~> h("dest_port")) != None && (item ~> h("dest_port")) != Some(S("")) ) n
+            if( notEmpty(item ~> h("source_ip") ) && notEmpty(item ~> h("source_port") ) && 
+              notEmpty(item ~> h("dest_ip") ) && notEmpty(item ~> h("dest_port") ) ) n
             else None
           },
           {
@@ -314,11 +306,9 @@ object HoneExtractor extends Extractor {
               "outVType" -> "software",
               "inVType" -> "flow"
             )
-            if((item ~> h("source_ip")) != None && (item ~> h("source_ip")) != Some(S("")) && 
-              (item ~> h("source_port")) != None && (item ~> h("source_port")) != Some(S("")) && 
-              (item ~> h("dest_ip")) != None && (item ~> h("dest_ip")) != Some(S("")) && 
-              (item ~> h("dest_port")) != None && (item ~> h("dest_port")) != Some(S("")) &&
-              (item ~> h("process_path")) != None && (item ~> h("process_path")) != Some(S(""))) n
+            if(notEmpty(item ~> h("source_ip") ) && notEmpty(item ~> h("source_port") ) && 
+              notEmpty(item ~> h("dest_ip") ) && notEmpty(item ~> h("dest_port") ) && 
+              notEmpty(item ~> h("process_path") ) ) n
             else None
           },
           {
@@ -337,8 +327,7 @@ object HoneExtractor extends Extractor {
               "outVType" -> "software",
               "inVType" -> "account"
             )
-            if((item ~> h("process_path")) != None && (item ~> h("process_path")) != Some(S("")) &&
-              (item ~> h("uid")) != None && (item ~> h("uid")) != Some(S("")) && hostName != "") n
+            if( (notEmpty(item ~> h("process_path")) && notEmpty(item ~> h("uid")) && hostName != "") ) n
             else None
           }
         )
