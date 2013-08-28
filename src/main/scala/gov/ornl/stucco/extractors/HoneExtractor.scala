@@ -22,13 +22,21 @@ object HoneExtractor extends Extractor {
     //user,uid,process_pid,process_path,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip
     val headers = node.get(0)
     val h = headers.asList.zipWithIndex.map{ a => a }.toMap
-    //print (h)
-    //print (h.get("process_path"))
     ^(
       "vertices" -> (node mapPartial { 
       //this will ignore header row and will ignore last row if it is just an empty string.
       case item if (item ~> 0 != headers ~> 0) && (item ~> 1 != None) =>
         *(
+          {
+            val n = ^(
+              "_id" -> hostName,
+              "_type" -> "vertex",
+              "source" -> "Hone",
+              "vertexType" -> "host"
+            )
+            if( notEmpty(n ~> "_id") ) n
+            else None
+          },
           {
             val n = ^(
               "_id" -> item ~> h("process_path"),
@@ -59,7 +67,7 @@ object HoneExtractor extends Extractor {
               "source" -> "Hone",
               "vertexType" -> "address"
             )
-            if( notEmpty(n ~> "source_ip") && notEmpty(n ~> "source_port") ) n
+            if( notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port")) ) n
             else None
           },
           {
@@ -69,7 +77,7 @@ object HoneExtractor extends Extractor {
               "source" -> "Hone",
               "vertexType" -> "address"
             )
-            if( notEmpty(n ~> "dest_ip") && notEmpty(n ~> "dest_port") ) n
+            if( notEmpty(item ~> h("dest_ip")) && notEmpty(item ~> h("dest_port")) ) n
             else None
           },
           {
@@ -123,8 +131,8 @@ object HoneExtractor extends Extractor {
               "vertexType" -> "flow",
               "startTime" -> item ~> h("timestamp_epoch_ms")
             )
-            if(notEmpty(n ~> "source_ip") && notEmpty(n ~> "source_port") && 
-              notEmpty(n ~> "dest_ip") && notEmpty(n ~> "dest_port") ) n
+            if( notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port")) && 
+              notEmpty(item ~> h("dest_ip")) && notEmpty(item ~> h("dest_port")) ) n
             else None
           },
           {
@@ -136,7 +144,7 @@ object HoneExtractor extends Extractor {
               "uid" -> item ~> h("uid"),
               "userName" -> item ~> h("user")
             )
-            if( hostName != "" && notEmpty(n ~> "uid") ) n
+            if( hostName != "" && notEmpty(item ~> h("uid")) ) n
             else None
           }
         )
