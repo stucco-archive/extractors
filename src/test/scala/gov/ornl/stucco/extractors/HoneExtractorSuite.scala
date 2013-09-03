@@ -28,7 +28,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(hone ~> "vertices" ~> 0 ~> "source" === Some(S("Hone")))
     assert(hone ~> "vertices" ~> 0 ~> "vertexType" === Some(S("host")))
-    
+
     assert(hone ~> "vertices" ~> 1 === None)
     assert(hone ~> "edges" ~> 0 === None)
   }
@@ -239,7 +239,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 9 ~> "source" === Some(S("Hone")))
     assert(hone ~> "edges" ~> 9 ~> "outVType" === Some(S("software")))
     assert(hone ~> "edges" ~> 9 ~> "inVType" === Some(S("account")))
-    
+
   }
 
 }
