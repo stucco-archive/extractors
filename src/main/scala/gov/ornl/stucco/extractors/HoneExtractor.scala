@@ -1,3 +1,5 @@
+package gov.ornl.stucco.extractors
+
 import morph.ast._
 import morph.extractor.Extractor
 
