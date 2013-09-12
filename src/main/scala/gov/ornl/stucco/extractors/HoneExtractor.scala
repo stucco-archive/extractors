@@ -21,7 +21,8 @@ object HoneExtractor extends Extractor {
   //hostName will come from the metadata, is not included in the data itself
   def extract(node: ValueNode, metaData: Map[String, String]): ValueNode = {
     val hostName = metaData("hostName")
-    //user,uid,process_pid,process_path,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip
+    //user,uid,proc_pid,proc_ppid,path,argv,conn_id,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip,byte_cnt,packet_cnt
+    //TODO:conn_id?
     val headers = node.get(0)
     val h = headers.asList.zipWithIndex.map { a => a }.toMap
     ^(
@@ -41,12 +42,14 @@ object HoneExtractor extends Extractor {
             },
             {
               val n = ^(
-                "_id" -> item ~> h("process_path"),
+                "_id" -> item ~> h("path"),
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "software",
-                "processPath" -> item ~> h("process_path"),
-                "processPid" -> item ~> h("process_pid")
+                "processPath" -> item ~> h("path"),
+                "processPid" -> item ~> h("proc_pid"),
+                "processPpid" -> item ~> h("proc_ppid"),
+                "processArgs" -> item ~> h("argv")
               )
               if (notEmpty(n ~> "_id")) n
               else None
@@ -131,7 +134,9 @@ object HoneExtractor extends Extractor {
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "flow",
-                "startTime" -> item ~> h("timestamp_epoch_ms")
+                "startTime" -> item ~> h("timestamp_epoch_ms"),
+                "totalBytes" -> item ~> h("byte_cnt"),
+                "totalPkts" -> item ~> h("packet_cnt")
               )
               if (notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port")) &&
                 notEmpty(item ~> h("dest_ip")) && notEmpty(item ~> h("dest_port"))) n
@@ -157,16 +162,16 @@ object HoneExtractor extends Extractor {
           *(
             {
               val n = ^(
-                "_id" -> Safely { hostName + "_runs_" + (item ~> h("process_path")).asString },
+                "_id" -> Safely { hostName + "_runs_" + (item ~> h("path")).asString },
                 "_outV" -> hostName,
-                "_inV" -> item ~> h("process_path"),
+                "_inV" -> item ~> h("path"),
                 "_type" -> "edge",
                 "_label" -> "runs",
                 "source" -> "Hone",
                 "outVType" -> "host",
                 "inVType" -> "software"
               )
-              if (hostName != "" && notEmpty(item ~> h("process_path"))) n
+              if (hostName != "" && notEmpty(item ~> h("path"))) n
               else None
             },
             {
@@ -301,11 +306,11 @@ object HoneExtractor extends Extractor {
             {
               val n = ^(
                 "_id" -> Safely {
-                  (item ~> h("process_path")).asString + "_hasFlow_" +
+                  (item ~> h("path")).asString + "_hasFlow_" +
                     (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
                     (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString
                 },
-                "_outV" -> item ~> h("process_path"),
+                "_outV" -> item ~> h("path"),
                 "_inV" -> Safely {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
                     (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString
@@ -318,16 +323,16 @@ object HoneExtractor extends Extractor {
               )
               if (notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port")) &&
                 notEmpty(item ~> h("dest_ip")) && notEmpty(item ~> h("dest_port")) &&
-                notEmpty(item ~> h("process_path"))) n
+                notEmpty(item ~> h("path"))) n
               else None
             },
             {
               val n = ^(
                 "_id" -> Safely {
-                  (item ~> h("process_path")).asString + "_runsAs_" +
+                  (item ~> h("path")).asString + "_runsAs_" +
                     hostName + ":" + (item ~> h("uid")).asString
                 },
-                "_outV" -> item ~> h("process_path"),
+                "_outV" -> item ~> h("path"),
                 "_inV" -> Safely {
                   hostName + ":" + (item ~> h("uid")).asString
                 },
@@ -337,7 +342,7 @@ object HoneExtractor extends Extractor {
                 "outVType" -> "software",
                 "inVType" -> "account"
               )
-              if ((notEmpty(item ~> h("process_path")) && notEmpty(item ~> h("uid")) && hostName != "")) n
+              if ((notEmpty(item ~> h("path")) && notEmpty(item ~> h("uid")) && hostName != "")) n
               else None
             }
           )

@@ -18,8 +18,8 @@ class HoneExtractorSuite extends FunSuite {
   val N = NumberNode
 
   test("parse an empty Hone element") {
-    var text = """user,uid,process_pid,process_path,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip
-,,,,,,,,,,
+    var text = """user,uid,proc_pid,proc_ppid,path,argv,conn_id,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip,byte_cnt,packet_cnt
+,,,,,,,,,,,,,,,,,,,,,
 """
     val node = morph.parser.CsvParser(text)
     val hone = HoneExtractor.extract(node, Map("hostName" -> "Mary"))
@@ -33,9 +33,9 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 0 === None)
   }
 
-  test("parse 1 Hone element - missing: user, source_ip, dest_ip") {
-    var text = """user,uid,process_pid,process_path,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip
-,0,3476,/sbin/ttymon,1371770584002,63112,37632,0,,,
+  test("parse 1 Hone element - missing: user, argv, source_ip, dest_ip") {
+    var text = """user,uid,proc_pid,proc_ppid,path,argv,conn_id,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip,byte_cnt,packet_cnt
+,0,3476,3470,/sbin/ttymon,,10000,1371770584002,63112,37632,0,,,,
 """
     val node = morph.parser.CsvParser(text)
     val hone = HoneExtractor.extract(node, Map("hostName" -> "Mary"))
@@ -51,6 +51,8 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "vertices" ~> 1 ~> "vertexType" === Some(S("software")))
     assert(hone ~> "vertices" ~> 1 ~> "processPath" === Some(S("/sbin/ttymon")))
     assert(hone ~> "vertices" ~> 1 ~> "processPid" === Some(S("3476")))
+    assert(hone ~> "vertices" ~> 1 ~> "processPpid" === Some(S("3470")))
+    assert(hone ~> "vertices" ~> 1 ~> "processArgs" === Some(S("")))
 
     assert(hone ~> "vertices" ~> 2 ~> "_id" === Some(S("63112")))
     assert(hone ~> "vertices" ~> 2 ~> "_type" === Some(S("vertex")))
@@ -89,8 +91,8 @@ class HoneExtractorSuite extends FunSuite {
   }
 
   test("parse 1 Hone element - missing user") {
-    var text = """user,uid,process_pid,process_path,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip
-,1000,3144,/usr/lib/gvfs/gvfsd-smb,1371797596390,49870,6667,4,10.32.92.230,69.42.215.170,
+    var text = """user,uid,proc_pid,proc_ppid,path,argv,conn_id,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip,byte_cnt,packet_cnt
+,1000,3144,3140,/usr/lib/gvfs/gvfsd-smb,test,10000,1371797596390,49870,6667,4,10.32.92.230,69.42.215.170,2068,2
 """
     val node = morph.parser.CsvParser(text)
     val hone = HoneExtractor.extract(node, Map("hostName" -> "Mary"))
@@ -106,6 +108,8 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "vertices" ~> 1 ~> "vertexType" === Some(S("software")))
     assert(hone ~> "vertices" ~> 1 ~> "processPath" === Some(S("/usr/lib/gvfs/gvfsd-smb")))
     assert(hone ~> "vertices" ~> 1 ~> "processPid" === Some(S("3144")))
+    assert(hone ~> "vertices" ~> 1 ~> "processPpid" === Some(S("3140")))
+    assert(hone ~> "vertices" ~> 1 ~> "processArgs" === Some(S("test")))
 
     assert(hone ~> "vertices" ~> 2 ~> "_id" === Some(S("10.32.92.230:49870")))
     assert(hone ~> "vertices" ~> 2 ~> "_type" === Some(S("vertex")))
@@ -142,6 +146,8 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "vertices" ~> 8 ~> "source" === Some(S("Hone")))
     assert(hone ~> "vertices" ~> 8 ~> "vertexType" === Some(S("flow")))
     assert(hone ~> "vertices" ~> 8 ~> "startTime" === Some(S("1371797596390")))
+    assert(hone ~> "vertices" ~> 8 ~> "totalPkts" === Some(S("2")))
+    assert(hone ~> "vertices" ~> 8 ~> "totalBytes" === Some(S("2068")))
 
     assert(hone ~> "vertices" ~> 9 ~> "_id" === Some(S("Mary:1000")))
     assert(hone ~> "vertices" ~> 9 ~> "_type" === Some(S("vertex")))
