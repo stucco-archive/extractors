@@ -84,12 +84,12 @@ class ArgusExtractorSuite extends FunSuite {
     assert(argus ~> "vertices" ~> 4 ~> "vertexType" === Some(S("IP")))
     assert(argus ~> "vertices" ~> 4 ~> "source" === Some(S("Argus")))
 
-    assert(argus ~> "vertices" ~> 5 ~> "_id" === Some(N(23078)))
+    assert(argus ~> "vertices" ~> 5 ~> "_id" === Some(S("23078")))
     assert(argus ~> "vertices" ~> 5 ~> "_type" === Some(S("vertex")))
     assert(argus ~> "vertices" ~> 5 ~> "vertexType" === Some(S("port")))
     assert(argus ~> "vertices" ~> 5 ~> "source" === Some(S("Argus")))
 
-    assert(argus ~> "vertices" ~> 6 ~> "_id" === Some(N(1984)))
+    assert(argus ~> "vertices" ~> 6 ~> "_id" === Some(S("1984")))
     assert(argus ~> "vertices" ~> 6 ~> "_type" === Some(S("vertex")))
     assert(argus ~> "vertices" ~> 6 ~> "vertexType" === Some(S("port")))
     assert(argus ~> "vertices" ~> 6 ~> "source" === Some(S("Argus")))
@@ -132,7 +132,7 @@ class ArgusExtractorSuite extends FunSuite {
     
     assert(argus ~> "edges" ~> 4 ~> "_id" === Some(S("10.32.92.5:23078_hasPort_23078")))
     assert(argus ~> "edges" ~> 4 ~> "_outV" === Some(S("10.32.92.5:23078")))
-    assert(argus ~> "edges" ~> 4 ~> "_inV" === Some(N(23078)))
+    assert(argus ~> "edges" ~> 4 ~> "_inV" === Some(S("23078")))
     assert(argus ~> "edges" ~> 4 ~> "_type" === Some(S("edge")))
     assert(argus ~> "edges" ~> 4 ~> "_label" === Some(S("hasPort")))
     assert(argus ~> "edges" ~> 4 ~> "source" === Some(S("Argus")))
@@ -141,7 +141,7 @@ class ArgusExtractorSuite extends FunSuite {
 
     assert(argus ~> "edges" ~> 5 ~> "_id" === Some(S("172.10.0.6:1984_hasPort_1984")))
     assert(argus ~> "edges" ~> 5 ~> "_outV" === Some(S("172.10.0.6:1984")))
-    assert(argus ~> "edges" ~> 5 ~> "_inV" === Some(N(1984)))
+    assert(argus ~> "edges" ~> 5 ~> "_inV" === Some(S("1984")))
     assert(argus ~> "edges" ~> 5 ~> "_type" === Some(S("edge")))
     assert(argus ~> "edges" ~> 5 ~> "_label" === Some(S("hasPort")))
     assert(argus ~> "edges" ~> 5 ~> "source" === Some(S("Argus")))
@@ -211,12 +211,12 @@ class ArgusExtractorSuite extends FunSuite {
     assert(argus ~> "vertices" ~> 4 ~> "vertexType" === Some(S("IP")))
     assert(argus ~> "vertices" ~> 4 ~> "source" === Some(S("Argus")))
 
-    assert(argus ~> "vertices" ~> 5 ~> "_id" === Some(N(60867)))
+    assert(argus ~> "vertices" ~> 5 ~> "_id" === Some(S("60867")))
     assert(argus ~> "vertices" ~> 5 ~> "_type" === Some(S("vertex")))
     assert(argus ~> "vertices" ~> 5 ~> "vertexType" === Some(S("port")))
     assert(argus ~> "vertices" ~> 5 ~> "source" === Some(S("Argus")))
 
-    assert(argus ~> "vertices" ~> 6 ~> "_id" === Some(N(1984)))
+    assert(argus ~> "vertices" ~> 6 ~> "_id" === Some(S("1984")))
     assert(argus ~> "vertices" ~> 6 ~> "_type" === Some(S("vertex")))
     assert(argus ~> "vertices" ~> 6 ~> "vertexType" === Some(S("port")))
     assert(argus ~> "vertices" ~> 6 ~> "source" === Some(S("Argus")))
@@ -257,12 +257,12 @@ class ArgusExtractorSuite extends FunSuite {
     assert(argus ~> "vertices" ~> 11 ~> "vertexType" === Some(S("IP")))
     assert(argus ~> "vertices" ~> 11 ~> "source" === Some(S("Argus")))
 
-    assert(argus ~> "vertices" ~> 12 ~> "_id" === Some(N(22974)))
+    assert(argus ~> "vertices" ~> 12 ~> "_id" === Some(S("22974")))
     assert(argus ~> "vertices" ~> 12 ~> "_type" === Some(S("vertex")))
     assert(argus ~> "vertices" ~> 12 ~> "vertexType" === Some(S("port")))
     assert(argus ~> "vertices" ~> 12 ~> "source" === Some(S("Argus")))
 
-    assert(argus ~> "vertices" ~> 13 ~> "_id" === Some(N(1984)))
+    assert(argus ~> "vertices" ~> 13 ~> "_id" === Some(S("1984")))
     assert(argus ~> "vertices" ~> 13 ~> "_type" === Some(S("vertex")))
     assert(argus ~> "vertices" ~> 13 ~> "vertexType" === Some(S("port")))
     assert(argus ~> "vertices" ~> 13 ~> "source" === Some(S("Argus")))
@@ -319,7 +319,7 @@ class ArgusExtractorSuite extends FunSuite {
     
     assert(argus ~> "edges" ~> 4 ~> "_id" === Some(S("10.32.92.10:60867_hasPort_60867")))
     assert(argus ~> "edges" ~> 4 ~> "_outV" === Some(S("10.32.92.10:60867")))
-    assert(argus ~> "edges" ~> 4 ~> "_inV" === Some(N(60867)))
+    assert(argus ~> "edges" ~> 4 ~> "_inV" === Some(S("60867")))
     assert(argus ~> "edges" ~> 4 ~> "_type" === Some(S("edge")))
     assert(argus ~> "edges" ~> 4 ~> "_label" === Some(S("hasPort")))
     assert(argus ~> "edges" ~> 4 ~> "source" === Some(S("Argus")))
@@ -328,7 +328,7 @@ class ArgusExtractorSuite extends FunSuite {
 
     assert(argus ~> "edges" ~> 5 ~> "_id" === Some(S("172.10.0.6:1984_hasPort_1984")))
     assert(argus ~> "edges" ~> 5 ~> "_outV" === Some(S("172.10.0.6:1984")))
-    assert(argus ~> "edges" ~> 5 ~> "_inV" === Some(N(1984)))
+    assert(argus ~> "edges" ~> 5 ~> "_inV" === Some(S("1984")))
     assert(argus ~> "edges" ~> 5 ~> "_type" === Some(S("edge")))
     assert(argus ~> "edges" ~> 5 ~> "_label" === Some(S("hasPort")))
     assert(argus ~> "edges" ~> 5 ~> "source" === Some(S("Argus")))
@@ -373,7 +373,7 @@ class ArgusExtractorSuite extends FunSuite {
     
     assert(argus ~> "edges" ~> 10 ~> "_id" === Some(S("10.32.92.5:22974_hasPort_22974")))
     assert(argus ~> "edges" ~> 10 ~> "_outV" === Some(S("10.32.92.5:22974")))
-    assert(argus ~> "edges" ~> 10 ~> "_inV" === Some(N(22974)))
+    assert(argus ~> "edges" ~> 10 ~> "_inV" === Some(S("22974")))
     assert(argus ~> "edges" ~> 10 ~> "_type" === Some(S("edge")))
     assert(argus ~> "edges" ~> 10 ~> "_label" === Some(S("hasPort")))
     assert(argus ~> "edges" ~> 10 ~> "source" === Some(S("Argus")))
@@ -382,7 +382,7 @@ class ArgusExtractorSuite extends FunSuite {
 
     assert(argus ~> "edges" ~> 11 ~> "_id" === Some(S("172.10.0.6:1984_hasPort_1984")))
     assert(argus ~> "edges" ~> 11 ~> "_outV" === Some(S("172.10.0.6:1984")))
-    assert(argus ~> "edges" ~> 11 ~> "_inV" === Some(N(1984)))
+    assert(argus ~> "edges" ~> 11 ~> "_inV" === Some(S("1984")))
     assert(argus ~> "edges" ~> 11 ~> "_type" === Some(S("edge")))
     assert(argus ~> "edges" ~> 11 ~> "_label" === Some(S("hasPort")))
     assert(argus ~> "edges" ~> 11 ~> "source" === Some(S("Argus")))

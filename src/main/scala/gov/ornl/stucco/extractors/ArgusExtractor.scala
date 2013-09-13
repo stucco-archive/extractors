@@ -54,7 +54,7 @@ object ArgusExtractor extends Extractor {
         {
           val n = ^(
             "_id" -> Safely {
-                  (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber
+                  (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber.toString
                 },
             "_type" -> "vertex",
             "vertexType" -> "address",
@@ -66,7 +66,7 @@ object ArgusExtractor extends Extractor {
         {
           val n = ^(
             "_id" -> Safely {
-                  (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber
+                  (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber.toString
                 },
             "_type" -> "vertex",
             "vertexType" -> "address",
@@ -97,7 +97,7 @@ object ArgusExtractor extends Extractor {
         },
         {
           val n = ^(
-            "_id" -> item ~> "@SrcPort",
+            "_id" -> Safely{(item ~> "@SrcPort").asNumber.toString},
             "_type" -> "vertex",
             "vertexType" -> "port",
             "source" -> "Argus"
@@ -107,7 +107,7 @@ object ArgusExtractor extends Extractor {
         },
         {
           val n = ^(
-            "_id" -> item ~> "@DstPort",
+            "_id" -> Safely{(item ~> "@DstPort").asNumber.toString},
             "_type" -> "vertex",
             "vertexType" -> "port",
             "source" -> "Argus"
@@ -216,7 +216,7 @@ object ArgusExtractor extends Extractor {
             "_outV" -> Safely {
               (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber
             },
-            "_inV" -> item ~> "@SrcPort",
+            "_inV" -> Safely{(item ~> "@SrcPort").asNumber.toString},
             "_type" -> "edge",
             "_label" -> "hasPort",
             "source" -> "Argus",
@@ -235,7 +235,7 @@ object ArgusExtractor extends Extractor {
             "_outV" -> Safely {
               (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber
             },
-            "_inV" -> item ~> "@DstPort",
+            "_inV" -> Safely{(item ~> "@DstPort").asNumber.toString},
             "_type" -> "edge",
             "_label" -> "hasPort",
             "source" -> "Argus",
