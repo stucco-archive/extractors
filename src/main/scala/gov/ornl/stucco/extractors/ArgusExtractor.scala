@@ -142,7 +142,8 @@ object ArgusExtractor extends Extractor {
             "inVType" -> "address"
           )
           if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
-            notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort")) n
+              notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
+              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
           else None
         },
         {
@@ -166,7 +167,8 @@ object ArgusExtractor extends Extractor {
             "inVType" -> "address"
           )
           if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
-            notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort")) n
+              notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
+              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
           else None
         },
         {
@@ -185,7 +187,8 @@ object ArgusExtractor extends Extractor {
             "outVType" -> "address",
             "inVType" -> "IP"
           )
-          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort")) n
+          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
+              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
           else None
         },
         {
@@ -204,7 +207,8 @@ object ArgusExtractor extends Extractor {
             "outVType" -> "address",
             "inVType" -> "IP"
           )
-          if (notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort")) n
+          if (notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
+              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
           else None
         },
         {
@@ -223,7 +227,8 @@ object ArgusExtractor extends Extractor {
             "outVType" -> "address",
             "inVType" -> "port"
           )
-          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort")) n
+          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
+              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
           else None
         },
         {
@@ -242,7 +247,8 @@ object ArgusExtractor extends Extractor {
             "outVType" -> "address",
             "inVType" -> "port"
           )
-          if (notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort")) n
+          if (notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
+              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
           else None
         }
       )
