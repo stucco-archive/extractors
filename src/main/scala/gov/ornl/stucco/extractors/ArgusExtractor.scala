@@ -48,7 +48,8 @@ object ArgusExtractor extends Extractor {
             "srcPkts" -> item ~> "@SrcPkts"
           )
           if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
-            notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort")) n
+              notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
+              notEmpty(n ~> "_id")) n
           else None
         },
         {
@@ -60,7 +61,8 @@ object ArgusExtractor extends Extractor {
             "vertexType" -> "address",
             "source" -> "Argus"
           )
-          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort")) n
+          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
+              notEmpty(n ~> "_id")) n
           else None
         },
         {
@@ -72,7 +74,8 @@ object ArgusExtractor extends Extractor {
             "vertexType" -> "address",
             "source" -> "Argus"
           )
-          if (notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort")) n
+          if (notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
+              notEmpty(n ~> "_id")) n
           else None
         },
         {
@@ -82,7 +85,8 @@ object ArgusExtractor extends Extractor {
             "vertexType" -> "IP",
             "source" -> "Argus"
           )
-          if (notEmpty(item ~> "@SrcAddr")) n
+          if (notEmpty(item ~> "@SrcAddr") &&
+              notEmpty(n ~> "_id")) n
           else None
         },
         {
@@ -92,7 +96,8 @@ object ArgusExtractor extends Extractor {
             "vertexType" -> "IP",
             "source" -> "Argus"
           )
-          if (notEmpty(item ~> "@DstAddr")) n
+          if (notEmpty(item ~> "@DstAddr") &&
+              notEmpty(n ~> "_id")) n
           else None
         },
         {
@@ -102,7 +107,8 @@ object ArgusExtractor extends Extractor {
             "vertexType" -> "port",
             "source" -> "Argus"
           )
-          if (notEmpty(item ~> "@SrcPort")) n
+          if (notEmpty(item ~> "@SrcPort") &&
+              notEmpty(n ~> "_id")) n
           else None
         },
         {
@@ -112,7 +118,8 @@ object ArgusExtractor extends Extractor {
             "vertexType" -> "port",
             "source" -> "Argus"
           )
-          if (notEmpty(item ~> "@DstPort")) n
+          if (notEmpty(item ~> "@DstPort") &&
+              notEmpty(n ~> "_id")) n
           else None
         }
       )
