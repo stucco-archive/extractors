@@ -45,14 +45,14 @@ object NvdExtractor extends Extractor {
     "edges" -> (node ~> "nvd" ~> "entry" %%-> { nvdItem =>
       (nvdItem ~> "vuln:vulnerable-software-list" ~> "vuln:product" %%-> { cpeItem =>
         ^(
-          "_id" -> nvdItem ~> "@id",
+          "_id" -> (cpeItem.asString + "_to_" + (nvdItem ~> "@id").asString),
           "_type" -> "edge",
           "inVType" -> "vulnerability",
           "outVType" -> "software",
           "source" -> "NVD",
           "_inV" -> nvdItem ~> "@id",
           "_outV" -> cpeItem,
-          "_label" -> (cpeItem.asString + "_to_" + (nvdItem ~> "@id").asString)
+          "_label" -> "hasVulnerability"
         )
       }).encapsulate
     }).autoFlatten
