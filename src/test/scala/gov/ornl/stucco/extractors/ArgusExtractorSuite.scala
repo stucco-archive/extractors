@@ -19,8 +19,9 @@ class ArgusExtractorSuite extends FunSuite {
 
 //data from something like this:
 //ra -r argus.out -M noman xml -n > argus.out.xml
-//with fields line in ra.conf like this:
-// TODO
+//with fields line in ra.conf like:
+//RA_FIELD_SPECIFIER="stime flgs proto saddr sport dir daddr dport spkts dpkts appbytes abr state:12 nstroke dur"
+
 
   test("parse one argus entries, with (unused) mgmt records included") {
     val node = morph.parser.XmlParser("""
