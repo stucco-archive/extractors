@@ -1,11 +1,11 @@
 import org.scalatest.FunSuite
 
-import morph.ast._
-import morph.ast.Implicits._
-import morph.ast.DSL._
-import morph.parser._
-import morph.parser.Interface._
-import morph.utils.Utils._
+import gov.ornl.stucco.morph.ast._
+import gov.ornl.stucco.morph.ast.Implicits._
+import gov.ornl.stucco.morph.ast.DSL._
+import gov.ornl.stucco.morph.parser._
+import gov.ornl.stucco.morph.parser.Interface._
+import gov.ornl.stucco.morph.utils.Utils._
 
 import gov.ornl.stucco.extractors._
 
@@ -18,7 +18,7 @@ class NvdExtractorSuite extends FunSuite {
   val N = NumberNode
 
   test("parse one simple NVD element") {
-    val node = morph.parser.XmlParser("""
+    val node = XmlParser("""
     <?xml version='1.0' encoding='UTF-8'?>
     <nvd xmlns:scap-core="http://scap.nist.gov/schema/scap-core/0.1" xmlns="http://scap.nist.gov/schema/feed/vulnerability/2.0" xmlns:cpe-lang="http://cpe.mitre.org/language/2.0" xmlns:cvss="http://scap.nist.gov/schema/cvss-v2/0.2" xmlns:patch="http://scap.nist.gov/schema/patch/0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vuln="http://scap.nist.gov/schema/vulnerability/0.4" nvd_xml_version="2.0" pub_date="2013-07-22T10:00:00" xsi:schemaLocation="http://scap.nist.gov/schema/patch/0.1 http://nvd.nist.gov/schema/patch_0.1.xsd http://scap.nist.gov/schema/scap-core/0.1 http://nvd.nist.gov/schema/scap-core_0.1.xsd http://scap.nist.gov/schema/feed/vulnerability/2.0 http://nvd.nist.gov/schema/nvd-cve-feed_2.0.xsd">
 
@@ -68,7 +68,7 @@ class NvdExtractorSuite extends FunSuite {
   }
 
   test("parse two NVD elements (w/o references)") {
-    val node = morph.parser.XmlParser("""
+    val node = XmlParser("""
     <?xml version='1.0' encoding='UTF-8'?>
     <nvd xmlns:scap-core="http://scap.nist.gov/schema/scap-core/0.1" xmlns="http://scap.nist.gov/schema/feed/vulnerability/2.0" xmlns:cpe-lang="http://cpe.mitre.org/language/2.0" xmlns:cvss="http://scap.nist.gov/schema/cvss-v2/0.2" xmlns:patch="http://scap.nist.gov/schema/patch/0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vuln="http://scap.nist.gov/schema/vulnerability/0.4" nvd_xml_version="2.0" pub_date="2013-07-22T10:00:00" xsi:schemaLocation="http://scap.nist.gov/schema/patch/0.1 http://nvd.nist.gov/schema/patch_0.1.xsd http://scap.nist.gov/schema/scap-core/0.1 http://nvd.nist.gov/schema/scap-core_0.1.xsd http://scap.nist.gov/schema/feed/vulnerability/2.0 http://nvd.nist.gov/schema/nvd-cve-feed_2.0.xsd">
 
@@ -148,7 +148,7 @@ class NvdExtractorSuite extends FunSuite {
   }
 
   test("check CPE->NVD edges") {
-    val node = morph.parser.XmlParser("""
+    val node = XmlParser("""
     <?xml version='1.0' encoding='UTF-8'?>
     <nvd xmlns:scap-core="http://scap.nist.gov/schema/scap-core/0.1" xmlns="http://scap.nist.gov/schema/feed/vulnerability/2.0" xmlns:cpe-lang="http://cpe.mitre.org/language/2.0" xmlns:cvss="http://scap.nist.gov/schema/cvss-v2/0.2" xmlns:patch="http://scap.nist.gov/schema/patch/0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vuln="http://scap.nist.gov/schema/vulnerability/0.4" nvd_xml_version="2.0" pub_date="2013-07-22T10:00:00" xsi:schemaLocation="http://scap.nist.gov/schema/patch/0.1 http://nvd.nist.gov/schema/patch_0.1.xsd http://scap.nist.gov/schema/scap-core/0.1 http://nvd.nist.gov/schema/scap-core_0.1.xsd http://scap.nist.gov/schema/feed/vulnerability/2.0 http://nvd.nist.gov/schema/nvd-cve-feed_2.0.xsd">
 
