@@ -1,7 +1,7 @@
 package gov.ornl.stucco.extractors
 
-import morph.ast._
-import morph.extractor.Extractor
+import gov.ornl.stucco.morph.ast._
+import gov.ornl.stucco.morph.extractor.Extractor
 
 object MetasploitExtractor extends Extractor {
 
@@ -42,7 +42,7 @@ object MetasploitExtractor extends Extractor {
               else None
             },
             {
-              val cves = morph.parser.CsvParser((item ~> h("ref_names")).asString) ~> 0 
+              val cves = gov.ornl.stucco.morph.parser.CsvParser((item ~> h("ref_names")).asString) ~> 0 
               val m = cves mapPartial {
                 case cve if (cve.isString && cve.asString.contains("CVE-") ) =>
                 *(
@@ -68,7 +68,7 @@ object MetasploitExtractor extends Extractor {
         case item if (item ~> 0 != headers ~> 0) && (item ~> 1 != None) =>
           *(
             {
-              val cves = morph.parser.CsvParser((item ~> h("ref_names")).asString) ~> 0 //*((item ~> h("ref_names")).asString.split(","))
+              val cves = gov.ornl.stucco.morph.parser.CsvParser((item ~> h("ref_names")).asString) ~> 0 //*((item ~> h("ref_names")).asString.split(","))
               val m = cves mapPartial {
                 case cve if (cve.isString && cve.asString.contains("CVE-") ) =>
                 *(
