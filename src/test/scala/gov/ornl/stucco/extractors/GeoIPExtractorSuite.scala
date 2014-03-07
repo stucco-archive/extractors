@@ -1,11 +1,11 @@
 import org.scalatest.FunSuite
 
-import morph.ast._
-import morph.ast.Implicits._
-import morph.ast.DSL._
-import morph.parser._
-import morph.parser.Interface._
-import morph.utils.Utils._
+import gov.ornl.stucco.morph.ast._
+import gov.ornl.stucco.morph.ast.Implicits._
+import gov.ornl.stucco.morph.ast.DSL._
+import gov.ornl.stucco.morph.parser._
+import gov.ornl.stucco.morph.parser.Interface._
+import gov.ornl.stucco.morph.utils.Utils._
 
 import gov.ornl.stucco.extractors._
 
@@ -25,7 +25,7 @@ class GeoIPExtractorSuite extends FunSuite {
 "1.0.8.0","1.0.15.255","16779264","16781311","CN","China"
 "1.0.16.0","1.0.31.255","16781312","16785407","JP","Japan"
 """
-    val node = morph.parser.CsvParser(text)
+    val node = CsvParser(text)
     val geoIP = GeoIPExtractor(node)
     //print(geoIP)
     assert(geoIP ~> "vertices" ~> 0 ~> "_id" === Some(S("1.0.0.0_through_1.0.0.255")))

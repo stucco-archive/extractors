@@ -1,7 +1,7 @@
 package gov.ornl.stucco.extractors
 
-import morph.ast._
-import morph.extractor.Extractor
+import gov.ornl.stucco.morph.ast._
+import gov.ornl.stucco.morph.extractor.Extractor
 
 /**
  * CPE data extractor.

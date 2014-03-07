@@ -1,11 +1,11 @@
 import org.scalatest.FunSuite
 
-import morph.ast._
-import morph.ast.Implicits._
-import morph.ast.DSL._
-import morph.parser._
-import morph.parser.Interface._
-import morph.utils.Utils._
+import gov.ornl.stucco.morph.ast._
+import gov.ornl.stucco.morph.ast.Implicits._
+import gov.ornl.stucco.morph.ast.DSL._
+import gov.ornl.stucco.morph.parser._
+import gov.ornl.stucco.morph.parser.Interface._
+import gov.ornl.stucco.morph.utils.Utils._
 
 import gov.ornl.stucco.extractors._
 
@@ -18,7 +18,7 @@ class CveExtractorSuite extends FunSuite {
   val N = NumberNode
 
   test("parse one CVE element with one reference") {
-    val node = morph.parser.XmlParser("""
+    val node = XmlParser("""
       <?xml version="1.0"?>
       <cve xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns="http://cve.mitre.org/cve/downloads"
@@ -75,7 +75,7 @@ class CveExtractorSuite extends FunSuite {
   }
 
   test("parse two CVE elements with several references") {
-    val node = morph.parser.XmlParser("""
+    val node = XmlParser("""
       <?xml version="1.0"?>
       <cve xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns="http://cve.mitre.org/cve/downloads"

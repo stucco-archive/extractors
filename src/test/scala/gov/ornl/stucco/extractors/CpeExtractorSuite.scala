@@ -1,11 +1,11 @@
 import org.scalatest.FunSuite
 
-import morph.ast._
-import morph.ast.Implicits._
-import morph.ast.DSL._
-import morph.parser._
-import morph.parser.Interface._
-import morph.utils.Utils._
+import gov.ornl.stucco.morph.ast._
+import gov.ornl.stucco.morph.ast.Implicits._
+import gov.ornl.stucco.morph.ast.DSL._
+import gov.ornl.stucco.morph.parser._
+import gov.ornl.stucco.morph.parser.Interface._
+import gov.ornl.stucco.morph.utils.Utils._
 
 import gov.ornl.stucco.extractors._
 
@@ -18,7 +18,7 @@ class CpeExtractorSuite extends FunSuite {
   val N = NumberNode
 
   test("parse one simple CPE element") {
-    val node = morph.parser.XmlParser("""
+    val node = XmlParser("""
     <?xml version='1.0' encoding='UTF-8'?>
     <cpe-list xmlns:meta="http://scap.nist.gov/schema/cpe-dictionary-metadata/0.2" xmlns:scap-core="http://scap.nist.gov/schema/scap-core/0.3" xmlns:config="http://scap.nist.gov/schema/configuration/0.1" xmlns="http://cpe.mitre.org/dictionary/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns6="http://scap.nist.gov/schema/scap-core/0.1" xsi:schemaLocation="http://scap.nist.gov/schema/configuration/0.1 http://nvd.nist.gov/schema/configuration_0.1.xsd http://scap.nist.gov/schema/scap-core/0.3 http://nvd.nist.gov/schema/scap-core_0.3.xsd http://cpe.mitre.org/dictionary/2.0 http://cpe.mitre.org/files/cpe-dictionary_2.2.xsd http://scap.nist.gov/schema/scap-core/0.1 http://nvd.nist.gov/schema/scap-core_0.1.xsd http://scap.nist.gov/schema/cpe-dictionary-metadata/0.2 http://nvd.nist.gov/schema/cpe-dictionary-metadata_0.2.xsd">
       <generator>
@@ -55,7 +55,7 @@ class CpeExtractorSuite extends FunSuite {
   }
 
   test("parse several CPE elements") {
-    val node = morph.parser.XmlParser("""
+    val node = XmlParser("""
     <?xml version='1.0' encoding='UTF-8'?>
     <cpe-list xmlns:meta="http://scap.nist.gov/schema/cpe-dictionary-metadata/0.2" xmlns:scap-core="http://scap.nist.gov/schema/scap-core/0.3" xmlns:config="http://scap.nist.gov/schema/configuration/0.1" xmlns="http://cpe.mitre.org/dictionary/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns6="http://scap.nist.gov/schema/scap-core/0.1" xsi:schemaLocation="http://scap.nist.gov/schema/configuration/0.1 http://nvd.nist.gov/schema/configuration_0.1.xsd http://scap.nist.gov/schema/scap-core/0.3 http://nvd.nist.gov/schema/scap-core_0.3.xsd http://cpe.mitre.org/dictionary/2.0 http://cpe.mitre.org/files/cpe-dictionary_2.2.xsd http://scap.nist.gov/schema/scap-core/0.1 http://nvd.nist.gov/schema/scap-core_0.1.xsd http://scap.nist.gov/schema/cpe-dictionary-metadata/0.2 http://nvd.nist.gov/schema/cpe-dictionary-metadata_0.2.xsd">
       <generator>

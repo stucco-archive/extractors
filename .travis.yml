@@ -4,3 +4,12 @@ scala:
 jdk:
   - oraclejdk7
   - openjdk7
+before_install:
+  - mvn scm:checkout
+  - cd morph
+  - mvn scm:checkout
+  - cd JSON-java
+  - mvn clean install
+  - cd ..
+  - mvn clean install
+  - cd ..

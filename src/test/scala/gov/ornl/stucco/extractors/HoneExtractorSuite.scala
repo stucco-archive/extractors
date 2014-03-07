@@ -1,11 +1,11 @@
 import org.scalatest.FunSuite
 
-import morph.ast._
-import morph.ast.Implicits._
-import morph.ast.DSL._
-import morph.parser._
-import morph.parser.Interface._
-import morph.utils.Utils._
+import gov.ornl.stucco.morph.ast._
+import gov.ornl.stucco.morph.ast.Implicits._
+import gov.ornl.stucco.morph.ast.DSL._
+import gov.ornl.stucco.morph.parser._
+import gov.ornl.stucco.morph.parser.Interface._
+import gov.ornl.stucco.morph.utils.Utils._
 
 import gov.ornl.stucco.extractors._
 
@@ -21,7 +21,7 @@ class HoneExtractorSuite extends FunSuite {
     var text = """user,uid,proc_pid,proc_ppid,path,argv,conn_id,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip,byte_cnt,packet_cnt
 ,,,,,,,,,,,,,,,,,,,,,
 """
-    val node = morph.parser.CsvParser(text)
+    val node = CsvParser(text)
     val hone = HoneExtractor.extract(node, Map("hostName" -> "Mary"))
 
     assert(hone ~> "vertices" ~> 0 ~> "_id" === Some(S("Mary")))
@@ -37,7 +37,7 @@ class HoneExtractorSuite extends FunSuite {
     var text = """user,uid,proc_pid,proc_ppid,path,argv,conn_id,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip,byte_cnt,packet_cnt
 ,0,3476,3470,/sbin/ttymon,,10000,1371770584002,63112,37632,0,,,,
 """
-    val node = morph.parser.CsvParser(text)
+    val node = CsvParser(text)
     val hone = HoneExtractor.extract(node, Map("hostName" -> "Mary"))
 
     assert(hone ~> "vertices" ~> 0 ~> "_id" === Some(S("Mary")))
@@ -94,7 +94,7 @@ class HoneExtractorSuite extends FunSuite {
     var text = """user,uid,proc_pid,proc_ppid,path,argv,conn_id,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip,byte_cnt,packet_cnt
 ,1000,3144,3140,/usr/lib/gvfs/gvfsd-smb,test,10000,1371797596390,49870,6667,4,10.32.92.230,69.42.215.170,2068,2
 """
-    val node = morph.parser.CsvParser(text)
+    val node = CsvParser(text)
     val hone = HoneExtractor.extract(node, Map("hostName" -> "Mary"))
 
     assert(hone ~> "vertices" ~> 0 ~> "_id" === Some(S("Mary")))
