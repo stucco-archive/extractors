@@ -250,9 +250,10 @@ class HoneExtractorSuite extends FunSuite {
 
   }
 
-  test("get & parse a >1M csv from file") {
+  test("get & parse a >10M csv from file") {
     val text = scala.io.Source.fromFile("testData/hone.csv").mkString
-    val node = CsvParser(text)
+    val more_text = text + '\n' + text + '\n' + text + '\n' + text + '\n' + text + '\n' + text + '\n' + text + '\n' + text + '\n' + text + '\n' + text
+    val node = CsvParser(more_text)
     val hone = HoneExtractor.extract(node, Map("hostName" -> "Mary"))
     //print(hone)
     assert(hone != null )
