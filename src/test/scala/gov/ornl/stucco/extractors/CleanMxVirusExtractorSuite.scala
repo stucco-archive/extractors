@@ -57,9 +57,9 @@ class CleanMxVirusExtractorSuite extends FunSuite {
         </entries>
         </output>
       """)
-    println(node)
+    //println(node)
     val entries = CleanMxVirusExtractor(node)
-    println(entries)
+    //println(entries)
     assert(entries ~> "vertices" ~> 0 ~> "_id" === Some(S("CleanMx_22447134")))
     assert(entries ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(entries ~> "vertices" ~> 0 ~> "source" === Some(S("CleanMx(virus)")))
