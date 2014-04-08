@@ -9,6 +9,8 @@ import gov.ornl.stucco.morph.utils.Utils._
 
 import gov.ornl.stucco.extractors._
 
+import org.apache.commons.io._
+
 class HoneExtractorSuite extends FunSuite {
 
   // to make testing easier
@@ -246,6 +248,14 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 9 ~> "outVType" === Some(S("software")))
     assert(hone ~> "edges" ~> 9 ~> "inVType" === Some(S("account")))
 
+  }
+
+  test("get & parse a >1M csv from file") {
+    val text = scala.io.Source.fromFile("testData/hone.csv").mkString
+    val node = CsvParser(text)
+    val hone = HoneExtractor.extract(node, Map("hostName" -> "Mary"))
+    //print(hone)
+    assert(hone != null )
   }
 
 }
