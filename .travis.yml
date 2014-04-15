@@ -13,4 +13,3 @@ before_install:
   - cd ..
   - mvn clean install
   - cd ..
-env: JAVA_OPTS="-d64 -Xms128M -Xmx512M"
