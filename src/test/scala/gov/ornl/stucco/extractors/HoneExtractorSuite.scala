@@ -250,12 +250,14 @@ class HoneExtractorSuite extends FunSuite {
 
   }
 
-  test("parse a >5M csv from file") {
+  test("parse a >15M csv from file") {
+    val copyCount = 15
     val text = scala.io.Source.fromFile("testData/hone.csv").mkString
-    val moreText = text + '\n' + text + '\n' + text + '\n' + text + '\n' + text// + '\n' + text + '\n' + text + '\n' + text + '\n' + text + '\n' + text
-    val node = CsvParser(moreText)
+    var longerText = ""
+    for (i <- 1 to copyCount) { longerText = longerText + text + '\n' }
+    val node = CsvParser(longerText)
     val hone = HoneExtractor.extract(node, Map("hostName" -> "Mary"))
-    assert(hone != null ) //TODO ?
+    assert(hone.get("vertices").asList.length === 1722345 )
   }
 
   /*
