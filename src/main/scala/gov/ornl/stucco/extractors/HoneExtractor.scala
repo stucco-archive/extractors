@@ -31,17 +31,18 @@ object HoneExtractor extends Extractor {
         case item if (item ~> 0 != headers ~> 0) && (item ~> 1 != None) =>
           *(
             {
-              val n = ^(
+              if (hostName.nonEmpty)
+              ^(
                 "_id" -> hostName,
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "host"
               )
-              if (notEmpty(n ~> "_id")) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("path")).nodeNonEmpty)
+              ^(
                 "_id" -> item ~> h("path"),
                 "_type" -> "vertex",
                 "source" -> "Hone",
@@ -51,82 +52,83 @@ object HoneExtractor extends Extractor {
                 "processPpid" -> item ~> h("proc_ppid"),
                 "processArgs" -> item ~> h("argv")
               )
-              if (notEmpty(n ~> "_id")) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> hostName).nodeNonEmpty)
+              ^(
                 "_id" -> item ~> hostName,
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "host",
                 "hostName" -> hostName
               )
-              if (notEmpty(n ~> "_id")) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("source_ip")).nodeNonEmpty && (item ~> h("source_port")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely { (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString },
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "address"
               )
-              if (notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port"))) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("dest_ip")).nodeNonEmpty && (item ~> h("dest_port")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely { (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString },
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "address"
               )
-              if (notEmpty(item ~> h("dest_ip")) && notEmpty(item ~> h("dest_port"))) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("source_ip")).nodeNonEmpty)
+              ^(
                 "_id" -> item ~> h("source_ip"),
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "IP"
               )
-              if (notEmpty(n ~> "_id")) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("dest_ip")).nodeNonEmpty)
+              ^(
                 "_id" -> item ~> h("dest_ip"),
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "IP"
               )
-              if (notEmpty(n ~> "_id")) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("source_port")).nodeNonEmpty)
+              ^(
                 "_id" -> item ~> h("source_port"),
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "port"
               )
-              if (notEmpty(n ~> "_id")) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("dest_port")).nodeNonEmpty)
+              ^(
                 "_id" -> item ~> h("dest_port"),
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "port"
               )
-              if (notEmpty(n ~> "_id")) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("source_ip")).nodeNonEmpty && (item ~> h("source_port")).nodeNonEmpty &&
+                (item ~> h("dest_ip")).nodeNonEmpty && (item ~> h("dest_port")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
                     (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString
@@ -138,12 +140,11 @@ object HoneExtractor extends Extractor {
                 "totalBytes" -> item ~> h("byte_cnt"),
                 "totalPkts" -> item ~> h("packet_cnt")
               )
-              if (notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port")) &&
-                notEmpty(item ~> h("dest_ip")) && notEmpty(item ~> h("dest_port"))) n
               else None
             },
             {
-              val n = ^(
+              if (hostName.nonEmpty && (item ~> h("uid")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely { hostName + ":" + (item ~> h("uid")).asString },
                 "_type" -> "vertex",
                 "source" -> "Hone",
@@ -151,7 +152,6 @@ object HoneExtractor extends Extractor {
                 "uid" -> item ~> h("uid"),
                 "userName" -> item ~> h("user")
               )
-              if (hostName != "" && notEmpty(item ~> h("uid"))) n
               else None
             }
           )
@@ -161,7 +161,8 @@ object HoneExtractor extends Extractor {
         case item if (item ~> 0 != headers ~> 0) && (item ~> 1 != None) =>
           *(
             {
-              val n = ^(
+              if (hostName.nonEmpty && (item ~> h("path")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely { hostName + "_runs_" + (item ~> h("path")).asString },
                 "_outV" -> hostName,
                 "_inV" -> item ~> h("path"),
@@ -171,11 +172,12 @@ object HoneExtractor extends Extractor {
                 "outVType" -> "host",
                 "inVType" -> "software"
               )
-              if (hostName != "" && notEmpty(item ~> h("path"))) n
               else None
             },
             {
-              val n = ^(
+              if (hostName.nodeNonEmpty && (item ~> h("source_ip")).nodeNonEmpty &&
+                (item ~> h("source_port")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely {
                   hostName + "_usesAddress_" +
                     (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString
@@ -188,11 +190,11 @@ object HoneExtractor extends Extractor {
                 "outVType" -> "host",
                 "inVType" -> "address"
               )
-              if (hostName != "" && notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port"))) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("source_ip")).nodeNonEmpty && (item ~> h("source_port")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString +
                     "_hasIP_" + (item ~> h("source_ip")).asString
@@ -205,11 +207,11 @@ object HoneExtractor extends Extractor {
                 "outVType" -> "address",
                 "inVType" -> "IP"
               )
-              if (notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port"))) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("dest_ip")).nodeNonEmpty && (item ~> h("dest_port")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely {
                   (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString +
                     "_hasIP_" + (item ~> h("dest_ip")).asString
@@ -222,11 +224,11 @@ object HoneExtractor extends Extractor {
                 "outVType" -> "address",
                 "inVType" -> "IP"
               )
-              if (notEmpty(item ~> h("dest_ip")) && notEmpty(item ~> h("dest_port"))) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("source_ip")).nodeNonEmpty && (item ~> h("source_port")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString +
                     "_hasPort_" + (item ~> h("source_port")).asString
@@ -239,11 +241,11 @@ object HoneExtractor extends Extractor {
                 "outVType" -> "address",
                 "inVType" -> "port"
               )
-              if (notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port"))) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("dest_ip")).nodeNonEmpty && (item ~> h("dest_port")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely {
                   (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString +
                     "_hasPort_" + (item ~> h("dest_port")).asString
@@ -256,11 +258,12 @@ object HoneExtractor extends Extractor {
                 "outVType" -> "address",
                 "inVType" -> "port"
               )
-              if (notEmpty(item ~> h("dest_ip")) && notEmpty(item ~> h("dest_port"))) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("source_ip")).nodeNonEmpty && (item ~> h("source_port")).nodeNonEmpty &&
+                (item ~> h("dest_ip")).nodeNonEmpty && (item ~> h("dest_port")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
                     (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString + "_dstAddress_" +
@@ -277,12 +280,12 @@ object HoneExtractor extends Extractor {
                 "outVType" -> "flow",
                 "inVType" -> "address"
               )
-              if (notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port")) &&
-                notEmpty(item ~> h("dest_ip")) && notEmpty(item ~> h("dest_port"))) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("source_ip")).nodeNonEmpty && (item ~> h("source_port")).nodeNonEmpty &&
+                (item ~> h("dest_ip")).nodeNonEmpty && (item ~> h("dest_port")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
                     (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString + "_srcAddress_" +
@@ -299,12 +302,13 @@ object HoneExtractor extends Extractor {
                 "outVType" -> "flow",
                 "inVType" -> "address"
               )
-              if (notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port")) &&
-                notEmpty(item ~> h("dest_ip")) && notEmpty(item ~> h("dest_port"))) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("source_ip")).nodeNonEmpty && (item ~> h("source_port")).nodeNonEmpty &&
+                (item ~> h("dest_ip")).nodeNonEmpty && (item ~> h("dest_port")).nodeNonEmpty &&
+                (item ~> h("path")).nodeNonEmpty)
+              ^(
                 "_id" -> Safely {
                   (item ~> h("path")).asString + "_hasFlow_" +
                     (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
@@ -321,13 +325,12 @@ object HoneExtractor extends Extractor {
                 "outVType" -> "software",
                 "inVType" -> "flow"
               )
-              if (notEmpty(item ~> h("source_ip")) && notEmpty(item ~> h("source_port")) &&
-                notEmpty(item ~> h("dest_ip")) && notEmpty(item ~> h("dest_port")) &&
-                notEmpty(item ~> h("path"))) n
               else None
             },
             {
-              val n = ^(
+              if ((item ~> h("path")).nodeNonEmpty && (item ~> h("uid")).nodeNonEmpty &&
+                hostName.nonEmpty)
+              ^(
                 "_id" -> Safely {
                   (item ~> h("path")).asString + "_runsAs_" +
                     hostName + ":" + (item ~> h("uid")).asString
@@ -342,7 +345,6 @@ object HoneExtractor extends Extractor {
                 "outVType" -> "software",
                 "inVType" -> "account"
               )
-              if ((notEmpty(item ~> h("path")) && notEmpty(item ~> h("uid")) && hostName != "")) n
               else None
             }
           )
@@ -351,4 +353,3 @@ object HoneExtractor extends Extractor {
   }
 
 }
-
