@@ -252,22 +252,20 @@ class HoneExtractorSuite extends FunSuite {
 
   test("parse a >15M csv from file") {
     val copyCount = 15
-    val text = scala.io.Source.fromFile("testData/hone.csv").mkString
+    val text = scala.io.Source.fromFile("testData/hone.csv").getLines mkString "\n"
     var longerText = ""
     for (i <- 1 to copyCount) { longerText = longerText + text + '\n' }
-    val node = CsvParser(longerText)
-    val hone = HoneExtractor.extract(node, Map("hostName" -> "Mary"))
+    val hone = HoneExtractor.extract(CsvParser(longerText), Map("hostName" -> "Mary"))
     assert(hone.get("vertices").asList.length === 1722345 )
   }
 
   /*
   //gives error: java.lang.OutOfMemoryError: GC overhead limit exceeded
   test("parse a >50M csv from file") {
-    val text = scala.io.Source.fromFile("testData/hone.csv").mkString
+    val text = scala.io.Source.fromFile("testData/hone.csv").getLines mkString "\n"
     val moreText = text + '\n' + text + '\n' + text + '\n' + text + '\n' + text + '\n' + text + '\n' + text + '\n' + text + '\n' + text + '\n' + text
     val evenMoreText = moreText + '\n' + moreText + '\n' + moreText + '\n' + moreText + '\n' + moreText// + '\n' + moreText + '\n' + moreText + '\n' + moreText + '\n' + moreText + '\n' + moreText
-    val node = CsvParser(evenMoreText)
-    val hone = HoneExtractor.extract(node, Map("hostName" -> "Mary"))
+    val hone = HoneExtractor.extract(CsvParser(evenMoreText), Map("hostName" -> "Mary"))
     //print(hone)
     assert(hone != null ) //TODO ?
   }*/
