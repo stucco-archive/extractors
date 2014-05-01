@@ -17,7 +17,7 @@ class NvdExtractorSuite extends FunSuite {
   val S = StringNode
   val N = NumberNode
 
-  test("parse one simple NVD element") {
+  test("parse one NVD element w/ CPE item") {
     val node = XmlParser("""
     <?xml version='1.0' encoding='UTF-8'?>
     <nvd xmlns:scap-core="http://scap.nist.gov/schema/scap-core/0.1" xmlns="http://scap.nist.gov/schema/feed/vulnerability/2.0" xmlns:cpe-lang="http://cpe.mitre.org/language/2.0" xmlns:cvss="http://scap.nist.gov/schema/cvss-v2/0.2" xmlns:patch="http://scap.nist.gov/schema/patch/0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vuln="http://scap.nist.gov/schema/vulnerability/0.4" nvd_xml_version="2.0" pub_date="2013-07-22T10:00:00" xsi:schemaLocation="http://scap.nist.gov/schema/patch/0.1 http://nvd.nist.gov/schema/patch_0.1.xsd http://scap.nist.gov/schema/scap-core/0.1 http://nvd.nist.gov/schema/scap-core_0.1.xsd http://scap.nist.gov/schema/feed/vulnerability/2.0 http://nvd.nist.gov/schema/nvd-cve-feed_2.0.xsd">
@@ -50,11 +50,17 @@ class NvdExtractorSuite extends FunSuite {
     assert(nvd ~> "vertices" ~> 0 ~> "_id" === Some(S("CVE-2013-2361")))
     assert(nvd ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(nvd ~> "vertices" ~> 0 ~> "source" === Some(S("NVD")))
+    assert(nvd ~> "vertices" ~> 0 ~> "vertexType" === Some(S("vulnerability")))
     assert(nvd ~> "vertices" ~> 0 ~> "description" === Some(S("Cross-site scripting (XSS) vulnerability in HP System Management Homepage (SMH) before 7.2.1 allows remote attackers to inject arbitrary web script or HTML via unspecified vectors.")))
     assert(nvd ~> "vertices" ~> 0 ~> "references" ~> 0 === Some(S("https://h20564.www2.hp.com/portal/site/hpsc/public/kb/docDisplay?docId=emr_na-c03839862")))
     assert(nvd ~> "vertices" ~> 0 ~> "references" ~> 1 === Some(S("SOURCE:description")))
     assert((nvd get "vertices" get 0 get "publishedDate") === Some(S("2013-07-22T07:19:36.253-04:00")))
     assert((nvd get "vertices" get 0 get "modifiedDate") === Some(S("2013-07-22T07:19:36.253-04:00")))
+
+    assert(nvd ~> "vertices" ~> 1 ~> "_id" === Some(S("cpe:/a:HP:System_Management_Homepage:7.2.0")))
+    assert(nvd ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
+    assert(nvd ~> "vertices" ~> 1 ~> "vertexType" === Some(S("software")))
+    assert(nvd ~> "vertices" ~> 1 ~> "source" === Some(S("NVD")))
 
     assert(nvd ~> "edges" ~> 0 ~> "_id" === Some(S("cpe:/a:HP:System_Management_Homepage:7.2.0_to_CVE-2013-2361")))
     assert(nvd ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
@@ -67,7 +73,7 @@ class NvdExtractorSuite extends FunSuite {
 
   }
 
-  test("parse two NVD elements (w/o references)") {
+  test("parse two NVD elements (w/o references or CPEs)") {
     val node = XmlParser("""
     <?xml version='1.0' encoding='UTF-8'?>
     <nvd xmlns:scap-core="http://scap.nist.gov/schema/scap-core/0.1" xmlns="http://scap.nist.gov/schema/feed/vulnerability/2.0" xmlns:cpe-lang="http://cpe.mitre.org/language/2.0" xmlns:cvss="http://scap.nist.gov/schema/cvss-v2/0.2" xmlns:patch="http://scap.nist.gov/schema/patch/0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vuln="http://scap.nist.gov/schema/vulnerability/0.4" nvd_xml_version="2.0" pub_date="2013-07-22T10:00:00" xsi:schemaLocation="http://scap.nist.gov/schema/patch/0.1 http://nvd.nist.gov/schema/patch_0.1.xsd http://scap.nist.gov/schema/scap-core/0.1 http://nvd.nist.gov/schema/scap-core_0.1.xsd http://scap.nist.gov/schema/feed/vulnerability/2.0 http://nvd.nist.gov/schema/nvd-cve-feed_2.0.xsd">
@@ -125,6 +131,7 @@ class NvdExtractorSuite extends FunSuite {
     assert(nvd ~> "vertices" ~> 0 ~> "_id" === Some(S("CVE-2013-4878")))
     assert(nvd ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(nvd ~> "vertices" ~> 0 ~> "source" === Some(S("NVD")))
+    assert(nvd ~> "vertices" ~> 0 ~> "vertexType" === Some(S("vulnerability")))
     assert(nvd ~> "vertices" ~> 0 ~> "description" === Some(S("The default configuration of Parallels Plesk Panel 9.0.x and 9.2.x on UNIX, and Small Business Panel 10.x on UNIX, has an improper ScriptAlias directive for phppath, which makes it easier for remote attackers to execute arbitrary code via a crafted request, a different vulnerability than CVE-2012-1823.")))
     assert((nvd get "vertices" get 0 get "publishedDate") === Some(S("2013-07-18T12:51:56.227-04:00")))
     assert((nvd get "vertices" get 0 get "modifiedDate") === Some(S("2013-07-19T16:51:21.577-04:00")))
@@ -142,6 +149,7 @@ class NvdExtractorSuite extends FunSuite {
     assert(nvd ~> "vertices" ~> 1 ~> "_id" === Some(S("CVE-2013-5217")))
     assert(nvd ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
     assert(nvd ~> "vertices" ~> 1 ~> "source" === Some(S("NVD")))
+    assert(nvd ~> "vertices" ~> 0 ~> "vertexType" === Some(S("vulnerability")))
     assert(nvd ~> "vertices" ~> 1 ~> "description" === Some(S("** REJECT **  DO NOT USE THIS CANDIDATE NUMBER. ConsultIDs: CVE-2012-5217.  Reason: This candidate is a duplicate of CVE-2012-5217.  A typo caused the wrong ID to be used.  Notes: All CVE users should reference CVE-2012-5217 instead of this candidate.  All references and descriptions in this candidate have been removed to prevent accidental usage.")))
     assert((nvd get "vertices" get 1 get "publishedDate") === Some(S("2013-07-22T07:20:46.637-04:00")))
     assert((nvd get "vertices" get 1 get "modifiedDate") === Some(S("2013-07-22T07:20:47.053-04:00")))
@@ -214,7 +222,7 @@ class NvdExtractorSuite extends FunSuite {
   test("parse a ~5M nvd file") {
     val text = scala.io.Source.fromFile("testData/nvdcve-2.0-2002_pt1.xml").getLines mkString "\n"
     val nvd = NvdExtractor(XmlParser(text))
-    assert(nvd.get("vertices").asList.length === 2103 )
+    assert(nvd.get("vertices").asList.length === 8804 )
   }
 
   test("parse a ~75M nvd file") {
@@ -226,8 +234,16 @@ class NvdExtractorSuite extends FunSuite {
     for (i <- 1 to copyCount) { longerText = longerText + entries + '\n' }
     longerText = longerText + lines(lines.length-1)
     val nvd = NvdExtractor(XmlParser(longerText))
-    assert(nvd.get("vertices").asList.length === 2103 * copyCount )
+    assert(nvd.get("vertices").asList.length === 8804 * copyCount )
   }
-
+/*
+  test("parse the actual data") {
+    val text = scala.io.Source.fromFile("testData/nvdcve-2.0-2002.xml").getLines mkString "\n"
+    val node = XmlParser(text)
+    val msf = NvdExtractor.extract(node)
+    print(msf)
+    //assert(hone.get("vertices").asList.length === 1722345 )
+  }
+*/
 }
 

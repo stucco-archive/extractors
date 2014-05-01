@@ -13,34 +13,44 @@ object NvdExtractor extends Extractor {
 
   def extract(node: ValueNode): ValueNode = ^(
     "vertices" -> (node ~> "nvd" ~> "entry" %%-> { item =>
-      ^(
-        "_id" -> item ~> "@id",
-        "_type" -> "vertex",
-        "vertexType" -> "vulnerability",
-        "source" -> "NVD",
-        "description" -> item ~> "vuln:summary",
-        "publishedDate" -> item ~> "vuln:published-datetime",
-        "modifiedDate" -> item ~> "vuln:last-modified-datetime",
-        "cweNumber" -> item ~> "vuln:cwe" ~> "@id",
+      *(
+        ^(
+          "_id" -> item ~> "@id",
+          "_type" -> "vertex",
+          "vertexType" -> "vulnerability",
+          "source" -> "NVD",
+          "description" -> item ~> "vuln:summary",
+          "publishedDate" -> item ~> "vuln:published-datetime",
+          "modifiedDate" -> item ~> "vuln:last-modified-datetime",
+          "cweNumber" -> item ~> "vuln:cwe" ~> "@id",
 
-        "cvssScore" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:score",
-        "accessVector" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:access-vector",
-        "accessComplexity" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:access-complexity",
-        "accessAuthentication" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:authentication",
-        "confidentialityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:confidentiality-impact",
-        "integrityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:integrity-impact",
-        "availabilityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:availability-impact",
-        "cvssDate" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:generated-on-datetime",
+          "cvssScore" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:score",
+          "accessVector" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:access-vector",
+          "accessComplexity" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:access-complexity",
+          "accessAuthentication" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:authentication",
+          "confidentialityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:confidentiality-impact",
+          "integrityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:integrity-impact",
+          "availabilityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:availability-impact",
+          "cvssDate" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:generated-on-datetime",
 
-        "references" -> (
-          item ~> "vuln:references" %%-> { obj =>
-            obj ~> "vuln:reference" ~> "@href" orElse Safely {
-              (obj ~> "vuln:source").asString + ":" +
-                (obj ~> "vuln:reference" ~> "#text").asString
-            }
-          }).encapsulate
+          "references" -> (
+            item ~> "vuln:references" %%-> { obj =>
+              obj ~> "vuln:reference" ~> "@href" orElse Safely {
+                (obj ~> "vuln:source").asString + ":" +
+                  (obj ~> "vuln:reference" ~> "#text").asString
+              }
+            }).encapsulate
+        ),
+        (item ~> "vuln:vulnerable-software-list" ~> "vuln:product" %%-> { cpeItem =>
+          ^(
+            "_id" -> (cpeItem.asString),
+            "_type" -> "vertex",
+            "vertexType" -> "software",
+            "source" -> "NVD"
+          )
+        })
       )
-    }).encapsulate,
+    }).autoFlatten.autoFlatten,
 
     "edges" -> (node ~> "nvd" ~> "entry" %%-> { nvdItem =>
       (nvdItem ~> "vuln:vulnerable-software-list" ~> "vuln:product" %%-> { cpeItem =>
