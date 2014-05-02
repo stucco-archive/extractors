@@ -25,7 +25,7 @@ object NvdExtractor extends Extractor {
           "cweNumber" -> item ~> "vuln:cwe" ~> "@id",
 
           "cvssScore" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:score",
-          "accessVector" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:access-vector",
+          "accessVector" -> {item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:access-vector" ~> "#text" orElse item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:access-vector"},
           "accessComplexity" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:access-complexity",
           "accessAuthentication" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:authentication",
           "confidentialityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:confidentiality-impact",
