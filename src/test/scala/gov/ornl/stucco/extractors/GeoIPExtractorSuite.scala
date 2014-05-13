@@ -89,5 +89,27 @@ class GeoIPExtractorSuite extends FunSuite {
     assert(geoIP ~> "vertices" ~> 4 ~> "countryName" === Some(S("Japan")))
   }
 
+  test("parse geoIP element with high address") {
+    var text = """"StartIP","EndIP","Start IP (int)","End IP (int)","Country code","Country name"
+"223.255.252.0","223.255.253.255","3758095360","3758095871","CN","China"
+"223.255.254.0","223.255.254.255","3758095872","3758096127","SG","Singapore"
+"223.255.255.0","223.255.255.255","3758096128","3758096383","AU","Australia"
+"""
+    val node = CsvParser(text)
+    val geoIP = GeoIPExtractor(node)
+    //print(geoIP)
+    assert(geoIP ~> "vertices" ~> 0 ~> "_id" === Some(S("223.255.252.0_through_223.255.253.255")))
+    assert(geoIP ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
+    assert(geoIP ~> "vertices" ~> 0 ~> "source" === Some(S("maxmind")))
+    assert(geoIP ~> "vertices" ~> 0 ~> "vertexType" === Some(S("addressRange")))
+
+    assert(geoIP ~> "vertices" ~> 0 ~> "startIP" === Some(S("223.255.252.0")))
+    assert(geoIP ~> "vertices" ~> 0 ~> "endIP" === Some(S("223.255.253.255")))
+    assert(geoIP ~> "vertices" ~> 0 ~> "startIPInt" === Some(N(3758095360l)))
+    assert(geoIP ~> "vertices" ~> 0 ~> "endIPInt" === Some(N(3758095871l)))
+    assert(geoIP ~> "vertices" ~> 0 ~> "countryCode" === Some(S("CN")))
+    assert(geoIP ~> "vertices" ~> 0 ~> "countryName" === Some(S("China")))
+  }
+
 }
 

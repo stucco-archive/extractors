@@ -27,8 +27,8 @@ object GeoIPExtractor extends Extractor {
             "source" -> "maxmind",
             "startIP" -> item ~> 0,
             "endIP" -> item ~> 1,
-            "startIPInt" -> Safely { (item ~> 2).asString.toInt },
-            "endIPInt" -> Safely { (item ~> 3).asString.toInt },
+            "startIPInt" -> Safely { (item ~> 2).asString.toLong },
+            "endIPInt" -> Safely { (item ~> 3).asString.toLong },
             "countryCode" -> item ~> 4,
             "countryName" -> item ~> 5
           )
