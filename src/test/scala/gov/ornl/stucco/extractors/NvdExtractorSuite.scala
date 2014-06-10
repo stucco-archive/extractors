@@ -224,7 +224,7 @@ class NvdExtractorSuite extends FunSuite {
     val nvd = NvdExtractor(XmlParser(text))
     assert(nvd.get("vertices").asList.length === 8804 )
   }
-
+/*
   test("parse a ~75M nvd file") {
     val copyCount = 15
     val text = scala.io.Source.fromFile("testData/nvdcve-2.0-2002_pt1.xml").getLines mkString "\n"
@@ -236,6 +236,7 @@ class NvdExtractorSuite extends FunSuite {
     val nvd = NvdExtractor(XmlParser(longerText))
     assert(nvd.get("vertices").asList.length === 8804 * copyCount )
   }
+  */
 /*
   test("parse the actual data") {
     val text = scala.io.Source.fromFile("testData/nvdcve-2.0-2002.xml").getLines mkString "\n"

@@ -249,7 +249,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 9 ~> "inVType" === Some(S("account")))
 
   }
-
+/*
   test("parse a >15M csv from file") {
     val copyCount = 15
     val text = scala.io.Source.fromFile("testData/hone.csv").getLines mkString "\n"
@@ -258,7 +258,7 @@ class HoneExtractorSuite extends FunSuite {
     val hone = HoneExtractor.extract(CsvParser(longerText), Map("hostName" -> "Mary"))
     assert(hone.get("vertices").asList.length === 1722345 )
   }
-
+*/
   /*
   //gives error: java.lang.OutOfMemoryError: GC overhead limit exceeded
   test("parse a >50M csv from file") {
