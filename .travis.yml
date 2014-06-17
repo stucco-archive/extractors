@@ -13,3 +13,6 @@ before_install:
   - cd ..
   - mvn clean install
   - cd ..
+after_success:
+  - wget https://raw.githubusercontent.com/stucco/test/master/rerun-test.sh
+  - ./rerun-test.sh
