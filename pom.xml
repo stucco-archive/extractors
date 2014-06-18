@@ -5,7 +5,7 @@
   <version>1.0.0</version>
   <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <maven.test.skip>true</maven.test.skip>
+      <maven.test.skip>false</maven.test.skip>
   </properties>
   <repositories>
   	<repository>
@@ -90,6 +90,7 @@
             <version>1.0-M2</version>
             <configuration>
                 <argLine>-Xms2048m -Xmx2048m</argLine>
+                <skipTests>${maven.test.skip}</skipTests>
             </configuration>
             <executions>
                 <execution>
