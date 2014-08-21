@@ -42,8 +42,8 @@ object CleanMxVirusExtractor extends Extractor {
             "_type" -> "vertex",
             "vertexType" -> "malware",
             "source" -> "CleanMx(virus)",
-            "avName" -> item ~> "virusname", //TODO remove ![CDATA[]]
-            "md5" -> item ~> "md5"
+            "aliases" -> item ~> "virusname", //TODO remove ![CDATA[]]
+            "md5hashes" -> item ~> "md5"
           )
         },
         {

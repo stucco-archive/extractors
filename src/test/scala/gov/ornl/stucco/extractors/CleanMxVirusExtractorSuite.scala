@@ -71,7 +71,7 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
     assert(entries ~> "vertices" ~> 1 ~> "source" === Some(S("CleanMx(virus)")))
     assert(entries ~> "vertices" ~> 1 ~> "vertexType" === Some(S("malware")))
-    assert(entries ~> "vertices" ~> 1 ~> "md5" === Some(S("b5bcb300eb41207d0d945b79c364a0b5")))
+    assert(entries ~> "vertices" ~> 1 ~> "md5hashes" === Some(S("b5bcb300eb41207d0d945b79c364a0b5")))
 
     assert(entries ~> "vertices" ~> 2 ~> "_id" === Some(S("115.47.55.160:80")))
     assert(entries ~> "vertices" ~> 2 ~> "_type" === Some(S("vertex")))
