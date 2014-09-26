@@ -48,10 +48,20 @@ object LoginEventExtractor extends Extractor {
             {
               if ((item ~> h("user")).nodeNonEmpty)
               ^(
-                "_id" -> item ~> h("user")
+                "_id" -> item ~> h("user"),
                 "_type" -> "vertex",
                 "source" -> "LoginEvent",
-                "vertexType" -> "account",
+                "vertexType" -> "account"
+              )
+              else None
+            },
+            {
+              if ((item ~> h("login_software")).nodeNonEmpty)
+              ^(
+                "_id" -> item ~> h("login_software"),
+                "_type" -> "vertex",
+                "source" -> "LoginEvent",
+                "vertexType" -> "software"
               )
               else None
             }
@@ -75,8 +85,23 @@ object LoginEventExtractor extends Extractor {
                 "inVType" -> "host"
               )
               else None
+            },
+            {
+              if ((item ~> h("hostname")).nodeNonEmpty && (item ~> h("login_software")).nodeNonEmpty)
+              ^(
+                "_id" -> Safely { (item ~> h("hostname")).asString + "_runs_" + (item ~> h("login_software")).asString },
+                "_outV" -> item ~> h("hostname"),
+                "_inV" -> item ~> h("login_software"),
+                "_type" -> "edge",
+                "_label" -> "runs",
+                "source" -> "LoginEvent",
+                "outVType" -> "host",
+                "inVType" -> "software"
+              )
+              else None
             }
-      }).autoFlatten
+          )
+        }).autoFlatten
     )
   }
 }

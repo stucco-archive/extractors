@@ -77,7 +77,8 @@ object PackageListExtractor extends Extractor {
               )
               else None
             }
-      }).autoFlatten
+          )
+        }).autoFlatten
     )
   }
 }

@@ -104,9 +104,6 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 1 ~> "source" === Some(S("Hone")))
     assert(hone ~> "edges" ~> 1 ~> "outVType" === Some(S("software")))
     assert(hone ~> "edges" ~> 1 ~> "inVType" === Some(S("account")))
-
-    println("ZZZ: ")
-    println(hone.toString)
   }
 
   test("parse 1 Hone element - missing user") {
