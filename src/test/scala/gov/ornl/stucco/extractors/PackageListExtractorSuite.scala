@@ -55,8 +55,8 @@ class PackageListExtractorSuite extends FunSuite {
     assert(packageList ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
     assert(packageList ~> "vertices" ~> 1 ~> "source" === Some(S("PackageList")))
     assert(packageList ~> "vertices" ~> 1 ~> "vertexType" === Some(S("software")))
-    assert(packageList ~> "vertices" ~> 1 ~> "packageName" === Some(S("ftp")))
-    assert(packageList ~> "vertices" ~> 1 ~> "packageVersion" === Some(S("0.17-25")))
+    assert(packageList ~> "vertices" ~> 1 ~> "product" === Some(S("ftp")))
+    assert(packageList ~> "vertices" ~> 1 ~> "version" === Some(S("0.17-25")))
 
     assert(packageList ~> "edges" ~> 0 ~> "_id" === Some(S("stucco1_runs_ftp_0.17-25")))
     assert(packageList ~> "edges" ~> 0 ~> "_outV" === Some(S("stucco1")))

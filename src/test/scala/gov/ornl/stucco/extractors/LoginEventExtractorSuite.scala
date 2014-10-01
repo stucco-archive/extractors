@@ -61,11 +61,11 @@ class LoginEventExtractorSuite extends FunSuite {
     assert(loginEvent ~> "vertices" ~> 2 ~> "source" === Some(S("LoginEvent")))
     assert(loginEvent ~> "vertices" ~> 2 ~> "vertexType" === Some(S("software")))
 
-    assert(loginEvent ~> "edges" ~> 0 ~> "_id" === Some(S("StuccoUser_loginsTo_StuccoHost")))
+    assert(loginEvent ~> "edges" ~> 0 ~> "_id" === Some(S("StuccoUser_logsInTo_StuccoHost")))
     assert(loginEvent ~> "edges" ~> 0 ~> "_outV" === Some(S("StuccoUser")))
     assert(loginEvent ~> "edges" ~> 0 ~> "_inV" === Some(S("StuccoHost")))
     assert(loginEvent ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
-    assert(loginEvent ~> "edges" ~> 0 ~> "_label" === Some(S("loginsTo")))
+    assert(loginEvent ~> "edges" ~> 0 ~> "_label" === Some(S("logsInTo")))
     assert(loginEvent ~> "edges" ~> 0 ~> "source" === Some(S("LoginEvent")))
     assert(loginEvent ~> "edges" ~> 0 ~> "outVType" === Some(S("account")))
     assert(loginEvent ~> "edges" ~> 0 ~> "inVType" === Some(S("host")))
