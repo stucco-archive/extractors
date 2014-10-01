@@ -50,8 +50,8 @@ object PackageListExtractor extends Extractor {
                 "_type" -> "vertex",
                 "source" -> "PackageList",
                 "vertexType" -> "software",
-                "packageName" -> item ~> h("package"),
-                "packageVersion" -> item ~> h("version")
+                "product" -> item ~> h("package"),
+                "version" -> item ~> h("version")
               )
               else None
             }
