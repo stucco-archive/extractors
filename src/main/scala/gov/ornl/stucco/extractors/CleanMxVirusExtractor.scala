@@ -26,17 +26,6 @@ object CleanMxVirusExtractor extends Extractor {
     "vertices" -> (node ~> "output" ~> "entries" ~> "entry" %%-> { item =>
       *(
         {
-          val n = ^(
-            "_id" -> Safely{ "CleanMx_" + (item ~> "id").asNumber.toString },
-            "_type" -> "vertex",
-            "vertexType" -> "attackerAsset",
-            "source" -> "CleanMx(virus)",
-            "firstSeen" -> item ~> "first",
-            "lastSeen" -> item ~> "last"
-          )
-          n
-        },
-        {
           ^(
             "_id" -> Safely{ "CleanMx_" + (item ~> "md5").asString},
             "_type" -> "vertex",
@@ -111,26 +100,14 @@ object CleanMxVirusExtractor extends Extractor {
       *(
         {
           ^(
-            "_id" -> Safely{ ("CleanMx_" + (item ~> "md5").asString + "_to_" + "CleanMx_" + (item ~> "id").asNumber.toString)},
-            "_type" -> "edge",
-            "inVType" -> "attackerAsset",
-            "outVType" -> "malware",
-            "source" -> "CleanMx(virus)",
-            "_inV" -> Safely{ ("CleanMx_" + (item ~> "id").asNumber.toString)},
-            "_outV" -> Safely{ ("CleanMx_" + (item ~> "md5").asString)},
-            "_label" -> "associatedWith"
-          )
-        },
-        {
-          ^(
-            "_id" -> Safely{ ("CleanMx_" + (item ~> "id").asNumber.toString + "_to_" + (item ~> "ip").asString + ":80")}, //TODO port num, see above.
+            "_id" -> Safely{ ("CleanMx_" + (item ~> "md5").asString + "_to_" + (item ~> "ip").asString + ":80")}, //TODO port num, see above.
             "_type" -> "edge",
             "inVType" -> "address",
-            "outVType" -> "attackerAsset",
+            "outVType" -> "malware",
             "source" -> "CleanMx(virus)",
             "_inV" -> Safely{ ((item ~> "ip").asString + ":80")},
-            "_outV" -> Safely{ ("CleanMx_" + (item ~> "id").asNumber.toString)},
-            "_label" -> "usesAddress"
+            "_outV" -> Safely{ ("CleanMx_" + (item ~> "md5").asString)},
+            "_label" -> "communicatesWith"
           )
         },
         {
