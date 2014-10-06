@@ -24,8 +24,7 @@ object ArgusExtractor extends Extractor {
 
   def extract(node: ValueNode): ValueNode = {
 
-    val headers = *("seq","stime","ltime","saddr","sport","dir","daddr","dport",
-      "proto","pkts","bytes")
+    val headers = *("stime","flgs","proto","saddr","sport","dir","daddr","dport","pkts","bytes","state")
 
     val h = headers.asList.zipWithIndex.map { a => a }.toMap
     
@@ -45,11 +44,11 @@ object ArgusExtractor extends Extractor {
                 "source" -> "Argus", 
                 "proto" -> item ~> h("proto"),
                 "appBytes" -> item ~> h("bytes"),        
-  //              "state" -> item ~> "@State",
+                "state" -> item ~> h("state"),
                 "startTime" -> item ~> h("stime"),
   //              "appByteRatio" -> item ~> "@AppByteRatio",
-                "dir" -> item ~> h("dir")
-  //              "flags" -> item ~> "@Flags",
+                "dir" -> item ~> h("dir"),
+                "flags" -> item ~> h("flgs")
   //              "duration" -> item ~> "@Duration",
   //              "dstPkts" -> item ~> "@DstPkts",
   //              "srcPkts" -> item ~> "@SrcPkts"
