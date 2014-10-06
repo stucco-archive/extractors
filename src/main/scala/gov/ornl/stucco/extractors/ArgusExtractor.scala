@@ -22,243 +22,252 @@ object ArgusExtractor extends Extractor {
     node != None && node != Some(S(""))
   }
 
-  def extract(node: ValueNode): ValueNode = ^(
-    "vertices" -> (node ~> "ArgusDataStream" ~> "ArgusFlowRecord" %%-> { item =>
-      *(
-        {
-          val n = ^(
-            "_id" -> Safely {
-                  (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber + "::" +
-                    (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber
-                },
-            "_type" -> "vertex",
-            "vertexType" -> "flow",
-            "source" -> "Argus",
-            
-            "keyStrokeNStroke" -> item ~> "@KeyStrokeNStroke", //SSH Keystroke Detection stuff - unused here for now.
-            "proto" -> item ~> "@Proto",
-            "appBytes" -> item ~> "@AppBytes",        
-            "state" -> item ~> "@State",
-            "startTime" -> item ~> "@StartTime",
-            "appByteRatio" -> item ~> "@AppByteRatio",
-            "dir" -> item ~> "@Dir",
-            "flags" -> item ~> "@Flags",
-            "duration" -> item ~> "@Duration",
-            "dstPkts" -> item ~> "@DstPkts",
-            "srcPkts" -> item ~> "@SrcPkts"
-          )
-          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
-              notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
-              notEmpty(n ~> "_id")) n
-          else None
-        },
-        {
-          val n = ^(
-            "_id" -> Safely {
-                  (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber.toString
-                },
-            "_type" -> "vertex",
-            "vertexType" -> "address",
-            "source" -> "Argus"
-          )
-          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
-              notEmpty(n ~> "_id")) n
-          else None
-        },
-        {
-          val n = ^(
-            "_id" -> Safely {
-                  (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber.toString
-                },
-            "_type" -> "vertex",
-            "vertexType" -> "address",
-            "source" -> "Argus"
-          )
-          if (notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
-              notEmpty(n ~> "_id")) n
-          else None
-        },
-        {
-          val n = ^(
-            "_id" -> item ~> "@SrcAddr",
-            "_type" -> "vertex",
-            "vertexType" -> "IP",
-            "source" -> "Argus"
-          )
-          if (notEmpty(item ~> "@SrcAddr") &&
-              notEmpty(n ~> "_id")) n
-          else None
-        },
-        {
-          val n = ^(
-            "_id" -> item ~> "@DstAddr",
-            "_type" -> "vertex",
-            "vertexType" -> "IP",
-            "source" -> "Argus"
-          )
-          if (notEmpty(item ~> "@DstAddr") &&
-              notEmpty(n ~> "_id")) n
-          else None
-        },
-        {
-          val n = ^(
-            "_id" -> Safely{(item ~> "@SrcPort").asNumber.toString},
-            "_type" -> "vertex",
-            "vertexType" -> "port",
-            "source" -> "Argus"
-          )
-          if (notEmpty(item ~> "@SrcPort") &&
-              notEmpty(n ~> "_id")) n
-          else None
-        },
-        {
-          val n = ^(
-            "_id" -> Safely{(item ~> "@DstPort").asNumber.toString},
-            "_type" -> "vertex",
-            "vertexType" -> "port",
-            "source" -> "Argus"
-          )
-          if (notEmpty(item ~> "@DstPort") &&
-              notEmpty(n ~> "_id")) n
-          else None
-        }
-      )
-    }).autoFlatten,
+  def extract(node: ValueNode): ValueNode = {
 
-    "edges" -> (node ~> "ArgusDataStream" ~> "ArgusFlowRecord" %%-> { item =>
+    val headers = *("stime","flgs","proto","saddr","sport","dir","daddr","dport","pkts","bytes","state")
 
-      *(
-        {
-          val n = ^(
-            "_id" -> Safely {
-              (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber + "::" +
-              (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber + "_srcAddress_" +
-              (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber
+    val h = headers.asList.zipWithIndex.map { a => a }.toMap
+    
+    ^(
+      "vertices" -> (node mapPartial {
+        //this will ignore header row and will ignore last row if it is just an empty string.
+        case item if (item ~> 0 != headers ~> 0) && (item ~> 1 != None) =>
+          *(
+            {
+              val n = ^(
+                "_id" -> Safely {
+                      (item ~> h("saddr")).asString + ":" + (item ~>h("sport")).asString + "::" +
+                        (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString
+                    },
+                "_type" -> "vertex",
+                "vertexType" -> "flow",
+                "source" -> "Argus", 
+                "proto" -> item ~> h("proto"),
+                "appBytes" -> item ~> h("bytes"),        
+                "state" -> item ~> h("state"),
+                "startTime" -> item ~> h("stime"),
+  //              "appByteRatio" -> item ~> "@AppByteRatio",
+                "dir" -> item ~> h("dir"),
+                "flags" -> item ~> h("flgs")
+  //              "duration" -> item ~> "@Duration",
+  //              "dstPkts" -> item ~> "@DstPkts",
+  //              "srcPkts" -> item ~> "@SrcPkts"
+              )
+
+              if ((item ~> h("saddr")).nodeNonEmpty && (item ~> h("sport")).nodeNonEmpty &&
+                  (item ~> h("daddr")).nodeNonEmpty && (item ~> h("dport")).nodeNonEmpty &&
+                  notEmpty(n ~> "_id")) n
+              else None
             },
-            "_outV" -> Safely {
-              (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber + "::" +
-              (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber
+            {
+              val n = ^(
+                "_id" -> Safely {
+                      (item ~> h("saddr")).asString + ":" + (item ~> h("sport")).asString
+                    },
+                "_type" -> "vertex",
+                "vertexType" -> "address",
+                "source" -> "Argus"
+              )
+              if ((item ~> h("saddr")).nodeNonEmpty && (item ~> h("sport")).nodeNonEmpty &&
+                  notEmpty(n ~> "_id")) n
+              else None
             },
-            "_inV" -> Safely {
-              (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber
+            {
+              val n = ^(
+                "_id" -> Safely {
+                      (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString
+                    },
+                "_type" -> "vertex",
+                "vertexType" -> "address",
+                "source" -> "Argus"
+              )
+              if ((item ~> h("daddr")).nodeNonEmpty && (item ~> h("dport")).nodeNonEmpty &&
+                  notEmpty(n ~> "_id")) n
+              else None
             },
-            "_type" -> "edge",
-            "_label" -> "srcAddress",
-            "source" -> "Argus",
-            "outVType" -> "flow",
-            "inVType" -> "address"
+            {
+              val n = ^(
+                "_id" -> item ~> h("saddr"),
+                "_type" -> "vertex",
+                "vertexType" -> "IP",
+                "source" -> "Argus"
+              )
+              if ((item ~> h("saddr")).nodeNonEmpty &&
+                  notEmpty(n ~> "_id")) n
+              else None
+            },
+            {
+              val n = ^(
+                "_id" -> item ~> h("daddr"),
+                "_type" -> "vertex",
+                "vertexType" -> "IP",
+                "source" -> "Argus"
+              )
+              if ((item ~> h("daddr")).nodeNonEmpty &&
+                  notEmpty(n ~> "_id")) n
+              else None
+            },
+            {
+              val n = ^(
+                "_id" -> Safely{(item ~> h("sport")).asString},
+                "_type" -> "vertex",
+                "vertexType" -> "port",
+                "source" -> "Argus"
+              )
+              if ((item ~> h("sport")).nodeNonEmpty &&
+                  notEmpty(n ~> "_id")) n
+              else None
+            },
+            {
+              val n = ^(
+                "_id" -> Safely{(item ~> h("dport")).asString},
+                "_type" -> "vertex",
+                "vertexType" -> "port",
+                "source" -> "Argus"
+              )
+              if ((item ~> h("dport")).nodeNonEmpty &&
+                  notEmpty(n ~> "_id")) n
+              else None
+            }
           )
-          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
-              notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
-              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
-          else None
-        },
-        {
-          val n = ^(
-            "_id" -> Safely {
-              (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber + "::" +
-              (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber + "_dstAddress_" +
-              (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber
+        }).autoFlatten,
+
+      "edges" -> (node mapPartial {
+        //this will ignore header row and will ignore last row if it is just an empty string.
+        case item if (item ~> 0 != headers ~> 0) && (item ~> 1 != None) =>
+          *(
+            {
+              val n = ^(
+                "_id" -> Safely {
+                  (item ~> h("saddr")).asString + ":" + (item ~> h("sport")).asString + "::" +
+                  (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString + "_srcAddress_" +
+                  (item ~> h("saddr")).asString + ":" + (item ~> h("sport")).asString
+                },
+                "_outV" -> Safely {
+                  (item ~> h("saddr")).asString + ":" + (item ~> h("sport")).asString + "::" +
+                  (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString
+                },
+                "_inV" -> Safely {
+                  (item ~> h("saddr")).asString + ":" + (item ~> h("sport")).asString
+                },
+                "_type" -> "edge",
+                "_label" -> "srcAddress",
+                "source" -> "Argus",
+                "outVType" -> "flow",
+                "inVType" -> "address"
+              )
+              if ((item ~> h("saddr")).nodeNonEmpty && (item ~> h("sport")).nodeNonEmpty &&
+                  (item ~> h("daddr")).nodeNonEmpty && (item ~> h("dport")).nodeNonEmpty &&
+                  notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
+              else None
             },
-            "_outV" -> Safely {
-              (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber + "::" +
-              (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber
+            {
+              val n = ^(
+                "_id" -> Safely {
+                  (item ~> h("saddr")).asString + ":" + (item ~> h("sport")).asString + "::" +
+                  (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString + "_dstAddress_" +
+                  (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString
+                },
+                "_outV" -> Safely {
+                  (item ~> h("saddr")).asString + ":" + (item ~> h("sport")).asString + "::" +
+                  (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString
+                },
+                "_inV" -> Safely {
+                  (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString
+                },
+                "_type" -> "edge",
+                "_label" -> "dstAddress",
+                "source" -> "Argus",
+                "outVType" -> "flow",
+                "inVType" -> "address"
+              )
+              if ((item ~> h("saddr")).nodeNonEmpty && (item ~> h("sport")).nodeNonEmpty &&
+                  (item ~> h("daddr")).nodeNonEmpty && (item ~> h("dport")).nodeNonEmpty &&
+                  notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
+              else None
             },
-            "_inV" -> Safely {
-              (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber
+            {
+              val n = ^(
+                "_id" -> Safely {
+                  (item ~> h("saddr")).asString + ":" + (item ~> h("sport")).asString + "_hasIP_" +
+                  (item ~> h("saddr")).asString
+                },
+                "_outV" -> Safely {
+                  (item ~> h("saddr")).asString + ":" + (item ~> h("sport")).asString
+                },
+                "_inV" -> item ~> h("saddr"),
+                "_type" -> "edge",
+                "_label" -> "hasIP",
+                "source" -> "Argus",
+                "outVType" -> "address",
+                "inVType" -> "IP"
+              )
+              if ((item ~> h("saddr")).nodeNonEmpty && (item ~> h("sport")).nodeNonEmpty &&
+                  notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
+              else None
             },
-            "_type" -> "edge",
-            "_label" -> "dstAddress",
-            "source" -> "Argus",
-            "outVType" -> "flow",
-            "inVType" -> "address"
+            {
+              val n = ^(
+                "_id" -> Safely {
+                  (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString + "_hasIP_" +
+                  (item ~> h("daddr")).asString
+                },
+                "_outV" -> Safely {
+                  (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString
+                },
+                "_inV" -> item ~> h("daddr"),
+                "_type" -> "edge",
+                "_label" -> "hasIP",
+                "source" -> "Argus",
+                "outVType" -> "address",
+                "inVType" -> "IP"
+              )
+              if ((item ~> h("daddr")).nodeNonEmpty && (item ~> h("dport")).nodeNonEmpty &&
+                  notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
+              else None
+            },
+            {
+              val n = ^(
+                "_id" -> Safely {
+                  (item ~> h("saddr")).asString + ":" + (item ~> h("sport")).asString + "_hasPort_" +
+                  (item ~> h("sport")).asString
+                },
+                "_outV" -> Safely {
+                  (item ~> h("saddr")).asString + ":" + (item ~> h("sport")).asString
+                },
+                "_inV" -> Safely{(item ~> h("sport")).asString},
+                "_type" -> "edge",
+                "_label" -> "hasPort",
+                "source" -> "Argus",
+                "outVType" -> "address",
+                "inVType" -> "port"
+              )
+              if ((item ~> h("saddr")).nodeNonEmpty && (item ~> h("sport")).nodeNonEmpty &&
+                  notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
+              else None
+            },
+            {
+              val n = ^(
+                "_id" -> Safely {
+                  (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString + "_hasPort_" +
+                  (item ~> h("dport")).asString
+                },
+                "_outV" -> Safely {
+                  (item ~> h("daddr")).asString + ":" + (item ~> h("dport")).asString
+                },
+                "_inV" -> Safely{(item ~> h("dport")).asString},
+                "_type" -> "edge",
+                "_label" -> "hasPort",
+                "source" -> "Argus",
+                "outVType" -> "address",
+                "inVType" -> "port"
+              )
+              if ((item ~> h("daddr")).nodeNonEmpty && (item ~> h("dport")).nodeNonEmpty &&
+                  notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
+              else None
+            }
           )
-          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
-              notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
-              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
-          else None
-        },
-        {
-          val n = ^(
-            "_id" -> Safely {
-              (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber + "_hasIP_" +
-              (item ~> "@SrcAddr").asString
-            },
-            "_outV" -> Safely {
-              (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber
-            },
-            "_inV" -> item ~> "@SrcAddr",
-            "_type" -> "edge",
-            "_label" -> "hasIP",
-            "source" -> "Argus",
-            "outVType" -> "address",
-            "inVType" -> "IP"
-          )
-          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
-              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
-          else None
-        },
-        {
-          val n = ^(
-            "_id" -> Safely {
-              (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber + "_hasIP_" +
-              (item ~> "@DstAddr").asString
-            },
-            "_outV" -> Safely {
-              (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber
-            },
-            "_inV" -> item ~> "@DstAddr",
-            "_type" -> "edge",
-            "_label" -> "hasIP",
-            "source" -> "Argus",
-            "outVType" -> "address",
-            "inVType" -> "IP"
-          )
-          if (notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
-              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
-          else None
-        },
-        {
-          val n = ^(
-            "_id" -> Safely {
-              (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber + "_hasPort_" +
-              (item ~> "@SrcPort").asNumber
-            },
-            "_outV" -> Safely {
-              (item ~> "@SrcAddr").asString + ":" + (item ~> "@SrcPort").asNumber
-            },
-            "_inV" -> Safely{(item ~> "@SrcPort").asNumber.toString},
-            "_type" -> "edge",
-            "_label" -> "hasPort",
-            "source" -> "Argus",
-            "outVType" -> "address",
-            "inVType" -> "port"
-          )
-          if (notEmpty(item ~> "@SrcAddr") && notEmpty(item ~> "@SrcPort") &&
-              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
-          else None
-        },
-        {
-          val n = ^(
-            "_id" -> Safely {
-              (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber + "_hasPort_" +
-              (item ~> "@DstPort").asNumber
-            },
-            "_outV" -> Safely {
-              (item ~> "@DstAddr").asString + ":" + (item ~> "@DstPort").asNumber
-            },
-            "_inV" -> Safely{(item ~> "@DstPort").asNumber.toString},
-            "_type" -> "edge",
-            "_label" -> "hasPort",
-            "source" -> "Argus",
-            "outVType" -> "address",
-            "inVType" -> "port"
-          )
-          if (notEmpty(item ~> "@DstAddr") && notEmpty(item ~> "@DstPort") &&
-              notEmpty(n ~> "_inV") && notEmpty(n ~> "_outV")) n
-          else None
-        }
-      )
-    }).autoFlatten
-  )
+      }).autoFlatten
+    )
+  }
 }
