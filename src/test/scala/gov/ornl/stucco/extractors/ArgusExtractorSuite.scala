@@ -28,7 +28,7 @@ class ArgusExtractorSuite extends FunSuite {
   }
 
   test("parse an empty element (header included)") {
-    var text = """stime,flgs,proto,saddr,sport,dir,daddr,dport,pkts,bytes,state
+    var text = """StartTime,Flgs,Proto,SrcAddr,Sport,Dir,DstAddr,Dport,TotPkts,TotBytes,State
 ,,,,,,,,,,,,,,,,,,,,,
 """
     val node = CsvParser(text)
