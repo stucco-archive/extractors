@@ -155,6 +155,260 @@ class CleanMxVirusExtractorSuite extends FunSuite {
   }
 
   test("parse two elements") {
+    val node = XmlParser("""
+        <?xml version="1.0" encoding="iso-8859-15"?>
+        <output>
+            <response>
+                <error>0</error>
+            </response>
+        <entries>
+        <entry>
+            <line>7</line>
+            <id>22446016</id>
+            <first>1394445710</first>
+            <last>0</last>
+            <md5>dad1324061f93af4eb0205a3b114ea6e</md5>
+            <virustotal>http://www.virustotal.com/latest-report.html?resource=dad1324061f93af4eb0205a3b114ea6e</virustotal>
+            <vt_score>28/46 (60.9%)</vt_score>
+            <scanner>AhnLab_V3</scanner>
+            <virusname><![CDATA[Trojan%2FWin32.generic]]></virusname>
+            <url><![CDATA[http://www.filedataukmyscan.info/sp32_64_18199873683419572808.exe]]></url>
+            <recent>up</recent>
+            <response>alive</response>
+            <ip>95.211.169.207</ip>
+            <as>AS16265</as>
+            <review>95.211.169.207</review>
+            <domain>filedataukmyscan.info</domain>
+            <country>NL</country>
+            <source>RIPE</source>
+            <email>abuse@leaseweb.com</email>
+            <inetnum>95.211.0.0 - 95.211.255.255</inetnum>
+            <netname>NL-LEASEWEB-20080724</netname>
+            <descr><![CDATA[LeaseWeb B.V.]]></descr>
+            <ns1>brad.ns.cloudflare.com</ns1>
+            <ns2>pam.ns.cloudflare.com</ns2>
+            <ns3></ns3>
+            <ns4></ns4>
+            <ns5></ns5>
+        </entry>
+        <entry>
+            <line>8</line>
+            <id>22446014</id>
+            <first>1394445710</first>
+            <last>0</last>
+            <md5>6653a885aae75cc8bd45f2808d80202c</md5>
+            <virustotal>http://www.virustotal.com/latest-report.html?resource=6653a885aae75cc8bd45f2808d80202c</virustotal>
+            <vt_score>13/45 (28.9%)</vt_score>
+            <scanner>AntiVir</scanner>
+            <virusname><![CDATA[Adware%2FLinkular.C]]></virusname>
+            <url><![CDATA[http://www.coolestmovie.info/ds-exe/vlc/9076/VLCPlus_Setup.exe]]></url>
+            <recent>up</recent>
+            <response>alive</response>
+            <ip>54.208.13.153</ip>
+            <as>AS16509</as>
+            <review>54.208.13.153</review>
+            <domain>coolestmovie.info</domain>
+            <country>US</country>
+            <source>ARIN</source>
+            <email>ec2-abuse@amazon.com</email>
+            <inetnum>54.208.0.0 - 54.209.255.255</inetnum>
+            <netname>AMAZO-ZIAD4</netname>
+            <descr><![CDATA[Amazon.com, Inc. AMAZO-4 Amazon Web Services, Elastic Compute Cloud, EC2 1200 12th Avenue South Seattle WA 98144]]></descr>
+            <ns1>ns58.domaincontrol.com</ns1>
+            <ns2>ns57.domaincontrol.com</ns2>
+            <ns3></ns3>
+            <ns4></ns4>
+            <ns5></ns5>
+        </entry>
+        </entries>
+        </output>
+      """)
+    //println(node)
+    val entries = CleanMxVirusExtractor(node)
+    //println(entries)
+
+    assert(entries ~> "vertices" ~> 0 ~> "_id" === Some(S("CleanMx_dad1324061f93af4eb0205a3b114ea6e")))
+    assert(entries ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 0 ~> "vertexType" === Some(S("malware")))
+    assert(entries ~> "vertices" ~> 0 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "vertices" ~> 0 ~> "aliases" === Some(S("Trojan%2FWin32.generic")))
+    assert(entries ~> "vertices" ~> 0 ~> "md5hashes" === Some(S("dad1324061f93af4eb0205a3b114ea6e")))
+
+    assert(entries ~> "vertices" ~> 1 ~> "_id" === Some(S("95.211.169.207:80")))
+    assert(entries ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 1 ~> "vertexType" === Some(S("address")))
+    assert(entries ~> "vertices" ~> 1 ~> "source" === Some(S("CleanMx(virus)")))
+
+    assert(entries ~> "vertices" ~> 2 ~> "_id" === Some(S("80")))
+    assert(entries ~> "vertices" ~> 2 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 2 ~> "vertexType" === Some(S("port")))
+    assert(entries ~> "vertices" ~> 2 ~> "source" === Some(S("CleanMx(virus)")))
+
+    assert(entries ~> "vertices" ~> 3 ~> "_id" === Some(S("filedataukmyscan.info")))
+    assert(entries ~> "vertices" ~> 3 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 3 ~> "vertexType" === Some(S("DNSName")))
+    assert(entries ~> "vertices" ~> 3 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "vertices" ~> 3 ~> "ns1" === Some(S("brad.ns.cloudflare.com")))
+    assert(entries ~> "vertices" ~> 3 ~> "ns2" === Some(S("pam.ns.cloudflare.com")))
+    //assert(entries ~> "vertices" ~> 3 ~> "ns3" === Some(S(null)))
+    //assert(entries ~> "vertices" ~> 3 ~> "ns4" === Some(S(null)))
+    //assert(entries ~> "vertices" ~> 3 ~> "ns5" === Some(S(null)))
+
+    assert(entries ~> "vertices" ~> 4 ~> "_id" === Some(S("95.211.169.207")))
+    assert(entries ~> "vertices" ~> 4 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 4 ~> "vertexType" === Some(S("IP")))
+    assert(entries ~> "vertices" ~> 4 ~> "source" === Some(S("CleanMx(virus)")))
+
+    assert(entries ~> "vertices" ~> 5 ~> "_id" === Some(S("95.211.0.0_through_95.211.255.255")))
+    assert(entries ~> "vertices" ~> 5 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 5 ~> "vertexType" === Some(S("addressRange")))
+    assert(entries ~> "vertices" ~> 5 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "vertices" ~> 5 ~> "startIP" === Some(S("95.211.0.0")))
+    assert(entries ~> "vertices" ~> 5 ~> "endIP" === Some(S("95.211.255.255")))
+    assert(entries ~> "vertices" ~> 5 ~> "countryCode" === Some(S("NL")))
+    assert(entries ~> "vertices" ~> 5 ~> "netname" === Some(S("NL-LEASEWEB-20080724")))
+    assert(entries ~> "vertices" ~> 5 ~> "description" === Some(S("LeaseWeb B.V.")))
+    assert(entries ~> "vertices" ~> 5 ~> "asNum" === Some(S("AS16265")))
+    assert(entries ~> "vertices" ~> 5 ~> "assignedBy" === Some(S("RIPE")))
+
+    assert(entries ~> "vertices" ~> 6 ~> "_id" === Some(S("CleanMx_6653a885aae75cc8bd45f2808d80202c")))
+    assert(entries ~> "vertices" ~> 6 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 6 ~> "vertexType" === Some(S("malware")))
+    assert(entries ~> "vertices" ~> 6 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "vertices" ~> 6 ~> "aliases" === Some(S("Adware%2FLinkular.C")))
+    assert(entries ~> "vertices" ~> 6 ~> "md5hashes" === Some(S("6653a885aae75cc8bd45f2808d80202c")))
+
+    assert(entries ~> "vertices" ~> 7 ~> "_id" === Some(S("54.208.13.153:80")))
+    assert(entries ~> "vertices" ~> 7 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 7 ~> "vertexType" === Some(S("address")))
+    assert(entries ~> "vertices" ~> 7 ~> "source" === Some(S("CleanMx(virus)")))
+
+    assert(entries ~> "vertices" ~> 8 ~> "_id" === Some(S("80")))
+    assert(entries ~> "vertices" ~> 8 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 8 ~> "vertexType" === Some(S("port")))
+    assert(entries ~> "vertices" ~> 8 ~> "source" === Some(S("CleanMx(virus)")))
+
+    assert(entries ~> "vertices" ~> 9 ~> "_id" === Some(S("coolestmovie.info")))
+    assert(entries ~> "vertices" ~> 9 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 9 ~> "vertexType" === Some(S("DNSName")))
+    assert(entries ~> "vertices" ~> 9 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "vertices" ~> 9 ~> "ns1" === Some(S("ns58.domaincontrol.com")))
+    assert(entries ~> "vertices" ~> 9 ~> "ns2" === Some(S("ns57.domaincontrol.com")))
+    //assert(entries ~> "vertices" ~> 9 ~> "ns3" === Some(S(null)))
+    //assert(entries ~> "vertices" ~> 9 ~> "ns4" === Some(S(null)))
+    //assert(entries ~> "vertices" ~> 9 ~> "ns5" === None)
+
+    assert(entries ~> "vertices" ~> 10 ~> "_id" === Some(S("54.208.13.153")))
+    assert(entries ~> "vertices" ~> 10 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 10 ~> "vertexType" === Some(S("IP")))
+    assert(entries ~> "vertices" ~> 10 ~> "source" === Some(S("CleanMx(virus)")))
+
+    assert(entries ~> "vertices" ~> 11 ~> "_id" === Some(S("54.208.0.0_through_54.209.255.255")))
+    assert(entries ~> "vertices" ~> 11 ~> "_type" === Some(S("vertex")))
+    assert(entries ~> "vertices" ~> 11 ~> "vertexType" === Some(S("addressRange")))
+    assert(entries ~> "vertices" ~> 11 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "vertices" ~> 11 ~> "startIP" === Some(S("54.208.0.0")))
+    assert(entries ~> "vertices" ~> 11 ~> "endIP" === Some(S("54.209.255.255")))
+    assert(entries ~> "vertices" ~> 11 ~> "countryCode" === Some(S("US")))
+    assert(entries ~> "vertices" ~> 11 ~> "netname" === Some(S("AMAZO-ZIAD4")))
+    assert(entries ~> "vertices" ~> 11 ~> "description" === Some(S("Amazon.com, Inc. AMAZO-4 Amazon Web Services, Elastic Compute Cloud, EC2 1200 12th Avenue South Seattle WA 98144")))
+    assert(entries ~> "vertices" ~> 11 ~> "asNum" === Some(S("AS16509")))
+    assert(entries ~> "vertices" ~> 11 ~> "assignedBy" === Some(S("ARIN")))
+
+    assert(entries ~> "vertices" ~> 12 === None)
+
+    assert(entries ~> "edges" ~> 0 ~> "_id" === Some(S("CleanMx_dad1324061f93af4eb0205a3b114ea6e_to_95.211.169.207:80")))
+    assert(entries ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
+    assert(entries ~> "edges" ~> 0 ~> "inVType" === Some(S("address")))
+    assert(entries ~> "edges" ~> 0 ~> "outVType" === Some(S("malware")))
+    assert(entries ~> "edges" ~> 0 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "edges" ~> 0 ~> "_inV" === Some(S("95.211.169.207:80")))
+    assert(entries ~> "edges" ~> 0 ~> "_outV" === Some(S("CleanMx_dad1324061f93af4eb0205a3b114ea6e")))
+    assert(entries ~> "edges" ~> 0 ~> "_label" === Some(S("communicatesWith")))
+    
+    assert(entries ~> "edges" ~> 1 ~> "_id" === Some(S("95.211.169.207:80_to_80")))
+    assert(entries ~> "edges" ~> 1 ~> "_type" === Some(S("edge")))
+    assert(entries ~> "edges" ~> 1 ~> "inVType" === Some(S("port")))
+    assert(entries ~> "edges" ~> 1 ~> "outVType" === Some(S("address")))
+    assert(entries ~> "edges" ~> 1 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "edges" ~> 1 ~> "_inV" === Some(S("80")))
+    assert(entries ~> "edges" ~> 1 ~> "_outV" === Some(S("95.211.169.207:80")))
+    assert(entries ~> "edges" ~> 1 ~> "_label" === Some(S("hasPort")))
+    
+    assert(entries ~> "edges" ~> 2 ~> "_id" === Some(S("95.211.169.207:80_to_filedataukmyscan.info")))
+    assert(entries ~> "edges" ~> 2 ~> "_type" === Some(S("edge")))
+    assert(entries ~> "edges" ~> 2 ~> "inVType" === Some(S("DNSName")))
+    assert(entries ~> "edges" ~> 2 ~> "outVType" === Some(S("address")))
+    assert(entries ~> "edges" ~> 2 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "edges" ~> 2 ~> "_inV" === Some(S("filedataukmyscan.info")))
+    assert(entries ~> "edges" ~> 2 ~> "_outV" === Some(S("95.211.169.207:80")))
+    assert(entries ~> "edges" ~> 2 ~> "_label" === Some(S("hasDNSName")))
+    
+    assert(entries ~> "edges" ~> 3 ~> "_id" === Some(S("95.211.169.207:80_to_95.211.169.207")))
+    assert(entries ~> "edges" ~> 3 ~> "_type" === Some(S("edge")))
+    assert(entries ~> "edges" ~> 3 ~> "inVType" === Some(S("IP")))
+    assert(entries ~> "edges" ~> 3 ~> "outVType" === Some(S("address")))
+    assert(entries ~> "edges" ~> 3 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "edges" ~> 3 ~> "_inV" === Some(S("95.211.169.207")))
+    assert(entries ~> "edges" ~> 3 ~> "_outV" === Some(S("95.211.169.207:80")))
+    assert(entries ~> "edges" ~> 3 ~> "_label" === Some(S("hasIP")))
+    
+    assert(entries ~> "edges" ~> 4 ~> "_id" === Some(S("95.211.169.207_to_95.211.0.0_through_95.211.255.255")))
+    assert(entries ~> "edges" ~> 4 ~> "_type" === Some(S("edge")))
+    assert(entries ~> "edges" ~> 4 ~> "inVType" === Some(S("addressRange")))
+    assert(entries ~> "edges" ~> 4 ~> "outVType" === Some(S("IP")))
+    assert(entries ~> "edges" ~> 4 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "edges" ~> 4 ~> "_inV" === Some(S("95.211.0.0_through_95.211.255.255")))
+    assert(entries ~> "edges" ~> 4 ~> "_outV" === Some(S("95.211.169.207")))
+    assert(entries ~> "edges" ~> 4 ~> "_label" === Some(S("inAddressRange")))
+    
+    assert(entries ~> "edges" ~> 5 ~> "_id" === Some(S("CleanMx_6653a885aae75cc8bd45f2808d80202c_to_54.208.13.153:80")))
+    assert(entries ~> "edges" ~> 5 ~> "_type" === Some(S("edge")))
+    assert(entries ~> "edges" ~> 5 ~> "inVType" === Some(S("address")))
+    assert(entries ~> "edges" ~> 5 ~> "outVType" === Some(S("malware")))
+    assert(entries ~> "edges" ~> 5 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "edges" ~> 5 ~> "_inV" === Some(S("54.208.13.153:80")))
+    assert(entries ~> "edges" ~> 5 ~> "_outV" === Some(S("CleanMx_6653a885aae75cc8bd45f2808d80202c")))
+    assert(entries ~> "edges" ~> 5 ~> "_label" === Some(S("communicatesWith")))
+    
+    assert(entries ~> "edges" ~> 6 ~> "_id" === Some(S("54.208.13.153:80_to_80")))
+    assert(entries ~> "edges" ~> 6 ~> "_type" === Some(S("edge")))
+    assert(entries ~> "edges" ~> 6 ~> "inVType" === Some(S("port")))
+    assert(entries ~> "edges" ~> 6 ~> "outVType" === Some(S("address")))
+    assert(entries ~> "edges" ~> 6 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "edges" ~> 6 ~> "_inV" === Some(S("80")))
+    assert(entries ~> "edges" ~> 6 ~> "_outV" === Some(S("54.208.13.153:80")))
+    assert(entries ~> "edges" ~> 6 ~> "_label" === Some(S("hasPort")))
+    
+    assert(entries ~> "edges" ~> 7 ~> "_id" === Some(S("54.208.13.153:80_to_coolestmovie.info")))
+    assert(entries ~> "edges" ~> 7 ~> "_type" === Some(S("edge")))
+    assert(entries ~> "edges" ~> 7 ~> "inVType" === Some(S("DNSName")))
+    assert(entries ~> "edges" ~> 7 ~> "outVType" === Some(S("address")))
+    assert(entries ~> "edges" ~> 7 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "edges" ~> 7 ~> "_inV" === Some(S("coolestmovie.info")))
+    assert(entries ~> "edges" ~> 7 ~> "_outV" === Some(S("54.208.13.153:80")))
+    assert(entries ~> "edges" ~> 7 ~> "_label" === Some(S("hasDNSName")))
+    
+    assert(entries ~> "edges" ~> 8 ~> "_id" === Some(S("54.208.13.153:80_to_54.208.13.153")))
+    assert(entries ~> "edges" ~> 8 ~> "_type" === Some(S("edge")))
+    assert(entries ~> "edges" ~> 8 ~> "inVType" === Some(S("IP")))
+    assert(entries ~> "edges" ~> 8 ~> "outVType" === Some(S("address")))
+    assert(entries ~> "edges" ~> 8 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "edges" ~> 8 ~> "_inV" === Some(S("54.208.13.153")))
+    assert(entries ~> "edges" ~> 8 ~> "_outV" === Some(S("54.208.13.153:80")))
+    assert(entries ~> "edges" ~> 8 ~> "_label" === Some(S("hasIP")))
+    
+    assert(entries ~> "edges" ~> 9 ~> "_id" === Some(S("54.208.13.153_to_54.208.0.0_through_54.209.255.255")))
+    assert(entries ~> "edges" ~> 9 ~> "_type" === Some(S("edge")))
+    assert(entries ~> "edges" ~> 9 ~> "inVType" === Some(S("addressRange")))
+    assert(entries ~> "edges" ~> 9 ~> "outVType" === Some(S("IP")))
+    assert(entries ~> "edges" ~> 9 ~> "source" === Some(S("CleanMx(virus)")))
+    assert(entries ~> "edges" ~> 9 ~> "_inV" === Some(S("54.208.0.0_through_54.209.255.255")))
+    assert(entries ~> "edges" ~> 9 ~> "_outV" === Some(S("54.208.13.153")))
+    assert(entries ~> "edges" ~> 9 ~> "_label" === Some(S("inAddressRange")))
+
+    assert(entries ~> "edges" ~> 12 === None)
+    
     assert(None === None) //TODO
   }
 

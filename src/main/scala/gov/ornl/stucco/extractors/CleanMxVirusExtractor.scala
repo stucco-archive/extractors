@@ -95,7 +95,7 @@ object CleanMxVirusExtractor extends Extractor {
           else None
         }
       )
-    }).encapsulate,
+    }).encapsulate.autoFlatten,
     "edges" -> (node ~> "output" ~> "entries" ~> "entry" %%-> { item =>
       *(
         {
