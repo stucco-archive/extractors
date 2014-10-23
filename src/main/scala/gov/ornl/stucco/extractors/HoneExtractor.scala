@@ -23,7 +23,10 @@ object HoneExtractor extends Extractor {
     val hostName = metaData("hostName")
     //user,uid,proc_pid,proc_ppid,path,argv,conn_id,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip,byte_cnt,packet_cnt
     //TODO:conn_id?
-    val headers = node.get(0)
+    val headers = *("user","uid","proc_pid","proc_ppid","path","argv","conn_id",
+      "timestamp_epoch_ms","source_port","dest_port","ip_version","source_ip",
+      "dest_ip","byte_cnt","packet_cnt")
+
     val h = headers.asList.zipWithIndex.map { a => a }.toMap
     ^(
       "vertices" -> (node mapPartial {
