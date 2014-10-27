@@ -411,6 +411,19 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     
     assert(None === None) //TODO
   }
-
+/*
+  test("parse the actual data") {
+    val source = scala.io.Source.fromFile("testData/b446b373-0491-42df-bfba-fcb619463a13")(io.Codec("iso-8859-15"))
+    val text = source.getLines mkString "\n"
+    source.close()
+    print(text)
+    val node = XmlParser(text)
+    print("parsed OK!")
+    val result = CleanMxVirusExtractor.extract(node)
+    print("extracted OK!")
+    //print(msf)
+    //assert(hone.get("vertices").asList.length === 1722345 )
+  }
+*/
 }
 

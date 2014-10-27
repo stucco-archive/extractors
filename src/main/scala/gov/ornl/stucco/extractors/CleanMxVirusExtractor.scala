@@ -74,7 +74,8 @@ object CleanMxVirusExtractor extends Extractor {
           )
         },
         {
-          val ips = (item ~> "inetnum").asString.split(" - ")
+          val inetnum = (item ~> "inetnum").asString
+          val ips = if(inetnum.contains(" - ")) inetnum.split(" - ") else inetnum.split("-")
           val n = ^(
             "_id" -> Safely { ips(0) + "_through_" + ips(1) },
             "_type" -> "vertex",
@@ -147,7 +148,8 @@ object CleanMxVirusExtractor extends Extractor {
           )
         },
         {
-          val ips = (item ~> "inetnum").asString.split(" - ")
+          val inetnum = (item ~> "inetnum").asString
+          val ips = if(inetnum.contains(" - ")) inetnum.split(" - ") else inetnum.split("-")
           val n = ^(
             "_id" -> Safely { (item ~> "ip").asString + "_to_" + ips(0) + "_through_" + ips(1) },
           "_type" -> "edge",
