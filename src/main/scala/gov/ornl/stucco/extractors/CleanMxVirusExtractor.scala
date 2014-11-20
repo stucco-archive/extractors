@@ -27,7 +27,7 @@ object CleanMxVirusExtractor extends Extractor {
       *(
         {
           ^(
-            "_id" -> Safely{ "CleanMx_" + (item ~> "md5").asString},
+            "_id" -> Safely{ "CleanMx_" + (item ~> "id").asNumber},
             "_type" -> "vertex",
             "vertexType" -> "malware",
             "source" -> "CleanMx(virus)",
@@ -101,13 +101,13 @@ object CleanMxVirusExtractor extends Extractor {
       *(
         {
           ^(
-            "_id" -> Safely{ ("CleanMx_" + (item ~> "md5").asString + "_to_" + (item ~> "ip").asString + ":80")}, //TODO port num, see above.
+            "_id" -> Safely{ ("CleanMx_" + (item ~> "id").asNumber + "_to_" + (item ~> "ip").asString + ":80")}, //TODO port num, see above.
             "_type" -> "edge",
             "inVType" -> "address",
             "outVType" -> "malware",
             "source" -> "CleanMx(virus)",
             "_inV" -> Safely{ ((item ~> "ip").asString + ":80")},
-            "_outV" -> Safely{ ("CleanMx_" + (item ~> "md5").asString)},
+            "_outV" -> Safely{ ("CleanMx_" + (item ~> "id").asNumber)},
             "_label" -> "communicatesWith"
           )
         },

@@ -61,7 +61,7 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     val entries = CleanMxVirusExtractor(node)
     //println(entries)
 
-    assert(entries ~> "vertices" ~> 0 ~> "_id" === Some(S("CleanMx_b5bcb300eb41207d0d945b79c364a0b5")))
+    assert(entries ~> "vertices" ~> 0 ~> "_id" === Some(S("CleanMx_22447134")))
     assert(entries ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(entries ~> "vertices" ~> 0 ~> "source" === Some(S("CleanMx(virus)")))
     assert(entries ~> "vertices" ~> 0 ~> "vertexType" === Some(S("malware")))
@@ -105,13 +105,13 @@ class CleanMxVirusExtractorSuite extends FunSuite {
 
     assert(entries ~> "vertices" ~> 6 === None)
 
-    assert(entries ~> "edges" ~> 0 ~> "_id" === Some(S("CleanMx_b5bcb300eb41207d0d945b79c364a0b5_to_115.47.55.160:80")))
+    assert(entries ~> "edges" ~> 0 ~> "_id" === Some(S("CleanMx_22447134_to_115.47.55.160:80")))
     assert(entries ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 0 ~> "inVType" === Some(S("address")))
     assert(entries ~> "edges" ~> 0 ~> "outVType" === Some(S("malware")))
     assert(entries ~> "edges" ~> 0 ~> "source" === Some(S("CleanMx(virus)")))
     assert(entries ~> "edges" ~> 0 ~> "_inV" === Some(S("115.47.55.160:80")))
-    assert(entries ~> "edges" ~> 0 ~> "_outV" === Some(S("CleanMx_b5bcb300eb41207d0d945b79c364a0b5")))
+    assert(entries ~> "edges" ~> 0 ~> "_outV" === Some(S("CleanMx_22447134")))
     assert(entries ~> "edges" ~> 0 ~> "_label" === Some(S("communicatesWith")))
 
     assert(entries ~> "edges" ~> 1 ~> "_id" === Some(S("115.47.55.160:80_to_80")))
@@ -227,7 +227,7 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     val entries = CleanMxVirusExtractor(node)
     //println(entries)
 
-    assert(entries ~> "vertices" ~> 0 ~> "_id" === Some(S("CleanMx_dad1324061f93af4eb0205a3b114ea6e")))
+    assert(entries ~> "vertices" ~> 0 ~> "_id" === Some(S("CleanMx_22446016")))
     assert(entries ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(entries ~> "vertices" ~> 0 ~> "vertexType" === Some(S("malware")))
     assert(entries ~> "vertices" ~> 0 ~> "source" === Some(S("CleanMx(virus)")))
@@ -271,7 +271,7 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "vertices" ~> 5 ~> "asNum" === Some(S("AS16265")))
     assert(entries ~> "vertices" ~> 5 ~> "assignedBy" === Some(S("RIPE")))
 
-    assert(entries ~> "vertices" ~> 6 ~> "_id" === Some(S("CleanMx_6653a885aae75cc8bd45f2808d80202c")))
+    assert(entries ~> "vertices" ~> 6 ~> "_id" === Some(S("CleanMx_22446014")))
     assert(entries ~> "vertices" ~> 6 ~> "_type" === Some(S("vertex")))
     assert(entries ~> "vertices" ~> 6 ~> "vertexType" === Some(S("malware")))
     assert(entries ~> "vertices" ~> 6 ~> "source" === Some(S("CleanMx(virus)")))
@@ -317,13 +317,13 @@ class CleanMxVirusExtractorSuite extends FunSuite {
 
     assert(entries ~> "vertices" ~> 12 === None)
 
-    assert(entries ~> "edges" ~> 0 ~> "_id" === Some(S("CleanMx_dad1324061f93af4eb0205a3b114ea6e_to_95.211.169.207:80")))
+    assert(entries ~> "edges" ~> 0 ~> "_id" === Some(S("CleanMx_22446016_to_95.211.169.207:80")))
     assert(entries ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 0 ~> "inVType" === Some(S("address")))
     assert(entries ~> "edges" ~> 0 ~> "outVType" === Some(S("malware")))
     assert(entries ~> "edges" ~> 0 ~> "source" === Some(S("CleanMx(virus)")))
     assert(entries ~> "edges" ~> 0 ~> "_inV" === Some(S("95.211.169.207:80")))
-    assert(entries ~> "edges" ~> 0 ~> "_outV" === Some(S("CleanMx_dad1324061f93af4eb0205a3b114ea6e")))
+    assert(entries ~> "edges" ~> 0 ~> "_outV" === Some(S("CleanMx_22446016")))
     assert(entries ~> "edges" ~> 0 ~> "_label" === Some(S("communicatesWith")))
     
     assert(entries ~> "edges" ~> 1 ~> "_id" === Some(S("95.211.169.207:80_to_80")))
@@ -362,13 +362,13 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 4 ~> "_outV" === Some(S("95.211.169.207")))
     assert(entries ~> "edges" ~> 4 ~> "_label" === Some(S("inAddressRange")))
     
-    assert(entries ~> "edges" ~> 5 ~> "_id" === Some(S("CleanMx_6653a885aae75cc8bd45f2808d80202c_to_54.208.13.153:80")))
+    assert(entries ~> "edges" ~> 5 ~> "_id" === Some(S("CleanMx_22446014_to_54.208.13.153:80")))
     assert(entries ~> "edges" ~> 5 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 5 ~> "inVType" === Some(S("address")))
     assert(entries ~> "edges" ~> 5 ~> "outVType" === Some(S("malware")))
     assert(entries ~> "edges" ~> 5 ~> "source" === Some(S("CleanMx(virus)")))
     assert(entries ~> "edges" ~> 5 ~> "_inV" === Some(S("54.208.13.153:80")))
-    assert(entries ~> "edges" ~> 5 ~> "_outV" === Some(S("CleanMx_6653a885aae75cc8bd45f2808d80202c")))
+    assert(entries ~> "edges" ~> 5 ~> "_outV" === Some(S("CleanMx_22446014")))
     assert(entries ~> "edges" ~> 5 ~> "_label" === Some(S("communicatesWith")))
     
     assert(entries ~> "edges" ~> 6 ~> "_id" === Some(S("54.208.13.153:80_to_80")))
