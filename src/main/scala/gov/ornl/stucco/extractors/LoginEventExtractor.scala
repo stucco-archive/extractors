@@ -65,6 +65,26 @@ object LoginEventExtractor extends Extractor {
                 "product" -> item ~> h("login_software")
               )
               else None
+            },
+            {
+              if ((item ~> h("from_ip")).nodeNonEmpty)
+              ^(
+                "_id" -> item ~> h("from_ip"),
+                "_type" -> "vertex",
+                "source" -> "LoginEvent",
+                "vertexType" -> "ip"
+              )
+              else None
+            },
+            {
+              if ((item ~> h("from_ip")).nodeNonEmpty)
+              ^(
+                "_id" -> Safely { "host_at_" + (item ~> h("from_ip")).asString },
+                "_type" -> "vertex",
+                "source" -> "LoginEvent",
+                "vertexType" -> "host"
+              )
+              else None
             }
           )
         }).autoFlatten,
@@ -83,7 +103,39 @@ object LoginEventExtractor extends Extractor {
                 "_label" -> "logsInTo",
                 "source" -> "LoginEvent",
                 "outVType" -> "account",
-                "inVType" -> "host"
+                "inVType" -> "host",
+                "time" -> item ~> h("date_time"),
+                "status" -> item ~> h("status")
+              )
+              else None
+            },
+            {
+              if ((item ~> h("hostname")).nodeNonEmpty && (item ~> h("user")).nodeNonEmpty)
+              ^(
+                "_id" -> Safely { (item ~> h("user")).asString + "_logsInFrom_" + "host_at_" + (item ~> h("from_ip")).asString },
+                "_outV" -> item ~> h("user"),
+                "_inV" -> Safely { "host_at_" + (item ~> h("from_ip")).asString },
+                "_type" -> "edge",
+                "_label" -> "logsInFrom",
+                "source" -> "LoginEvent",
+                "outVType" -> "account",
+                "inVType" -> "host",
+                "time" -> item ~> h("date_time"),
+                "status" -> item ~> h("status")
+              )
+              else None
+            },
+            {
+              if ((item ~> h("hostname")).nodeNonEmpty && (item ~> h("user")).nodeNonEmpty)
+              ^(
+                "_id" -> Safely { "host_at_" + (item ~> h("from_ip")).asString + "_hasIP_" + (item ~> h("from_ip")).asString },
+                "_outV" -> Safely { "host_at_" + (item ~> h("from_ip")).asString },
+                "_inV" -> Safely { (item ~> h("from_ip")).asString },
+                "_type" -> "edge",
+                "_label" -> "hasIP",
+                "source" -> "LoginEvent",
+                "outVType" -> "host",
+                "inVType" -> "ip"
               )
               else None
             },
