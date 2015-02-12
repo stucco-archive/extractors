@@ -54,8 +54,8 @@ class NvdExtractorSuite extends FunSuite {
     assert(nvd ~> "vertices" ~> 0 ~> "description" === Some(S("Cross-site scripting (XSS) vulnerability in HP System Management Homepage (SMH) before 7.2.1 allows remote attackers to inject arbitrary web script or HTML via unspecified vectors.")))
     assert(nvd ~> "vertices" ~> 0 ~> "references" ~> 0 === Some(S("https://h20564.www2.hp.com/portal/site/hpsc/public/kb/docDisplay?docId=emr_na-c03839862")))
     assert(nvd ~> "vertices" ~> 0 ~> "references" ~> 1 === Some(S("SOURCE:description")))
-    assert((nvd get "vertices" get 0 get "publishedDate") === Some(S("2013-07-22T07:19:36.253-04:00")))
-    assert((nvd get "vertices" get 0 get "modifiedDate") === Some(S("2013-07-22T07:19:36.253-04:00")))
+    assert((nvd get "vertices" get 0 get "publishedDate") === Some(N(1374491976253L)))
+    assert((nvd get "vertices" get 0 get "modifiedDate") === Some(N(1374491976253L)))
 
     assert(nvd ~> "vertices" ~> 1 ~> "_id" === Some(S("cpe:/a:HP:System_Management_Homepage:7.2.0")))
     assert(nvd ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
@@ -133,8 +133,8 @@ class NvdExtractorSuite extends FunSuite {
     assert(nvd ~> "vertices" ~> 0 ~> "source" === Some(S("NVD")))
     assert(nvd ~> "vertices" ~> 0 ~> "vertexType" === Some(S("vulnerability")))
     assert(nvd ~> "vertices" ~> 0 ~> "description" === Some(S("The default configuration of Parallels Plesk Panel 9.0.x and 9.2.x on UNIX, and Small Business Panel 10.x on UNIX, has an improper ScriptAlias directive for phppath, which makes it easier for remote attackers to execute arbitrary code via a crafted request, a different vulnerability than CVE-2012-1823.")))
-    assert((nvd get "vertices" get 0 get "publishedDate") === Some(S("2013-07-18T12:51:56.227-04:00")))
-    assert((nvd get "vertices" get 0 get "modifiedDate") === Some(S("2013-07-19T16:51:21.577-04:00")))
+    assert((nvd get "vertices" get 0 get "publishedDate") === Some(N(1374166316227L)))
+    assert((nvd get "vertices" get 0 get "modifiedDate") === Some(N(1374267081577L)))
 
     assert(nvd ~> "vertices" ~> 0 ~> "cweNumber" === Some(S("CWE-264")))
     assert(nvd ~> "vertices" ~> 0 ~> "cvssScore" === Some(N(6.8)))
@@ -151,8 +151,8 @@ class NvdExtractorSuite extends FunSuite {
     assert(nvd ~> "vertices" ~> 1 ~> "source" === Some(S("NVD")))
     assert(nvd ~> "vertices" ~> 0 ~> "vertexType" === Some(S("vulnerability")))
     assert(nvd ~> "vertices" ~> 1 ~> "description" === Some(S("** REJECT **  DO NOT USE THIS CANDIDATE NUMBER. ConsultIDs: CVE-2012-5217.  Reason: This candidate is a duplicate of CVE-2012-5217.  A typo caused the wrong ID to be used.  Notes: All CVE users should reference CVE-2012-5217 instead of this candidate.  All references and descriptions in this candidate have been removed to prevent accidental usage.")))
-    assert((nvd get "vertices" get 1 get "publishedDate") === Some(S("2013-07-22T07:20:46.637-04:00")))
-    assert((nvd get "vertices" get 1 get "modifiedDate") === Some(S("2013-07-22T07:20:47.053-04:00")))
+    assert((nvd get "vertices" get 1 get "publishedDate") === Some(N(1374492046637L)))
+    assert((nvd get "vertices" get 1 get "modifiedDate") === Some(N(1374492047053L)))
   }
 
   test("check CPE->NVD edges") {

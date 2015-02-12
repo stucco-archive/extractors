@@ -22,6 +22,15 @@ object ArgusExtractor extends Extractor {
     node != None && node != Some(S(""))
   }
 
+  def getTime(node: Option[ValueNode]): Option[ValueNode] = {
+    val dateString = node.asString
+    if(dateString != ""){
+      return (dateString.toDouble * 1000).toLong
+    }else{
+      return None
+    }
+  }
+
   def extract(node: ValueNode): ValueNode = {
 
     val headers = *("StartTime","Flgs","Proto","SrcAddr","Sport","Dir","DstAddr","Dport","TotPkts","TotBytes","State")
@@ -45,7 +54,7 @@ object ArgusExtractor extends Extractor {
                 "proto" -> item ~> h("Proto"),
                 "appBytes" -> item ~> h("TotBytes"),        
                 "state" -> item ~> h("State"),
-                "startTime" -> item ~> h("StartTime"),
+                "startTime" -> getTime(item ~> h("StartTime")),
   //              "appByteRatio" -> item ~> "@AppByteRatio",
                 "dir" -> item ~> h("Dir"),
                 "flags" -> item ~> h("Flgs")

@@ -39,7 +39,7 @@ class ArgusExtractorSuite extends FunSuite {
   }
 
   test("parse one argus entries") {
-    val node = CsvParser("15:52:32.860730, e s      ,6,10.10.10.1,56867,   ->,10.10.10.100,22,8,585,REQ")
+    val node = CsvParser("1373553586.136399, e s      ,6,10.10.10.1,56867,   ->,10.10.10.100,22,8,585,REQ")
     val argus = ArgusExtractor(node)
    
     assert(argus ~> "vertices" ~> 0 ~> "_id" === Some(S("10.10.10.1:56867::10.10.10.100:22")))
@@ -48,7 +48,7 @@ class ArgusExtractorSuite extends FunSuite {
     assert(argus ~> "vertices" ~> 0 ~> "source" === Some(S("Argus")))
     assert(argus ~> "vertices" ~> 0 ~> "proto" === Some(S("6")))
     assert(argus ~> "vertices" ~> 0 ~> "appBytes" === Some(S("585")))
-    assert(argus ~> "vertices" ~> 0 ~> "startTime" === Some(S("15:52:32.860730")))
+    assert(argus ~> "vertices" ~> 0 ~> "startTime" === Some(N(1373553586136L)))
     assert(argus ~> "vertices" ~> 0 ~> "dir" === Some(S("   ->")))
     assert(argus ~> "vertices" ~> 0 ~> "flags" === Some(S(" e s      ")))
     assert(argus ~> "vertices" ~> 0 ~> "state" === Some(S("REQ")))

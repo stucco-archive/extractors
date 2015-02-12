@@ -22,6 +22,31 @@ object LoginEventExtractor extends Extractor {
     node != None && node != Some(S(""))
   }
 
+  val format = new java.text.SimpleDateFormat("yyyy MMM dd HH:mm:ss")
+
+  def getCurrYear(): String = {
+    val yearFormat = new java.text.SimpleDateFormat("yyyy")
+    val yearString = yearFormat.format(new java.util.Date())
+    return yearString
+  }
+
+  def getPrevYear(): String = {
+    val yearString = (Integer.parseInt(getCurrYear()) - 1).toString()
+    return yearString
+  }
+
+  def getTime(node: Option[ValueNode]): Option[ValueNode] = {
+    var dateString = node.asString
+    if(dateString != ""){
+      var ts = format.parse( getCurrYear() + " " + dateString ).getTime()
+      if(ts > new java.util.Date().getTime() )
+        ts = format.parse( getPrevYear() + " " + dateString ).getTime()
+      return ts
+    }else{
+      return None
+    }
+  }
+
   def extract(node: ValueNode): ValueNode = {
 
     //Sep 24 15:10:59,WE24565,sshd,Failed,zach,::1
@@ -104,7 +129,7 @@ object LoginEventExtractor extends Extractor {
                 "source" -> "LoginEvent",
                 "outVType" -> "account",
                 "inVType" -> "host",
-                "time" -> item ~> h("date_time"),
+                "timeStamp" -> getTime(item ~> h("date_time")),
                 "status" -> item ~> h("status")
               )
               else None
@@ -120,7 +145,7 @@ object LoginEventExtractor extends Extractor {
                 "source" -> "LoginEvent",
                 "outVType" -> "account",
                 "inVType" -> "host",
-                "time" -> item ~> h("date_time"),
+                "timeStamp" -> getTime(item ~> h("date_time")),
                 "status" -> item ~> h("status")
               )
               else None

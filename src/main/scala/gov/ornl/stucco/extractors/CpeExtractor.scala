@@ -10,6 +10,8 @@ import gov.ornl.stucco.morph.extractor.Extractor
  */
 object CpeExtractor extends Extractor {
 
+  val format = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+  
   def extract(node: ValueNode): ValueNode = ^(
     "vertices" -> (node ~> "cpe-list" ~> "cpe-item" %%-> { item =>
       val substrings = (item ~> "@name").asString split ":"
@@ -24,7 +26,7 @@ object CpeExtractor extends Extractor {
         },
         "nvdId" -> item ~> "meta:item-metadata" ~> "@nvd-id",
         "status" -> item ~> "meta:item-metadata" ~> "@status",
-        "modifiedDate" -> item ~> "meta:item-metadata" ~> "@modification-date",
+        "modifiedDate" -> Safely{ format.parse( (item ~> "meta:item-metadata" ~> "@modification-date").asString ).getTime() },
 
         //index 0 is the "source", which is always "cpe", and is redundant with above.
         "part" -> (substrings lift 1),

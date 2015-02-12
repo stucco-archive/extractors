@@ -11,6 +11,17 @@ object MetasploitExtractor extends Extractor {
   val S = StringNode
   val N = NumberNode
 
+  val format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+  def getTime(node: Option[ValueNode]): Option[ValueNode] = {
+    val dateString = node.asString
+    if(dateString != ""){
+      format.parse( dateString ).getTime()
+    }else{
+      None
+    }
+  }
+
   //TODO: it would be useful to also check non-strings here.
   def notEmpty(node: Option[ValueNode]): Boolean = {
     node != None && node != Some(S(""))
@@ -34,7 +45,7 @@ object MetasploitExtractor extends Extractor {
                 "source" -> "Metasploit",
                 "vertexType" -> "malware",
                 "malwareType" -> item ~> h("mtype"),
-                "discoveryDate" -> item ~> h("disclosure_date"),
+                "discoveryDate" -> getTime(item ~> h("disclosure_date")),
                 "overview" -> item ~> h("name"),
                 "details" -> item ~> h("description")
               )

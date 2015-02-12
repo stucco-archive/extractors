@@ -11,6 +11,8 @@ import gov.ornl.stucco.morph.extractor.Extractor
  */
 object NvdExtractor extends Extractor {
 
+  val format = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+
   def extract(node: ValueNode): ValueNode = ^(
     "vertices" -> (node ~> "nvd" ~> "entry" %%-> { item =>
       *(
@@ -20,8 +22,8 @@ object NvdExtractor extends Extractor {
           "vertexType" -> "vulnerability",
           "source" -> "NVD",
           "description" -> item ~> "vuln:summary",
-          "publishedDate" -> item ~> "vuln:published-datetime",
-          "modifiedDate" -> item ~> "vuln:last-modified-datetime",
+          "publishedDate" -> Safely{ format.parse( (item ~> "vuln:published-datetime").asString ).getTime() },
+          "modifiedDate" -> Safely{ format.parse( (item ~> "vuln:last-modified-datetime").asString ).getTime() },
           "cweNumber" -> item ~> "vuln:cwe" ~> "@id",
 
           "cvssScore" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:score",

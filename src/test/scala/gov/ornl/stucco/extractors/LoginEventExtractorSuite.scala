@@ -85,7 +85,7 @@ class LoginEventExtractorSuite extends FunSuite {
     assert(loginEvent ~> "edges" ~> 0 ~> "source" === Some(S("LoginEvent")))
     assert(loginEvent ~> "edges" ~> 0 ~> "outVType" === Some(S("account")))
     assert(loginEvent ~> "edges" ~> 0 ~> "inVType" === Some(S("host")))
-    assert(loginEvent ~> "edges" ~> 0 ~> "time" === Some(S("Sep 24 15:11:03")))
+    assert(loginEvent ~> "edges" ~> 0 ~> "timeStamp" === Some(N(1411585863000L)))
     assert(loginEvent ~> "edges" ~> 0 ~> "status" === Some(S("Accepted")))
 
     assert(loginEvent ~> "edges" ~> 1 ~> "_id" === Some(S("StuccoUser_logsInFrom_host_at_192.168.10.11")))
@@ -96,7 +96,7 @@ class LoginEventExtractorSuite extends FunSuite {
     assert(loginEvent ~> "edges" ~> 1 ~> "source" === Some(S("LoginEvent")))
     assert(loginEvent ~> "edges" ~> 1 ~> "outVType" === Some(S("account")))
     assert(loginEvent ~> "edges" ~> 1 ~> "inVType" === Some(S("host")))
-    assert(loginEvent ~> "edges" ~> 1 ~> "time" === Some(S("Sep 24 15:11:03")))
+    assert(loginEvent ~> "edges" ~> 1 ~> "timeStamp" === Some(N(1411585863000L)))
     assert(loginEvent ~> "edges" ~> 1 ~> "status" === Some(S("Accepted")))
 
     assert(loginEvent ~> "edges" ~> 2 ~> "_id" === Some(S("host_at_192.168.10.11_hasIP_192.168.10.11")))
