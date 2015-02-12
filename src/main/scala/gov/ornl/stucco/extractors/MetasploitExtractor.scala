@@ -11,12 +11,12 @@ object MetasploitExtractor extends Extractor {
   val S = StringNode
   val N = NumberNode
 
-  val format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+  val format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss XXX")
 
   def getTime(node: Option[ValueNode]): Option[ValueNode] = {
     val dateString = node.asString
     if(dateString != ""){
-      format.parse( dateString ).getTime()
+      format.parse( dateString + " +00:00" ).getTime()
     }else{
       None
     }

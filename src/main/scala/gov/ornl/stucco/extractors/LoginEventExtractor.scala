@@ -22,7 +22,7 @@ object LoginEventExtractor extends Extractor {
     node != None && node != Some(S(""))
   }
 
-  val format = new java.text.SimpleDateFormat("yyyy MMM dd HH:mm:ss")
+  val format = new java.text.SimpleDateFormat("yyyy MMM dd HH:mm:ss XXX")
 
   def getCurrYear(): String = {
     val yearFormat = new java.text.SimpleDateFormat("yyyy")
@@ -38,9 +38,9 @@ object LoginEventExtractor extends Extractor {
   def getTime(node: Option[ValueNode]): Option[ValueNode] = {
     var dateString = node.asString
     if(dateString != ""){
-      var ts = format.parse( getCurrYear() + " " + dateString ).getTime()
+      var ts = format.parse( getCurrYear() + " " + dateString + " +00:00"  ).getTime()
       if(ts > new java.util.Date().getTime() )
-        ts = format.parse( getPrevYear() + " " + dateString ).getTime()
+        ts = format.parse( getPrevYear() + " " + dateString + " +00:00"  ).getTime()
       return ts
     }else{
       return None
