@@ -46,7 +46,7 @@ object MetasploitExtractor extends Extractor {
                 "vertexType" -> "malware",
                 "malwareType" -> item ~> h("mtype"),
                 "discoveryDate" -> getTime(item ~> h("disclosure_date")),
-                "overview" -> item ~> h("name"),
+                "description" -> item ~> h("name"),
                 "details" -> item ~> h("description")
               )
               if (notEmpty(n ~> "_id")) n

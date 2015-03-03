@@ -47,7 +47,7 @@ class MetasploitExtractorSuite extends FunSuite {
     assert(msf ~> "vertices" ~> 0 ~> "vertexType" === Some(S("malware")))
     assert(msf ~> "vertices" ~> 0 ~> "malwareType" === Some(S("exploit")))
     assert(msf ~> "vertices" ~> 0 ~> "discoveryDate" === Some(N(1254873600000L)))
-    assert(msf ~> "vertices" ~> 0 ~> "overview" === Some(S("AIX Calendar Manager Service Daemon (rpc.cmsd) Opcode 21 Buffer Overflow")))
+    assert(msf ~> "vertices" ~> 0 ~> "description" === Some(S("AIX Calendar Manager Service Daemon (rpc.cmsd) Opcode 21 Buffer Overflow")))
     assert(msf ~> "vertices" ~> 0 ~> "details" === Some(S("This module exploits a buffer overflow vulnerability in opcode 21 handled by rpc.cmsd on AIX. By making a request with a long string passed to the first argument of the \"rtable_create\" RPC, a stack based buffer overflow occurs. This leads to arbitrary code execution.  NOTE: Unsuccessful attempts may cause inetd/portmapper to enter a state where further attempts are not possible.")))
 
     assert(msf ~> "vertices" ~> 1 === None)
@@ -67,7 +67,7 @@ class MetasploitExtractorSuite extends FunSuite {
     assert(msf ~> "vertices" ~> 0 ~> "vertexType" === Some(S("malware")))
     assert(msf ~> "vertices" ~> 0 ~> "malwareType" === Some(S("exploit")))
     assert(msf ~> "vertices" ~> 0 ~> "discoveryDate" === Some(N(1254873600000L)))
-    assert(msf ~> "vertices" ~> 0 ~> "overview" === Some(S("AIX Calendar Manager Service Daemon (rpc.cmsd) Opcode 21 Buffer Overflow")))
+    assert(msf ~> "vertices" ~> 0 ~> "description" === Some(S("AIX Calendar Manager Service Daemon (rpc.cmsd) Opcode 21 Buffer Overflow")))
     assert(msf ~> "vertices" ~> 0 ~> "details" === Some(S("This module exploits a buffer overflow vulnerability in opcode 21 handled by rpc.cmsd on AIX. By making a request with a long string passed to the first argument of the \"rtable_create\" RPC, a stack based buffer overflow occurs. This leads to arbitrary code execution.  NOTE: Unsuccessful attempts may cause inetd/portmapper to enter a state where further attempts are not possible.")))
 
     assert(msf ~> "vertices" ~> 1 ~> "_id" === Some(S("CVE-2009-3699")))
@@ -102,7 +102,7 @@ class MetasploitExtractorSuite extends FunSuite {
     assert(msf ~> "vertices" ~> 0 ~> "vertexType" === Some(S("malware")))
     assert(msf ~> "vertices" ~> 0 ~> "malwareType" === Some(S("exploit")))
     assert(msf ~> "vertices" ~> 0 ~> "discoveryDate" === Some(N(1254873600000L)))
-    assert(msf ~> "vertices" ~> 0 ~> "overview" === Some(S("AIX Calendar Manager Service Daemon (rpc.cmsd) Opcode 21 Buffer Overflow")))
+    assert(msf ~> "vertices" ~> 0 ~> "description" === Some(S("AIX Calendar Manager Service Daemon (rpc.cmsd) Opcode 21 Buffer Overflow")))
     assert(msf ~> "vertices" ~> 0 ~> "details" === Some(S("This module exploits a buffer overflow vulnerability in opcode 21 handled by rpc.cmsd on AIX. By making a request with a long string passed to the first argument of the \"rtable_create\" RPC, a stack based buffer overflow occurs. This leads to arbitrary code execution.  NOTE: Unsuccessful attempts may cause inetd/portmapper to enter a state where further attempts are not possible.")))
 
     assert(msf ~> "vertices" ~> 1 ~> "_id" === Some(S("CVE-2009-3699")))
