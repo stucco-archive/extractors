@@ -195,6 +195,7 @@ object HoneExtractor extends Extractor {
               if (hostName.nonEmpty && (item ~> h("path")).nodeNonEmpty)
               ^(
                 "_id" -> Safely { hostName + "_runs_" + (item ~> h("path")).asString },
+                "description" -> Safely { hostName + " runs " + (item ~> h("path")).asString },
                 "_outV" -> hostName,
                 "_inV" -> item ~> h("path"),
                 "_type" -> "edge",
@@ -213,6 +214,10 @@ object HoneExtractor extends Extractor {
                   hostName + "_usesAddress_" +
                     (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString
                 },
+                "description" -> Safely {
+                  hostName + " uses address " +
+                    (item ~> h("source_ip")).asString + ", port " + (item ~> h("source_port")).asString
+                },
                 "_outV" -> hostName,
                 "_inV" -> Safely { (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString },
                 "_type" -> "edge",
@@ -229,6 +234,10 @@ object HoneExtractor extends Extractor {
                 "_id" -> Safely {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString +
                     "_hasIP_" + (item ~> h("source_ip")).asString
+                },
+                "description" -> Safely {
+                  (item ~> h("source_ip")).asString + ", port " + (item ~> h("source_port")).asString +
+                    " has IP " + (item ~> h("source_ip")).asString
                 },
                 "_outV" -> Safely { (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString },
                 "_inV" -> item ~> h("source_ip"),
@@ -247,6 +256,10 @@ object HoneExtractor extends Extractor {
                   (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString +
                     "_hasIP_" + (item ~> h("dest_ip")).asString
                 },
+                "description" -> Safely {
+                  (item ~> h("dest_ip")).asString + ", port " + (item ~> h("dest_port")).asString +
+                    " has IP " + (item ~> h("dest_ip")).asString
+                },
                 "_outV" -> Safely { (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString },
                 "_inV" -> item ~> h("dest_ip"),
                 "_type" -> "edge",
@@ -264,6 +277,10 @@ object HoneExtractor extends Extractor {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString +
                     "_hasPort_" + (item ~> h("source_port")).asString
                 },
+                "description" -> Safely {
+                  (item ~> h("source_ip")).asString + ", port " + (item ~> h("source_port")).asString +
+                    " has port " + (item ~> h("source_port")).asString
+                },
                 "_outV" -> Safely { (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString },
                 "_inV" -> item ~> h("source_port"),
                 "_type" -> "edge",
@@ -280,6 +297,10 @@ object HoneExtractor extends Extractor {
                 "_id" -> Safely {
                   (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString +
                     "_hasPort_" + (item ~> h("dest_port")).asString
+                },
+                "description" -> Safely {
+                  (item ~> h("dest_ip")).asString + ", port " + (item ~> h("dest_port")).asString +
+                    " has port " + (item ~> h("dest_port")).asString
                 },
                 "_outV" -> Safely { (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString },
                 "_inV" -> item ~> h("dest_port"),
@@ -299,6 +320,11 @@ object HoneExtractor extends Extractor {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
                     (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString + "_dstAddress_" +
                     (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString
+                },
+                "description" -> Safely {
+                  (item ~> h("source_ip")).asString + ", port " + (item ~> h("source_port")).asString + " to " +
+                    (item ~> h("dest_ip")).asString + ", port " + (item ~> h("dest_port")).asString + " has destination address " +
+                    (item ~> h("dest_ip")).asString + ", port " + (item ~> h("dest_port")).asString
                 },
                 "_outV" -> Safely {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
@@ -321,6 +347,11 @@ object HoneExtractor extends Extractor {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
                     (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString + "_srcAddress_" +
                     (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString
+                },
+                "description" -> Safely {
+                  (item ~> h("source_ip")).asString + ", port " + (item ~> h("source_port")).asString + " to " +
+                    (item ~> h("dest_ip")).asString + ", port " + (item ~> h("dest_port")).asString + " has source address " +
+                    (item ~> h("source_ip")).asString + ", port " + (item ~> h("source_port")).asString
                 },
                 "_outV" -> Safely {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
@@ -345,6 +376,11 @@ object HoneExtractor extends Extractor {
                     (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
                     (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString
                 },
+                "description" -> Safely {
+                  (item ~> h("path")).asString + " has flow " +
+                    (item ~> h("source_ip")).asString + ", port " + (item ~> h("source_port")).asString + " to " +
+                    (item ~> h("dest_ip")).asString + ", port " + (item ~> h("dest_port")).asString
+                },
                 "_outV" -> item ~> h("path"),
                 "_inV" -> Safely {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
@@ -365,6 +401,10 @@ object HoneExtractor extends Extractor {
                 "_id" -> Safely {
                   (item ~> h("path")).asString + "_runsAs_" +
                     hostName + ":" + (item ~> h("uid")).asString
+                },
+                "description" -> Safely {
+                  (item ~> h("path")).asString + " runs as uid " +
+                    (item ~> h("uid")).asString + " on host " + hostName
                 },
                 "_outV" -> item ~> h("path"),
                 "_inV" -> Safely {

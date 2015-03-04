@@ -83,6 +83,7 @@ class MetasploitExtractorSuite extends FunSuite {
     assert(msf ~> "vertices" ~> 2 === None)
 
     assert(msf ~> "edges" ~> 0 ~> "_id" === Some(S("exploit/aix/rpc_cmsd_opcode21_exploits_CVE-2009-3699")))
+    assert(msf ~> "edges" ~> 0 ~> "description" === Some(S("exploit/aix/rpc_cmsd_opcode21 exploits CVE-2009-3699")))
     assert(msf ~> "edges" ~> 0 ~> "_outV" === Some(S("exploit/aix/rpc_cmsd_opcode21")))
     assert(msf ~> "edges" ~> 0 ~> "_inV" === Some(S("CVE-2009-3699")))
     assert(msf ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
@@ -128,6 +129,7 @@ class MetasploitExtractorSuite extends FunSuite {
     assert(msf ~> "vertices" ~> 3 === None)
 
     assert(msf ~> "edges" ~> 0 ~> "_id" === Some(S("exploit/aix/rpc_cmsd_opcode21_exploits_CVE-2009-3699")))
+    assert(msf ~> "edges" ~> 0 ~> "description" === Some(S("exploit/aix/rpc_cmsd_opcode21 exploits CVE-2009-3699")))
     assert(msf ~> "edges" ~> 0 ~> "_outV" === Some(S("exploit/aix/rpc_cmsd_opcode21")))
     assert(msf ~> "edges" ~> 0 ~> "_inV" === Some(S("CVE-2009-3699")))
     assert(msf ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
@@ -137,6 +139,7 @@ class MetasploitExtractorSuite extends FunSuite {
     assert(msf ~> "edges" ~> 0 ~> "inVType" === Some(S("vulnerability")))
 
     assert(msf ~> "edges" ~> 1 ~> "_id" === Some(S("exploit/aix/rpc_cmsd_opcode21_exploits_CVE-2009-nnnn")))
+    assert(msf ~> "edges" ~> 1 ~> "description" === Some(S("exploit/aix/rpc_cmsd_opcode21 exploits CVE-2009-nnnn")))
     assert(msf ~> "edges" ~> 1 ~> "_outV" === Some(S("exploit/aix/rpc_cmsd_opcode21")))
     assert(msf ~> "edges" ~> 1 ~> "_inV" === Some(S("CVE-2009-nnnn")))
     assert(msf ~> "edges" ~> 1 ~> "_type" === Some(S("edge")))

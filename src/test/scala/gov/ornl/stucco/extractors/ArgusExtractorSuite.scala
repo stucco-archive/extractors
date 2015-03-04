@@ -98,6 +98,7 @@ class ArgusExtractorSuite extends FunSuite {
     assert(argus ~> "vertices" ~> 6 ~> "source" === Some(S("Argus")))
 
     assert(argus ~> "edges" ~> 0 ~> "_id" === Some(S("10.10.10.1:56867::10.10.10.100:22_srcAddress_10.10.10.1:56867")))
+    assert(argus ~> "edges" ~> 0 ~> "description" === Some(S("10.10.10.1, port 56867 to 10.10.10.100, port 22 has source address 10.10.10.1, port 56867")))
     assert(argus ~> "edges" ~> 0 ~> "_outV" === Some(S("10.10.10.1:56867::10.10.10.100:22")))
     assert(argus ~> "edges" ~> 0 ~> "_inV" === Some(S("10.10.10.1:56867")))
     assert(argus ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
@@ -107,6 +108,7 @@ class ArgusExtractorSuite extends FunSuite {
     assert(argus ~> "edges" ~> 0 ~> "inVType" === Some(S("address")))
     
     assert(argus ~> "edges" ~> 1 ~> "_id" === Some(S("10.10.10.1:56867::10.10.10.100:22_dstAddress_10.10.10.100:22")))
+    assert(argus ~> "edges" ~> 1 ~> "description" === Some(S("10.10.10.1, port 56867 to 10.10.10.100, port 22 has destination address 10.10.10.100, port 22")))
     assert(argus ~> "edges" ~> 1 ~> "_outV" === Some(S("10.10.10.1:56867::10.10.10.100:22")))
     assert(argus ~> "edges" ~> 1 ~> "_inV" === Some(S("10.10.10.100:22")))
     assert(argus ~> "edges" ~> 1 ~> "_type" === Some(S("edge")))
@@ -116,6 +118,7 @@ class ArgusExtractorSuite extends FunSuite {
     assert(argus ~> "edges" ~> 1 ~> "inVType" === Some(S("address")))
 
     assert(argus ~> "edges" ~> 2 ~> "_id" === Some(S("10.10.10.1:56867_hasIP_10.10.10.1")))
+    assert(argus ~> "edges" ~> 2 ~> "description" === Some(S("10.10.10.1, port 56867 has IP 10.10.10.1")))
     assert(argus ~> "edges" ~> 2 ~> "_outV" === Some(S("10.10.10.1:56867")))
     assert(argus ~> "edges" ~> 2 ~> "_inV" === Some(S("10.10.10.1")))
     assert(argus ~> "edges" ~> 2 ~> "_type" === Some(S("edge")))
@@ -125,6 +128,7 @@ class ArgusExtractorSuite extends FunSuite {
     assert(argus ~> "edges" ~> 2 ~> "inVType" === Some(S("IP")))
 
     assert(argus ~> "edges" ~> 3 ~> "_id" === Some(S("10.10.10.100:22_hasIP_10.10.10.100")))
+    assert(argus ~> "edges" ~> 3 ~> "description" === Some(S("10.10.10.100, port 22 has IP 10.10.10.100")))
     assert(argus ~> "edges" ~> 3 ~> "_outV" === Some(S("10.10.10.100:22")))
     assert(argus ~> "edges" ~> 3 ~> "_inV" === Some(S("10.10.10.100")))
     assert(argus ~> "edges" ~> 3 ~> "_type" === Some(S("edge")))
@@ -134,6 +138,7 @@ class ArgusExtractorSuite extends FunSuite {
     assert(argus ~> "edges" ~> 3 ~> "inVType" === Some(S("IP")))
     
     assert(argus ~> "edges" ~> 4 ~> "_id" === Some(S("10.10.10.1:56867_hasPort_56867")))
+    assert(argus ~> "edges" ~> 4 ~> "description" === Some(S("10.10.10.1, port 56867 has port 56867")))
     assert(argus ~> "edges" ~> 4 ~> "_outV" === Some(S("10.10.10.1:56867")))
     assert(argus ~> "edges" ~> 4 ~> "_inV" === Some(S("56867")))
     assert(argus ~> "edges" ~> 4 ~> "_type" === Some(S("edge")))
@@ -143,6 +148,7 @@ class ArgusExtractorSuite extends FunSuite {
     assert(argus ~> "edges" ~> 4 ~> "inVType" === Some(S("port")))
 
     assert(argus ~> "edges" ~> 5 ~> "_id" === Some(S("10.10.10.100:22_hasPort_22")))
+    assert(argus ~> "edges" ~> 5 ~> "description" === Some(S("10.10.10.100, port 22 has port 22")))
     assert(argus ~> "edges" ~> 5 ~> "_outV" === Some(S("10.10.10.100:22")))
     assert(argus ~> "edges" ~> 5 ~> "_inV" === Some(S("22")))
     assert(argus ~> "edges" ~> 5 ~> "_type" === Some(S("edge")))

@@ -66,6 +66,7 @@ class NvdExtractorSuite extends FunSuite {
     assert(nvd ~> "vertices" ~> 1 ~> "source" === Some(S("NVD")))
 
     assert(nvd ~> "edges" ~> 0 ~> "_id" === Some(S("cpe:/a:HP:System_Management_Homepage:7.2.0_to_CVE-2013-2361")))
+    assert(nvd ~> "edges" ~> 0 ~> "description" === Some(S("HP System_Management_Homepage version 7.2.0 to CVE-2013-2361")))
     assert(nvd ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
     assert(nvd ~> "edges" ~> 0 ~> "inVType" === Some(S("vulnerability")))
     assert(nvd ~> "edges" ~> 0 ~> "outVType" === Some(S("software")))
@@ -187,6 +188,7 @@ class NvdExtractorSuite extends FunSuite {
     val nvd = NvdExtractor(node)
     //print(nvd)
     assert(nvd ~> "edges" ~> 0 ~> "_id" === Some(S("cpe:/a:parallels:parallels_plesk_panel:9.2_to_CVE-2099-0002")))
+    assert(nvd ~> "edges" ~> 0 ~> "description" === Some(S("parallels parallels_plesk_panel version 9.2 to CVE-2099-0002")))
     assert(nvd ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
     assert(nvd ~> "edges" ~> 0 ~> "inVType" === Some(S("vulnerability")))
     assert(nvd ~> "edges" ~> 0 ~> "outVType" === Some(S("software")))
@@ -196,6 +198,7 @@ class NvdExtractorSuite extends FunSuite {
     assert(nvd ~> "edges" ~> 0 ~> "_label" === Some(S("hasVulnerability")))
 
     assert(nvd ~> "edges" ~> 1 ~> "_id" === Some(S("cpe:/a:parallels:parallels_small_business_panel:10.0_to_CVE-2099-0003")))
+    assert(nvd ~> "edges" ~> 1 ~> "description" === Some(S("parallels parallels_small_business_panel version 10.0 to CVE-2099-0003")))
     assert(nvd ~> "edges" ~> 1 ~> "_type" === Some(S("edge")))
     assert(nvd ~> "edges" ~> 1 ~> "inVType" === Some(S("vulnerability")))
     assert(nvd ~> "edges" ~> 1 ~> "outVType" === Some(S("software")))
@@ -205,6 +208,7 @@ class NvdExtractorSuite extends FunSuite {
     assert(nvd ~> "edges" ~> 1 ~> "_label" === Some(S("hasVulnerability")))
 
     assert(nvd ~> "edges" ~> 2 ~> "_id" === Some(S("cpe:/a:parallels:parallels_plesk_panel:9.0_to_CVE-2099-0003")))
+    assert(nvd ~> "edges" ~> 2 ~> "description" === Some(S("parallels parallels_plesk_panel version 9.0 to CVE-2099-0003")))
     assert(nvd ~> "edges" ~> 2 ~> "_type" === Some(S("edge")))
     assert(nvd ~> "edges" ~> 2 ~> "inVType" === Some(S("vulnerability")))
     assert(nvd ~> "edges" ~> 2 ~> "outVType" === Some(S("software")))
@@ -214,6 +218,7 @@ class NvdExtractorSuite extends FunSuite {
     assert(nvd ~> "edges" ~> 2 ~> "_label" === Some(S("hasVulnerability")))
 
     assert(nvd ~> "edges" ~> 3 ~> "_id" === Some(S("cpe:/a:parallels:parallels_plesk_panel:9.2_to_CVE-2099-0003")))
+    assert(nvd ~> "edges" ~> 3 ~> "description" === Some(S("parallels parallels_plesk_panel version 9.2 to CVE-2099-0003")))
     assert(nvd ~> "edges" ~> 3 ~> "_type" === Some(S("edge")))
     assert(nvd ~> "edges" ~> 3 ~> "inVType" === Some(S("vulnerability")))
     assert(nvd ~> "edges" ~> 3 ~> "outVType" === Some(S("software")))

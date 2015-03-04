@@ -132,6 +132,7 @@ object LoginEventExtractor extends Extractor {
               if ((item ~> h("hostname")).nodeNonEmpty && (item ~> h("user")).nodeNonEmpty)
               ^(
                 "_id" -> Safely { (item ~> h("user")).asString + "_logsInTo_" + (item ~> h("hostname")).asString },
+                "description" -> Safely { (item ~> h("user")).asString + " logs in to " + (item ~> h("hostname")).asString },
                 "_outV" -> item ~> h("user"),
                 "_inV" -> item ~> h("hostname"),
                 "_type" -> "edge",
@@ -148,6 +149,7 @@ object LoginEventExtractor extends Extractor {
               if ((item ~> h("hostname")).nodeNonEmpty && (item ~> h("user")).nodeNonEmpty)
               ^(
                 "_id" -> Safely { (item ~> h("user")).asString + "_logsInFrom_" + "host_at_" + (item ~> h("from_ip")).asString },
+                "description" -> Safely { (item ~> h("user")).asString + " logs in from " + "host at " + (item ~> h("from_ip")).asString },
                 "_outV" -> item ~> h("user"),
                 "_inV" -> Safely { "host_at_" + (item ~> h("from_ip")).asString },
                 "_type" -> "edge",
@@ -164,6 +166,7 @@ object LoginEventExtractor extends Extractor {
               if ((item ~> h("hostname")).nodeNonEmpty && (item ~> h("user")).nodeNonEmpty)
               ^(
                 "_id" -> Safely { "host_at_" + (item ~> h("from_ip")).asString + "_hasIP_" + (item ~> h("from_ip")).asString },
+                "description" -> Safely { "host at " + (item ~> h("from_ip")).asString + " has IP " + (item ~> h("from_ip")).asString },
                 "_outV" -> Safely { "host_at_" + (item ~> h("from_ip")).asString },
                 "_inV" -> Safely { (item ~> h("from_ip")).asString },
                 "_type" -> "edge",
@@ -178,6 +181,7 @@ object LoginEventExtractor extends Extractor {
               if ((item ~> h("hostname")).nodeNonEmpty && (item ~> h("login_software")).nodeNonEmpty)
               ^(
                 "_id" -> Safely { (item ~> h("hostname")).asString + "_runs_" + (item ~> h("login_software")).asString },
+                "description" -> Safely { (item ~> h("hostname")).asString + " runs " + (item ~> h("login_software")).asString },
                 "_outV" -> item ~> h("hostname"),
                 "_inV" -> item ~> h("login_software"),
                 "_type" -> "edge",

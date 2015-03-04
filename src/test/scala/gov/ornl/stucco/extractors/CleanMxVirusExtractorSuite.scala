@@ -116,7 +116,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
 
     assert(entries ~> "vertices" ~> 6 === None)
 
-    assert(entries ~> "edges" ~> 0 ~> "_id" === Some(S("CleanMx_22447134_to_115.47.55.160:80")))
+    assert(entries ~> "edges" ~> 0 ~> "_id" === Some(S("CleanMx_22447134_communicatesWith_115.47.55.160:80")))
+    assert(entries ~> "edges" ~> 0 ~> "description" === Some(S("CleanMx entry 22447134 communicates with 115.47.55.160, port 80")))
     assert(entries ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 0 ~> "inVType" === Some(S("address")))
     assert(entries ~> "edges" ~> 0 ~> "outVType" === Some(S("malware")))
@@ -125,7 +126,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 0 ~> "_outV" === Some(S("CleanMx_22447134")))
     assert(entries ~> "edges" ~> 0 ~> "_label" === Some(S("communicatesWith")))
 
-    assert(entries ~> "edges" ~> 1 ~> "_id" === Some(S("115.47.55.160:80_to_80")))
+    assert(entries ~> "edges" ~> 1 ~> "_id" === Some(S("115.47.55.160:80_hasPort_80")))
+    assert(entries ~> "edges" ~> 1 ~> "description" === Some(S("115.47.55.160, port 80 has port 80")))
     assert(entries ~> "edges" ~> 1 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 1 ~> "inVType" === Some(S("port")))
     assert(entries ~> "edges" ~> 1 ~> "outVType" === Some(S("address")))
@@ -134,7 +136,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 1 ~> "_outV" === Some(S("115.47.55.160:80")))
     assert(entries ~> "edges" ~> 1 ~> "_label" === Some(S("hasPort")))
 
-    assert(entries ~> "edges" ~> 2 ~> "_id" === Some(S("115.47.55.160:80_to_idba.cc")))
+    assert(entries ~> "edges" ~> 2 ~> "_id" === Some(S("115.47.55.160:80_hasDNSName_idba.cc")))
+    assert(entries ~> "edges" ~> 2 ~> "description" === Some(S("115.47.55.160, port 80 has DNS name idba.cc")))
     assert(entries ~> "edges" ~> 2 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 2 ~> "inVType" === Some(S("DNSName")))
     assert(entries ~> "edges" ~> 2 ~> "outVType" === Some(S("address")))
@@ -143,7 +146,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 2 ~> "_outV" === Some(S("115.47.55.160:80")))
     assert(entries ~> "edges" ~> 2 ~> "_label" === Some(S("hasDNSName")))
 
-    assert(entries ~> "edges" ~> 3 ~> "_id" === Some(S("115.47.55.160:80_to_115.47.55.160")))
+    assert(entries ~> "edges" ~> 3 ~> "_id" === Some(S("115.47.55.160:80_hasIP_115.47.55.160")))
+    assert(entries ~> "edges" ~> 3 ~> "description" === Some(S("115.47.55.160, port 80 has IP 115.47.55.160")))
     assert(entries ~> "edges" ~> 3 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 3 ~> "inVType" === Some(S("IP")))
     assert(entries ~> "edges" ~> 3 ~> "outVType" === Some(S("address")))
@@ -152,7 +156,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 3 ~> "_outV" === Some(S("115.47.55.160:80")))
     assert(entries ~> "edges" ~> 3 ~> "_label" === Some(S("hasIP")))
 
-    assert(entries ~> "edges" ~> 4 ~> "_id" === Some(S("115.47.55.160_to_115.47.0.0_through_115.47.255.255")))
+    assert(entries ~> "edges" ~> 4 ~> "_id" === Some(S("115.47.55.160_inAddressRange_115.47.0.0_through_115.47.255.255")))
+    assert(entries ~> "edges" ~> 4 ~> "description" === Some(S("115.47.55.160 is in address range 115.47.0.0 through 115.47.255.255")))
     assert(entries ~> "edges" ~> 4 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 4 ~> "inVType" === Some(S("addressRange")))
     assert(entries ~> "edges" ~> 4 ~> "outVType" === Some(S("IP")))
@@ -350,7 +355,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
 
     assert(entries ~> "vertices" ~> 12 === None)
 
-    assert(entries ~> "edges" ~> 0 ~> "_id" === Some(S("CleanMx_22446016_to_95.211.169.207:80")))
+    assert(entries ~> "edges" ~> 0 ~> "_id" === Some(S("CleanMx_22446016_communicatesWith_95.211.169.207:80")))
+    assert(entries ~> "edges" ~> 0 ~> "description" === Some(S("CleanMx entry 22446016 communicates with 95.211.169.207, port 80")))
     assert(entries ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 0 ~> "inVType" === Some(S("address")))
     assert(entries ~> "edges" ~> 0 ~> "outVType" === Some(S("malware")))
@@ -359,7 +365,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 0 ~> "_outV" === Some(S("CleanMx_22446016")))
     assert(entries ~> "edges" ~> 0 ~> "_label" === Some(S("communicatesWith")))
     
-    assert(entries ~> "edges" ~> 1 ~> "_id" === Some(S("95.211.169.207:80_to_80")))
+    assert(entries ~> "edges" ~> 1 ~> "_id" === Some(S("95.211.169.207:80_hasPort_80")))
+    assert(entries ~> "edges" ~> 1 ~> "description" === Some(S("95.211.169.207, port 80 has port 80")))
     assert(entries ~> "edges" ~> 1 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 1 ~> "inVType" === Some(S("port")))
     assert(entries ~> "edges" ~> 1 ~> "outVType" === Some(S("address")))
@@ -368,7 +375,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 1 ~> "_outV" === Some(S("95.211.169.207:80")))
     assert(entries ~> "edges" ~> 1 ~> "_label" === Some(S("hasPort")))
     
-    assert(entries ~> "edges" ~> 2 ~> "_id" === Some(S("95.211.169.207:80_to_filedataukmyscan.info")))
+    assert(entries ~> "edges" ~> 2 ~> "_id" === Some(S("95.211.169.207:80_hasDNSName_filedataukmyscan.info")))
+    assert(entries ~> "edges" ~> 2 ~> "description" === Some(S("95.211.169.207, port 80 has DNS name filedataukmyscan.info")))
     assert(entries ~> "edges" ~> 2 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 2 ~> "inVType" === Some(S("DNSName")))
     assert(entries ~> "edges" ~> 2 ~> "outVType" === Some(S("address")))
@@ -377,7 +385,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 2 ~> "_outV" === Some(S("95.211.169.207:80")))
     assert(entries ~> "edges" ~> 2 ~> "_label" === Some(S("hasDNSName")))
     
-    assert(entries ~> "edges" ~> 3 ~> "_id" === Some(S("95.211.169.207:80_to_95.211.169.207")))
+    assert(entries ~> "edges" ~> 3 ~> "_id" === Some(S("95.211.169.207:80_hasIP_95.211.169.207")))
+    assert(entries ~> "edges" ~> 3 ~> "description" === Some(S("95.211.169.207, port 80 has IP 95.211.169.207")))
     assert(entries ~> "edges" ~> 3 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 3 ~> "inVType" === Some(S("IP")))
     assert(entries ~> "edges" ~> 3 ~> "outVType" === Some(S("address")))
@@ -386,7 +395,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 3 ~> "_outV" === Some(S("95.211.169.207:80")))
     assert(entries ~> "edges" ~> 3 ~> "_label" === Some(S("hasIP")))
     
-    assert(entries ~> "edges" ~> 4 ~> "_id" === Some(S("95.211.169.207_to_95.211.0.0_through_95.211.255.255")))
+    assert(entries ~> "edges" ~> 4 ~> "_id" === Some(S("95.211.169.207_inAddressRange_95.211.0.0_through_95.211.255.255")))
+    assert(entries ~> "edges" ~> 4 ~> "description" === Some(S("95.211.169.207 is in address range 95.211.0.0 through 95.211.255.255")))
     assert(entries ~> "edges" ~> 4 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 4 ~> "inVType" === Some(S("addressRange")))
     assert(entries ~> "edges" ~> 4 ~> "outVType" === Some(S("IP")))
@@ -395,7 +405,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 4 ~> "_outV" === Some(S("95.211.169.207")))
     assert(entries ~> "edges" ~> 4 ~> "_label" === Some(S("inAddressRange")))
     
-    assert(entries ~> "edges" ~> 5 ~> "_id" === Some(S("CleanMx_22446014_to_54.208.13.153:80")))
+    assert(entries ~> "edges" ~> 5 ~> "_id" === Some(S("CleanMx_22446014_communicatesWith_54.208.13.153:80")))
+    assert(entries ~> "edges" ~> 5 ~> "description" === Some(S("CleanMx entry 22446014 communicates with 54.208.13.153, port 80")))
     assert(entries ~> "edges" ~> 5 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 5 ~> "inVType" === Some(S("address")))
     assert(entries ~> "edges" ~> 5 ~> "outVType" === Some(S("malware")))
@@ -404,7 +415,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 5 ~> "_outV" === Some(S("CleanMx_22446014")))
     assert(entries ~> "edges" ~> 5 ~> "_label" === Some(S("communicatesWith")))
     
-    assert(entries ~> "edges" ~> 6 ~> "_id" === Some(S("54.208.13.153:80_to_80")))
+    assert(entries ~> "edges" ~> 6 ~> "_id" === Some(S("54.208.13.153:80_hasPort_80")))
+    assert(entries ~> "edges" ~> 6 ~> "description" === Some(S("54.208.13.153, port 80 has port 80")))
     assert(entries ~> "edges" ~> 6 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 6 ~> "inVType" === Some(S("port")))
     assert(entries ~> "edges" ~> 6 ~> "outVType" === Some(S("address")))
@@ -413,7 +425,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 6 ~> "_outV" === Some(S("54.208.13.153:80")))
     assert(entries ~> "edges" ~> 6 ~> "_label" === Some(S("hasPort")))
     
-    assert(entries ~> "edges" ~> 7 ~> "_id" === Some(S("54.208.13.153:80_to_coolestmovie.info")))
+    assert(entries ~> "edges" ~> 7 ~> "_id" === Some(S("54.208.13.153:80_hasDNSName_coolestmovie.info")))
+    assert(entries ~> "edges" ~> 7 ~> "description" === Some(S("54.208.13.153, port 80 has DNS name coolestmovie.info")))
     assert(entries ~> "edges" ~> 7 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 7 ~> "inVType" === Some(S("DNSName")))
     assert(entries ~> "edges" ~> 7 ~> "outVType" === Some(S("address")))
@@ -422,7 +435,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 7 ~> "_outV" === Some(S("54.208.13.153:80")))
     assert(entries ~> "edges" ~> 7 ~> "_label" === Some(S("hasDNSName")))
     
-    assert(entries ~> "edges" ~> 8 ~> "_id" === Some(S("54.208.13.153:80_to_54.208.13.153")))
+    assert(entries ~> "edges" ~> 8 ~> "_id" === Some(S("54.208.13.153:80_hasIP_54.208.13.153")))
+    assert(entries ~> "edges" ~> 8 ~> "description" === Some(S("54.208.13.153, port 80 has IP 54.208.13.153")))
     assert(entries ~> "edges" ~> 8 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 8 ~> "inVType" === Some(S("IP")))
     assert(entries ~> "edges" ~> 8 ~> "outVType" === Some(S("address")))
@@ -431,7 +445,8 @@ class CleanMxVirusExtractorSuite extends FunSuite {
     assert(entries ~> "edges" ~> 8 ~> "_outV" === Some(S("54.208.13.153:80")))
     assert(entries ~> "edges" ~> 8 ~> "_label" === Some(S("hasIP")))
     
-    assert(entries ~> "edges" ~> 9 ~> "_id" === Some(S("54.208.13.153_to_54.208.0.0_through_54.209.255.255")))
+    assert(entries ~> "edges" ~> 9 ~> "_id" === Some(S("54.208.13.153_inAddressRange_54.208.0.0_through_54.209.255.255")))
+    assert(entries ~> "edges" ~> 9 ~> "description" === Some(S("54.208.13.153 is in address range 54.208.0.0 through 54.209.255.255")))
     assert(entries ~> "edges" ~> 9 ~> "_type" === Some(S("edge")))
     assert(entries ~> "edges" ~> 9 ~> "inVType" === Some(S("addressRange")))
     assert(entries ~> "edges" ~> 9 ~> "outVType" === Some(S("IP")))

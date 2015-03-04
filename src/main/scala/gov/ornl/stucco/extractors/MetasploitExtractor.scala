@@ -89,6 +89,7 @@ object MetasploitExtractor extends Extractor {
                   {
                     val n = ^(
                       "_id" -> Safely { (item ~> h("fullname")).asString + "_exploits_" + cve.asString.trim() },
+                      "description" -> Safely { (item ~> h("fullname")).asString + " exploits " + cve.asString.trim() },
                       "_outV" -> item ~> h("fullname"),
                       "_inV" -> cve.asString.trim(),
                       "_type" -> "edge",

@@ -94,6 +94,7 @@ object NvdExtractor extends Extractor {
       (nvdItem ~> "vuln:vulnerable-software-list" ~> "vuln:product" %%-> { cpeItem =>
         ^(
           "_id" -> (cpeItem.asString + "_to_" + (nvdItem ~> "@id").asString),
+          "description" -> (makeCpeDesc(cpeItem).asString + " to " + (nvdItem ~> "@id").asString),
           "_type" -> "edge",
           "inVType" -> "vulnerability",
           "outVType" -> "software",

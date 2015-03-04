@@ -88,6 +88,7 @@ class LoginEventExtractorSuite extends FunSuite {
     assert(loginEvent ~> "vertices" ~> 5 === None)
 
     assert(loginEvent ~> "edges" ~> 0 ~> "_id" === Some(S("StuccoUser_logsInTo_StuccoHost")))
+    assert(loginEvent ~> "edges" ~> 0 ~> "description" === Some(S("StuccoUser logs in to StuccoHost")))
     assert(loginEvent ~> "edges" ~> 0 ~> "_outV" === Some(S("StuccoUser")))
     assert(loginEvent ~> "edges" ~> 0 ~> "_inV" === Some(S("StuccoHost")))
     assert(loginEvent ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
@@ -99,6 +100,7 @@ class LoginEventExtractorSuite extends FunSuite {
     assert(loginEvent ~> "edges" ~> 0 ~> "status" === Some(S("Accepted")))
 
     assert(loginEvent ~> "edges" ~> 1 ~> "_id" === Some(S("StuccoUser_logsInFrom_host_at_192.168.10.11")))
+    assert(loginEvent ~> "edges" ~> 1 ~> "description" === Some(S("StuccoUser logs in from host at 192.168.10.11")))
     assert(loginEvent ~> "edges" ~> 1 ~> "_outV" === Some(S("StuccoUser")))
     assert(loginEvent ~> "edges" ~> 1 ~> "_inV" === Some(S("host_at_192.168.10.11")))
     assert(loginEvent ~> "edges" ~> 1 ~> "_type" === Some(S("edge")))
@@ -110,6 +112,7 @@ class LoginEventExtractorSuite extends FunSuite {
     assert(loginEvent ~> "edges" ~> 1 ~> "status" === Some(S("Accepted")))
 
     assert(loginEvent ~> "edges" ~> 2 ~> "_id" === Some(S("host_at_192.168.10.11_hasIP_192.168.10.11")))
+    assert(loginEvent ~> "edges" ~> 2 ~> "description" === Some(S("host at 192.168.10.11 has IP 192.168.10.11")))
     assert(loginEvent ~> "edges" ~> 2 ~> "_outV" === Some(S("host_at_192.168.10.11")))
     assert(loginEvent ~> "edges" ~> 2 ~> "_inV" === Some(S("192.168.10.11")))
     assert(loginEvent ~> "edges" ~> 2 ~> "_type" === Some(S("edge")))
@@ -119,6 +122,7 @@ class LoginEventExtractorSuite extends FunSuite {
     assert(loginEvent ~> "edges" ~> 2 ~> "inVType" === Some(S("ip")))
 
     assert(loginEvent ~> "edges" ~> 3 ~> "_id" === Some(S("StuccoHost_runs_sshd")))
+    assert(loginEvent ~> "edges" ~> 3 ~> "description" === Some(S("StuccoHost runs sshd")))
     assert(loginEvent ~> "edges" ~> 3 ~> "_outV" === Some(S("StuccoHost")))
     assert(loginEvent ~> "edges" ~> 3 ~> "_inV" === Some(S("sshd")))
     assert(loginEvent ~> "edges" ~> 3 ~> "_type" === Some(S("edge")))

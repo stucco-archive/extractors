@@ -112,7 +112,8 @@ object CleanMxVirusExtractor extends Extractor {
       *(
         {
           ^(
-            "_id" -> Safely{ ("CleanMx_" + (item ~> "id").asNumber + "_to_" + (item ~> "ip").asString + ":80")}, //TODO port num, see above.
+            "_id" -> Safely{ ("CleanMx_" + (item ~> "id").asNumber + "_communicatesWith_" + (item ~> "ip").asString + ":80")}, //TODO port num, see above.
+            "description" -> Safely{ ("CleanMx entry " + (item ~> "id").asNumber + " communicates with " + (item ~> "ip").asString + ", port 80")},
             "_type" -> "edge",
             "inVType" -> "address",
             "outVType" -> "malware",
@@ -124,7 +125,8 @@ object CleanMxVirusExtractor extends Extractor {
         },
         {
           ^(
-            "_id" -> Safely{ ((item ~> "ip").asString + ":80" + "_to_" + "80")}, //TODO port num, see above.
+            "_id" -> Safely{ ((item ~> "ip").asString + ":80" + "_hasPort_" + "80")}, //TODO port num, see above.
+            "description" -> Safely{ ((item ~> "ip").asString + ", port 80" + " has port " + "80")},
             "_type" -> "edge",
             "inVType" -> "port",
             "outVType" -> "address",
@@ -136,7 +138,8 @@ object CleanMxVirusExtractor extends Extractor {
         },
         {
           ^(
-            "_id" -> Safely{ ((item ~> "ip").asString + ":80" + "_to_" + (item ~> "domain").asString)}, //TODO keep subdomain? see above.  port num, see above.
+            "_id" -> Safely{ ((item ~> "ip").asString + ":80" + "_hasDNSName_" + (item ~> "domain").asString)}, //TODO keep subdomain? see above.  port num, see above.
+            "description" -> Safely{ ((item ~> "ip").asString + ", port 80" + " has DNS name " + (item ~> "domain").asString)},
             "_type" -> "edge",
             "inVType" -> "DNSName",
             "outVType" -> "address",
@@ -148,7 +151,8 @@ object CleanMxVirusExtractor extends Extractor {
         },
         {
           ^(
-            "_id" -> Safely{ ((item ~> "ip").asString + ":80" + "_to_" + (item ~> "ip").asString)}, //TODO port num, see above.
+            "_id" -> Safely{ ((item ~> "ip").asString + ":80" + "_hasIP_" + (item ~> "ip").asString)}, //TODO port num, see above.
+            "description" -> Safely{ ((item ~> "ip").asString + ", port 80" + " has IP " + (item ~> "ip").asString)},
             "_type" -> "edge",
             "inVType" -> "IP",
             "outVType" -> "address",
@@ -162,14 +166,15 @@ object CleanMxVirusExtractor extends Extractor {
           val inetnum = (item ~> "inetnum").asString
           val ips = if(inetnum.contains(" - ")) inetnum.split(" - ") else inetnum.split("-")
           val n = ^(
-            "_id" -> Safely { (item ~> "ip").asString + "_to_" + ips(0) + "_through_" + ips(1) },
-          "_type" -> "edge",
-          "inVType" -> "addressRange",
-          "outVType" -> "IP",
-          "source" -> "CleanMx(virus)",
-          "_inV" -> Safely{ (ips(0) + "_through_" + ips(1))},
-          "_outV" -> item ~> "ip",
-          "_label" -> "inAddressRange"
+            "_id" -> Safely { (item ~> "ip").asString + "_inAddressRange_" + ips(0) + "_through_" + ips(1) },
+            "description" -> Safely { (item ~> "ip").asString + " is in address range " + ips(0) + " through " + ips(1) },
+            "_type" -> "edge",
+            "inVType" -> "addressRange",
+            "outVType" -> "IP",
+            "source" -> "CleanMx(virus)",
+            "_inV" -> Safely{ (ips(0) + "_through_" + ips(1))},
+            "_outV" -> item ~> "ip",
+            "_label" -> "inAddressRange"
           )
           if (notEmpty(n ~> "_id")) n
           else None

@@ -71,6 +71,7 @@ object PackageListExtractor extends Extractor {
               if ((item ~> h("hostname")).nodeNonEmpty && (item ~> h("package")).nodeNonEmpty && (item ~> h("version")).nodeNonEmpty)
               ^(
                 "_id" -> Safely { (item ~> h("hostname")).asString + "_runs_" + (item ~> h("package")).asString + "_" + (item ~> h("version")).asString },
+                "description" -> Safely { (item ~> h("hostname")).asString + " runs " + (item ~> h("package")).asString + "_" + (item ~> h("version")).asString },
                 "_outV" -> item ~> h("hostname"),
                 "_inV" -> Safely { (item ~> h("package")).asString + "_" + (item ~> h("version")).asString },
                 "_type" -> "edge",

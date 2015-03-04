@@ -100,6 +100,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "vertices" ~> 4 ~> "userName" === Some(S("")))
 
     assert(hone ~> "edges" ~> 0 ~> "_id" === Some(S("Mary_runs_/sbin/ttymon")))
+    assert(hone ~> "edges" ~> 0 ~> "description" === Some(S("Mary runs /sbin/ttymon")))
     assert(hone ~> "edges" ~> 0 ~> "_outV" === Some(S("Mary")))
     assert(hone ~> "edges" ~> 0 ~> "_inV" === Some(S("/sbin/ttymon")))
     assert(hone ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
@@ -109,6 +110,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 0 ~> "inVType" === Some(S("software")))
 
     assert(hone ~> "edges" ~> 1 ~> "_id" === Some(S("/sbin/ttymon_runsAs_Mary:0")))
+    assert(hone ~> "edges" ~> 1 ~> "description" === Some(S("/sbin/ttymon runs as uid 0 on host Mary")))
     assert(hone ~> "edges" ~> 1 ~> "_outV" === Some(S("/sbin/ttymon")))
     assert(hone ~> "edges" ~> 1 ~> "_inV" === Some(S("Mary:0")))
     assert(hone ~> "edges" ~> 1 ~> "_type" === Some(S("edge")))
@@ -205,6 +207,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "vertices" ~> 9 ~> "userName" === Some(S("")))
 
     assert(hone ~> "edges" ~> 0 ~> "_id" === Some(S("Mary_runs_/usr/lib/gvfs/gvfsd-smb")))
+    assert(hone ~> "edges" ~> 0 ~> "description" === Some(S("Mary runs /usr/lib/gvfs/gvfsd-smb")))
     assert(hone ~> "edges" ~> 0 ~> "_outV" === Some(S("Mary")))
     assert(hone ~> "edges" ~> 0 ~> "_inV" === Some(S("/usr/lib/gvfs/gvfsd-smb")))
     assert(hone ~> "edges" ~> 0 ~> "_type" === Some(S("edge")))
@@ -214,6 +217,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 0 ~> "inVType" === Some(S("software")))
 
     assert(hone ~> "edges" ~> 1 ~> "_id" === Some(S("Mary_usesAddress_10.32.92.230:49870")))
+    assert(hone ~> "edges" ~> 1 ~> "description" === Some(S("Mary uses address 10.32.92.230, port 49870")))
     assert(hone ~> "edges" ~> 1 ~> "_outV" === Some(S("Mary")))
     assert(hone ~> "edges" ~> 1 ~> "_inV" === Some(S("10.32.92.230:49870")))
     assert(hone ~> "edges" ~> 1 ~> "_type" === Some(S("edge")))
@@ -223,6 +227,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 1 ~> "inVType" === Some(S("address")))
 
     assert(hone ~> "edges" ~> 2 ~> "_id" === Some(S("10.32.92.230:49870_hasIP_10.32.92.230")))
+    assert(hone ~> "edges" ~> 2 ~> "description" === Some(S("10.32.92.230, port 49870 has IP 10.32.92.230")))
     assert(hone ~> "edges" ~> 2 ~> "_outV" === Some(S("10.32.92.230:49870")))
     assert(hone ~> "edges" ~> 2 ~> "_inV" === Some(S("10.32.92.230")))
     assert(hone ~> "edges" ~> 2 ~> "_type" === Some(S("edge")))
@@ -232,6 +237,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 2 ~> "inVType" === Some(S("IP")))
 
     assert(hone ~> "edges" ~> 3 ~> "_id" === Some(S("69.42.215.170:6667_hasIP_69.42.215.170")))
+    assert(hone ~> "edges" ~> 3 ~> "description" === Some(S("69.42.215.170, port 6667 has IP 69.42.215.170")))
     assert(hone ~> "edges" ~> 3 ~> "_outV" === Some(S("69.42.215.170:6667")))
     assert(hone ~> "edges" ~> 3 ~> "_inV" === Some(S("69.42.215.170")))
     assert(hone ~> "edges" ~> 3 ~> "_type" === Some(S("edge")))
@@ -241,6 +247,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 3 ~> "inVType" === Some(S("IP")))
 
     assert(hone ~> "edges" ~> 4 ~> "_id" === Some(S("10.32.92.230:49870_hasPort_49870")))
+    assert(hone ~> "edges" ~> 4 ~> "description" === Some(S("10.32.92.230, port 49870 has port 49870")))
     assert(hone ~> "edges" ~> 4 ~> "_outV" === Some(S("10.32.92.230:49870")))
     assert(hone ~> "edges" ~> 4 ~> "_inV" === Some(S("49870")))
     assert(hone ~> "edges" ~> 4 ~> "_type" === Some(S("edge")))
@@ -250,6 +257,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 4 ~> "inVType" === Some(S("port")))
 
     assert(hone ~> "edges" ~> 5 ~> "_id" === Some(S("69.42.215.170:6667_hasPort_6667")))
+    assert(hone ~> "edges" ~> 5 ~> "description" === Some(S("69.42.215.170, port 6667 has port 6667")))
     assert(hone ~> "edges" ~> 5 ~> "_outV" === Some(S("69.42.215.170:6667")))
     assert(hone ~> "edges" ~> 5 ~> "_inV" === Some(S("6667")))
     assert(hone ~> "edges" ~> 5 ~> "_type" === Some(S("edge")))
@@ -259,6 +267,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 5 ~> "inVType" === Some(S("port")))
 
     assert(hone ~> "edges" ~> 6 ~> "_id" === Some(S("10.32.92.230:49870::69.42.215.170:6667_dstAddress_69.42.215.170:6667")))
+    assert(hone ~> "edges" ~> 6 ~> "description" === Some(S("10.32.92.230, port 49870 to 69.42.215.170, port 6667 has destination address 69.42.215.170, port 6667")))
     assert(hone ~> "edges" ~> 6 ~> "_outV" === Some(S("10.32.92.230:49870::69.42.215.170:6667")))
     assert(hone ~> "edges" ~> 6 ~> "_inV" === Some(S("69.42.215.170:6667")))
     assert(hone ~> "edges" ~> 6 ~> "_type" === Some(S("edge")))
@@ -268,6 +277,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 6 ~> "inVType" === Some(S("address")))
 
     assert(hone ~> "edges" ~> 7 ~> "_id" === Some(S("10.32.92.230:49870::69.42.215.170:6667_srcAddress_10.32.92.230:49870")))
+    assert(hone ~> "edges" ~> 7 ~> "description" === Some(S("10.32.92.230, port 49870 to 69.42.215.170, port 6667 has source address 10.32.92.230, port 49870")))
     assert(hone ~> "edges" ~> 7 ~> "_outV" === Some(S("10.32.92.230:49870::69.42.215.170:6667")))
     assert(hone ~> "edges" ~> 7 ~> "_inV" === Some(S("10.32.92.230:49870")))
     assert(hone ~> "edges" ~> 7 ~> "_type" === Some(S("edge")))
@@ -277,6 +287,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 7 ~> "inVType" === Some(S("address")))
 
     assert(hone ~> "edges" ~> 8 ~> "_id" === Some(S("/usr/lib/gvfs/gvfsd-smb_hasFlow_10.32.92.230:49870::69.42.215.170:6667")))
+    assert(hone ~> "edges" ~> 8 ~> "description" === Some(S("/usr/lib/gvfs/gvfsd-smb has flow 10.32.92.230, port 49870 to 69.42.215.170, port 6667")))
     assert(hone ~> "edges" ~> 8 ~> "_outV" === Some(S("/usr/lib/gvfs/gvfsd-smb")))
     assert(hone ~> "edges" ~> 8 ~> "_inV" === Some(S("10.32.92.230:49870::69.42.215.170:6667")))
     assert(hone ~> "edges" ~> 8 ~> "_type" === Some(S("edge")))
@@ -286,6 +297,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 8 ~> "inVType" === Some(S("flow")))
 
     assert(hone ~> "edges" ~> 9 ~> "_id" === Some(S("/usr/lib/gvfs/gvfsd-smb_runsAs_Mary:1000")))
+    assert(hone ~> "edges" ~> 9 ~> "description" === Some(S("/usr/lib/gvfs/gvfsd-smb runs as uid 1000 on host Mary")))
     assert(hone ~> "edges" ~> 9 ~> "_outV" === Some(S("/usr/lib/gvfs/gvfsd-smb")))
     assert(hone ~> "edges" ~> 9 ~> "_inV" === Some(S("Mary:1000")))
     assert(hone ~> "edges" ~> 9 ~> "_type" === Some(S("edge")))

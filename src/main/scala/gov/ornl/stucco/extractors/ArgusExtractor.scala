@@ -180,6 +180,11 @@ object ArgusExtractor extends Extractor {
                   (item ~> h("DstAddr")).asString + ":" + (item ~> h("Dport")).asString + "_srcAddress_" +
                   (item ~> h("SrcAddr")).asString + ":" + (item ~> h("Sport")).asString
                 },
+                "description" -> Safely {
+                  (item ~> h("SrcAddr")).asString + ", port " + (item ~> h("Sport")).asString + " to " +
+                  (item ~> h("DstAddr")).asString + ", port " + (item ~> h("Dport")).asString + " has source address " +
+                  (item ~> h("SrcAddr")).asString + ", port " + (item ~> h("Sport")).asString
+                },
                 "_outV" -> Safely {
                   (item ~> h("SrcAddr")).asString + ":" + (item ~> h("Sport")).asString + "::" +
                   (item ~> h("DstAddr")).asString + ":" + (item ~> h("Dport")).asString
@@ -205,6 +210,11 @@ object ArgusExtractor extends Extractor {
                   (item ~> h("DstAddr")).asString + ":" + (item ~> h("Dport")).asString + "_dstAddress_" +
                   (item ~> h("DstAddr")).asString + ":" + (item ~> h("Dport")).asString
                 },
+                "description" -> Safely {
+                  (item ~> h("SrcAddr")).asString + ", port " + (item ~> h("Sport")).asString + " to " +
+                  (item ~> h("DstAddr")).asString + ", port " + (item ~> h("Dport")).asString + " has destination address " +
+                  (item ~> h("DstAddr")).asString + ", port " + (item ~> h("Dport")).asString
+                },
                 "_outV" -> Safely {
                   (item ~> h("SrcAddr")).asString + ":" + (item ~> h("Sport")).asString + "::" +
                   (item ~> h("DstAddr")).asString + ":" + (item ~> h("Dport")).asString
@@ -229,6 +239,10 @@ object ArgusExtractor extends Extractor {
                   (item ~> h("SrcAddr")).asString + ":" + (item ~> h("Sport")).asString + "_hasIP_" +
                   (item ~> h("SrcAddr")).asString
                 },
+                "description" -> Safely {
+                  (item ~> h("SrcAddr")).asString + ", port " + (item ~> h("Sport")).asString + " has IP " +
+                  (item ~> h("SrcAddr")).asString
+                },
                 "_outV" -> Safely {
                   (item ~> h("SrcAddr")).asString + ":" + (item ~> h("Sport")).asString
                 },
@@ -247,6 +261,10 @@ object ArgusExtractor extends Extractor {
               val n = ^(
                 "_id" -> Safely {
                   (item ~> h("DstAddr")).asString + ":" + (item ~> h("Dport")).asString + "_hasIP_" +
+                  (item ~> h("DstAddr")).asString
+                },
+                "description" -> Safely {
+                  (item ~> h("DstAddr")).asString + ", port " + (item ~> h("Dport")).asString + " has IP " +
                   (item ~> h("DstAddr")).asString
                 },
                 "_outV" -> Safely {
@@ -269,6 +287,10 @@ object ArgusExtractor extends Extractor {
                   (item ~> h("SrcAddr")).asString + ":" + (item ~> h("Sport")).asString + "_hasPort_" +
                   (item ~> h("Sport")).asString
                 },
+                "description" -> Safely {
+                  (item ~> h("SrcAddr")).asString + ", port " + (item ~> h("Sport")).asString + " has port " +
+                  (item ~> h("Sport")).asString
+                },
                 "_outV" -> Safely {
                   (item ~> h("SrcAddr")).asString + ":" + (item ~> h("Sport")).asString
                 },
@@ -287,6 +309,10 @@ object ArgusExtractor extends Extractor {
               val n = ^(
                 "_id" -> Safely {
                   (item ~> h("DstAddr")).asString + ":" + (item ~> h("Dport")).asString + "_hasPort_" +
+                  (item ~> h("Dport")).asString
+                },
+                "description" -> Safely {
+                  (item ~> h("DstAddr")).asString + ", port " + (item ~> h("Dport")).asString + " has port " +
                   (item ~> h("Dport")).asString
                 },
                 "_outV" -> Safely {
