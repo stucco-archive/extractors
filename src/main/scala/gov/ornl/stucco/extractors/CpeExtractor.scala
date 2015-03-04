@@ -17,6 +17,7 @@ object CpeExtractor extends Extractor {
       val substrings = (item ~> "@name").asString split ":"
       ^(
         "_id" -> item ~> "@name",
+        "name" -> item ~> "@name",
         "_type" -> "vertex",
         "vertexType" -> "software",
         "source" -> "CPE",

@@ -45,13 +45,18 @@ class PackageListExtractorSuite extends FunSuite {
 """
     val node = CsvParser(text)
     val packageList = PackageListExtractor.extract(node)
+    //print(packageList)
 
     assert(packageList ~> "vertices" ~> 0 ~> "_id" === Some(S("stucco1")))
+    assert(packageList ~> "vertices" ~> 0 ~> "name" === Some(S("stucco1")))
+    assert(packageList ~> "vertices" ~> 0 ~> "description" === Some(S("stucco1")))
     assert(packageList ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(packageList ~> "vertices" ~> 0 ~> "source" === Some(S("PackageList")))
     assert(packageList ~> "vertices" ~> 0 ~> "vertexType" === Some(S("host")))
 
     assert(packageList ~> "vertices" ~> 1 ~> "_id" === Some(S("ftp_0.17-25")))
+    assert(packageList ~> "vertices" ~> 1 ~> "name" === Some(S("ftp_0.17-25")))
+    assert(packageList ~> "vertices" ~> 1 ~> "description" === Some(S("ftp version 0.17-25")))
     assert(packageList ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
     assert(packageList ~> "vertices" ~> 1 ~> "source" === Some(S("PackageList")))
     assert(packageList ~> "vertices" ~> 1 ~> "vertexType" === Some(S("software")))

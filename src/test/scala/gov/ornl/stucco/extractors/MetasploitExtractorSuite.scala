@@ -25,6 +25,7 @@ class MetasploitExtractorSuite extends FunSuite {
     val msf = MetasploitExtractor.extract(node)
 
     assert(msf ~> "vertices" ~> 0 ~> "_id" === Some(S("-1")))
+    assert(msf ~> "vertices" ~> 0 ~> "name" === Some(S("-1")))
     assert(msf ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(msf ~> "vertices" ~> 0 ~> "source" === Some(S("Metasploit")))
     assert(msf ~> "vertices" ~> 0 ~> "vertexType" === Some(S("malware")))
@@ -42,6 +43,7 @@ class MetasploitExtractorSuite extends FunSuite {
     val msf = MetasploitExtractor.extract(node)
 
     assert(msf ~> "vertices" ~> 0 ~> "_id" === Some(S("exploit/aix/rpc_cmsd_opcode21")))
+    assert(msf ~> "vertices" ~> 0 ~> "name" === Some(S("exploit/aix/rpc_cmsd_opcode21")))
     assert(msf ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(msf ~> "vertices" ~> 0 ~> "source" === Some(S("Metasploit")))
     assert(msf ~> "vertices" ~> 0 ~> "vertexType" === Some(S("malware")))
@@ -62,6 +64,7 @@ class MetasploitExtractorSuite extends FunSuite {
     val msf = MetasploitExtractor.extract(node)
 
     assert(msf ~> "vertices" ~> 0 ~> "_id" === Some(S("exploit/aix/rpc_cmsd_opcode21")))
+    assert(msf ~> "vertices" ~> 0 ~> "name" === Some(S("exploit/aix/rpc_cmsd_opcode21")))
     assert(msf ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(msf ~> "vertices" ~> 0 ~> "source" === Some(S("Metasploit")))
     assert(msf ~> "vertices" ~> 0 ~> "vertexType" === Some(S("malware")))
@@ -71,6 +74,8 @@ class MetasploitExtractorSuite extends FunSuite {
     assert(msf ~> "vertices" ~> 0 ~> "details" === Some(S("This module exploits a buffer overflow vulnerability in opcode 21 handled by rpc.cmsd on AIX. By making a request with a long string passed to the first argument of the \"rtable_create\" RPC, a stack based buffer overflow occurs. This leads to arbitrary code execution.  NOTE: Unsuccessful attempts may cause inetd/portmapper to enter a state where further attempts are not possible.")))
 
     assert(msf ~> "vertices" ~> 1 ~> "_id" === Some(S("CVE-2009-3699")))
+    assert(msf ~> "vertices" ~> 1 ~> "name" === Some(S("CVE-2009-3699")))
+    assert(msf ~> "vertices" ~> 1 ~> "description" === Some(S("CVE-2009-3699")))
     assert(msf ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
     assert(msf ~> "vertices" ~> 1 ~> "source" === Some(S("Metasploit")))
     assert(msf ~> "vertices" ~> 1 ~> "vertexType" === Some(S("vulnerability")))
@@ -97,6 +102,7 @@ class MetasploitExtractorSuite extends FunSuite {
     val msf = MetasploitExtractor.extract(node)
 
     assert(msf ~> "vertices" ~> 0 ~> "_id" === Some(S("exploit/aix/rpc_cmsd_opcode21")))
+    assert(msf ~> "vertices" ~> 0 ~> "name" === Some(S("exploit/aix/rpc_cmsd_opcode21")))
     assert(msf ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(msf ~> "vertices" ~> 0 ~> "source" === Some(S("Metasploit")))
     assert(msf ~> "vertices" ~> 0 ~> "vertexType" === Some(S("malware")))
@@ -106,11 +112,15 @@ class MetasploitExtractorSuite extends FunSuite {
     assert(msf ~> "vertices" ~> 0 ~> "details" === Some(S("This module exploits a buffer overflow vulnerability in opcode 21 handled by rpc.cmsd on AIX. By making a request with a long string passed to the first argument of the \"rtable_create\" RPC, a stack based buffer overflow occurs. This leads to arbitrary code execution.  NOTE: Unsuccessful attempts may cause inetd/portmapper to enter a state where further attempts are not possible.")))
 
     assert(msf ~> "vertices" ~> 1 ~> "_id" === Some(S("CVE-2009-3699")))
+    assert(msf ~> "vertices" ~> 1 ~> "name" === Some(S("CVE-2009-3699")))
+    assert(msf ~> "vertices" ~> 1 ~> "description" === Some(S("CVE-2009-3699")))
     assert(msf ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
     assert(msf ~> "vertices" ~> 1 ~> "source" === Some(S("Metasploit")))
     assert(msf ~> "vertices" ~> 1 ~> "vertexType" === Some(S("vulnerability")))
 
     assert(msf ~> "vertices" ~> 2 ~> "_id" === Some(S("CVE-2009-nnnn")))
+    assert(msf ~> "vertices" ~> 2 ~> "name" === Some(S("CVE-2009-nnnn")))
+    assert(msf ~> "vertices" ~> 2 ~> "description" === Some(S("CVE-2009-nnnn")))
     assert(msf ~> "vertices" ~> 2 ~> "_type" === Some(S("vertex")))
     assert(msf ~> "vertices" ~> 2 ~> "source" === Some(S("Metasploit")))
     assert(msf ~> "vertices" ~> 2 ~> "vertexType" === Some(S("vulnerability")))

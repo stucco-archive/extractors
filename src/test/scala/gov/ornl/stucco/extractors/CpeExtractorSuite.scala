@@ -36,6 +36,7 @@ class CpeExtractorSuite extends FunSuite {
     val cpe = CpeExtractor(node)
     //print(cpe)
     assert(cpe ~> "vertices" ~> 0 ~> "_id" === Some(S("cpe:/a:1024cms:1024_cms:0.7")))
+    assert(cpe ~> "vertices" ~> 0 ~> "name" === Some(S("cpe:/a:1024cms:1024_cms:0.7")))
     assert(cpe ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(cpe ~> "vertices" ~> 0 ~> "source" === Some(S("CPE")))
     assert(cpe ~> "vertices" ~> 0 ~> "vertexType" === Some(S("software")))
@@ -84,6 +85,7 @@ class CpeExtractorSuite extends FunSuite {
     //print(cpe)
 
     assert(cpe ~> "vertices" ~> 0 ~> "_id" === Some(S("cpe:/a:microsoft:hotmail")))
+    assert(cpe ~> "vertices" ~> 0 ~> "name" === Some(S("cpe:/a:microsoft:hotmail")))
     assert(cpe ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(cpe ~> "vertices" ~> 0 ~> "source" === Some(S("CPE")))
     assert(cpe ~> "vertices" ~> 0 ~> "vertexType" === Some(S("software")))
@@ -101,6 +103,7 @@ class CpeExtractorSuite extends FunSuite {
 
     //TODO also is dep., presumably because of typo.  Should probably be marked as such somehow.
     assert(cpe ~> "vertices" ~> 1 ~> "_id" === Some(S("cpe:/o:yahama:rtx1100:8.03.82")))
+    assert(cpe ~> "vertices" ~> 1 ~> "name" === Some(S("cpe:/o:yahama:rtx1100:8.03.82")))
     assert(cpe ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
     assert(cpe ~> "vertices" ~> 1 ~> "source" === Some(S("CPE")))
     assert(cpe ~> "vertices" ~> 1 ~> "vertexType" === Some(S("software")))
@@ -117,6 +120,7 @@ class CpeExtractorSuite extends FunSuite {
     assert(cpe ~> "vertices" ~> 1 ~> "language" === None)
 
     assert(cpe ~> "vertices" ~> 2 ~> "_id" === Some(S("cpe:/o:yamaha:srt100:10.00.56")))
+    assert(cpe ~> "vertices" ~> 2 ~> "name" === Some(S("cpe:/o:yamaha:srt100:10.00.56")))
     assert(cpe ~> "vertices" ~> 2 ~> "_type" === Some(S("vertex")))
     assert(cpe ~> "vertices" ~> 2 ~> "source" === Some(S("CPE")))
     assert(cpe ~> "vertices" ~> 2 ~> "vertexType" === Some(S("software")))

@@ -37,6 +37,8 @@ object PackageListExtractor extends Extractor {
               if ((item ~> h("hostname")).nodeNonEmpty)
               ^(
                 "_id" -> item ~> h("hostname"),
+                "name" -> item ~> h("hostname"),
+                "description" -> item ~> h("hostname"),
                 "_type" -> "vertex",
                 "source" -> "PackageList",
                 "vertexType" -> "host"
@@ -47,6 +49,8 @@ object PackageListExtractor extends Extractor {
               if ((item ~> h("package")).nodeNonEmpty && (item ~> h("version")).nodeNonEmpty)
               ^(
                 "_id" -> Safely { (item ~> h("package")).asString + "_" + (item ~> h("version")).asString },
+                "name" -> Safely { (item ~> h("package")).asString + "_" + (item ~> h("version")).asString },
+                "description" -> Safely { (item ~> h("package")).asString + " version " + (item ~> h("version")).asString },
                 "_type" -> "vertex",
                 "source" -> "PackageList",
                 "vertexType" -> "software",

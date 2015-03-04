@@ -29,6 +29,8 @@ class GeoIPExtractorSuite extends FunSuite {
     val geoIP = GeoIPExtractor(node)
     //print(geoIP)
     assert(geoIP ~> "vertices" ~> 0 ~> "_id" === Some(S("1.0.0.0_through_1.0.0.255")))
+    assert(geoIP ~> "vertices" ~> 0 ~> "name" === Some(S("1.0.0.0_through_1.0.0.255")))
+    assert(geoIP ~> "vertices" ~> 0 ~> "description" === Some(S("1.0.0.0 through 1.0.0.255")))
     assert(geoIP ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(geoIP ~> "vertices" ~> 0 ~> "source" === Some(S("maxmind")))
     assert(geoIP ~> "vertices" ~> 0 ~> "vertexType" === Some(S("addressRange")))
@@ -41,6 +43,8 @@ class GeoIPExtractorSuite extends FunSuite {
     assert(geoIP ~> "vertices" ~> 0 ~> "countryName" === Some(S("Australia")))
 
     assert(geoIP ~> "vertices" ~> 1 ~> "_id" === Some(S("1.0.1.0_through_1.0.3.255")))
+    assert(geoIP ~> "vertices" ~> 1 ~> "name" === Some(S("1.0.1.0_through_1.0.3.255")))
+    assert(geoIP ~> "vertices" ~> 1 ~> "description" === Some(S("1.0.1.0 through 1.0.3.255")))
     assert(geoIP ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
     assert(geoIP ~> "vertices" ~> 1 ~> "source" === Some(S("maxmind")))
     assert(geoIP ~> "vertices" ~> 1 ~> "vertexType" === Some(S("addressRange")))
@@ -53,6 +57,8 @@ class GeoIPExtractorSuite extends FunSuite {
     assert(geoIP ~> "vertices" ~> 1 ~> "countryName" === Some(S("China")))
 
     assert(geoIP ~> "vertices" ~> 2 ~> "_id" === Some(S("1.0.4.0_through_1.0.7.255")))
+    assert(geoIP ~> "vertices" ~> 2 ~> "name" === Some(S("1.0.4.0_through_1.0.7.255")))
+    assert(geoIP ~> "vertices" ~> 2 ~> "description" === Some(S("1.0.4.0 through 1.0.7.255")))
     assert(geoIP ~> "vertices" ~> 2 ~> "_type" === Some(S("vertex")))
     assert(geoIP ~> "vertices" ~> 2 ~> "source" === Some(S("maxmind")))
     assert(geoIP ~> "vertices" ~> 2 ~> "vertexType" === Some(S("addressRange")))
@@ -65,6 +71,8 @@ class GeoIPExtractorSuite extends FunSuite {
     assert(geoIP ~> "vertices" ~> 2 ~> "countryName" === Some(S("Australia")))
 
     assert(geoIP ~> "vertices" ~> 3 ~> "_id" === Some(S("1.0.8.0_through_1.0.15.255")))
+    assert(geoIP ~> "vertices" ~> 3 ~> "name" === Some(S("1.0.8.0_through_1.0.15.255")))
+    assert(geoIP ~> "vertices" ~> 3 ~> "description" === Some(S("1.0.8.0 through 1.0.15.255")))
     assert(geoIP ~> "vertices" ~> 3 ~> "_type" === Some(S("vertex")))
     assert(geoIP ~> "vertices" ~> 3 ~> "source" === Some(S("maxmind")))
     assert(geoIP ~> "vertices" ~> 3 ~> "vertexType" === Some(S("addressRange")))
@@ -77,6 +85,8 @@ class GeoIPExtractorSuite extends FunSuite {
     assert(geoIP ~> "vertices" ~> 3 ~> "countryName" === Some(S("China")))
 
     assert(geoIP ~> "vertices" ~> 4 ~> "_id" === Some(S("1.0.16.0_through_1.0.31.255")))
+    assert(geoIP ~> "vertices" ~> 4 ~> "name" === Some(S("1.0.16.0_through_1.0.31.255")))
+    assert(geoIP ~> "vertices" ~> 4 ~> "description" === Some(S("1.0.16.0 through 1.0.31.255")))
     assert(geoIP ~> "vertices" ~> 4 ~> "_type" === Some(S("vertex")))
     assert(geoIP ~> "vertices" ~> 4 ~> "source" === Some(S("maxmind")))
     assert(geoIP ~> "vertices" ~> 4 ~> "vertexType" === Some(S("addressRange")))
@@ -99,6 +109,8 @@ class GeoIPExtractorSuite extends FunSuite {
     val geoIP = GeoIPExtractor(node)
     //print(geoIP)
     assert(geoIP ~> "vertices" ~> 0 ~> "_id" === Some(S("223.255.252.0_through_223.255.253.255")))
+    assert(geoIP ~> "vertices" ~> 0 ~> "name" === Some(S("223.255.252.0_through_223.255.253.255")))
+    assert(geoIP ~> "vertices" ~> 0 ~> "description" === Some(S("223.255.252.0 through 223.255.253.255")))
     assert(geoIP ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(geoIP ~> "vertices" ~> 0 ~> "source" === Some(S("maxmind")))
     assert(geoIP ~> "vertices" ~> 0 ~> "vertexType" === Some(S("addressRange")))

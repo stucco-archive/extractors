@@ -22,6 +22,8 @@ object GeoIPExtractor extends Extractor {
         case item if (item ~> 0 != headers ~> 0) && (item ~> 1 != None) =>
           ^(
             "_id" -> Safely { (item ~> 0).asString + "_through_" + (item ~> 1).asString },
+            "name" -> Safely { (item ~> 0).asString + "_through_" + (item ~> 1).asString },
+            "description" -> Safely { (item ~> 0).asString + " through " + (item ~> 1).asString },
             "_type" -> "vertex",
             "vertexType" -> "addressRange",
             "source" -> "maxmind",

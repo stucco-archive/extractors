@@ -48,6 +48,14 @@ object ArgusExtractor extends Extractor {
                       (item ~> h("SrcAddr")).asString + ":" + (item ~>h("Sport")).asString + "::" +
                         (item ~> h("DstAddr")).asString + ":" + (item ~> h("Dport")).asString
                     },
+                "name" -> Safely {
+                      (item ~> h("SrcAddr")).asString + ":" + (item ~>h("Sport")).asString + "::" +
+                        (item ~> h("DstAddr")).asString + ":" + (item ~> h("Dport")).asString
+                    },
+                "description" -> Safely {
+                      (item ~> h("SrcAddr")).asString + ", port " + (item ~>h("Sport")).asString + " to " +
+                        (item ~> h("DstAddr")).asString + ", port " + (item ~> h("Dport")).asString
+                    },
                 "_type" -> "vertex",
                 "vertexType" -> "flow",
                 "source" -> "Argus", 
@@ -73,6 +81,12 @@ object ArgusExtractor extends Extractor {
                 "_id" -> Safely {
                       (item ~> h("SrcAddr")).asString + ":" + (item ~> h("Sport")).asString
                     },
+                "name" -> Safely {
+                      (item ~> h("SrcAddr")).asString + ":" + (item ~> h("Sport")).asString
+                    },
+                "description" -> Safely {
+                      (item ~> h("SrcAddr")).asString + ", port " + (item ~> h("Sport")).asString
+                    },
                 "_type" -> "vertex",
                 "vertexType" -> "address",
                 "source" -> "Argus"
@@ -86,6 +100,12 @@ object ArgusExtractor extends Extractor {
                 "_id" -> Safely {
                       (item ~> h("DstAddr")).asString + ":" + (item ~> h("Dport")).asString
                     },
+                "name" -> Safely {
+                      (item ~> h("DstAddr")).asString + ":" + (item ~> h("Dport")).asString
+                    },
+                "description" -> Safely {
+                      (item ~> h("DstAddr")).asString + ", port " + (item ~> h("Dport")).asString
+                    },
                 "_type" -> "vertex",
                 "vertexType" -> "address",
                 "source" -> "Argus"
@@ -97,6 +117,8 @@ object ArgusExtractor extends Extractor {
             {
               val n = ^(
                 "_id" -> item ~> h("SrcAddr"),
+                "name" -> item ~> h("SrcAddr"),
+                "description" -> item ~> h("SrcAddr"),
                 "_type" -> "vertex",
                 "vertexType" -> "IP",
                 "source" -> "Argus"
@@ -108,6 +130,8 @@ object ArgusExtractor extends Extractor {
             {
               val n = ^(
                 "_id" -> item ~> h("DstAddr"),
+                "name" -> item ~> h("DstAddr"),
+                "description" -> item ~> h("DstAddr"),
                 "_type" -> "vertex",
                 "vertexType" -> "IP",
                 "source" -> "Argus"
@@ -119,6 +143,8 @@ object ArgusExtractor extends Extractor {
             {
               val n = ^(
                 "_id" -> Safely{(item ~> h("Sport")).asString},
+                "name" -> Safely{(item ~> h("Sport")).asString},
+                "description" -> Safely{(item ~> h("Sport")).asString},
                 "_type" -> "vertex",
                 "vertexType" -> "port",
                 "source" -> "Argus"
@@ -130,6 +156,8 @@ object ArgusExtractor extends Extractor {
             {
               val n = ^(
                 "_id" -> Safely{(item ~> h("Dport")).asString},
+                "name" -> Safely{(item ~> h("Dport")).asString},
+                "description" -> Safely{(item ~> h("Dport")).asString},
                 "_type" -> "vertex",
                 "vertexType" -> "port",
                 "source" -> "Argus"

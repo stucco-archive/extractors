@@ -41,6 +41,7 @@ object MetasploitExtractor extends Extractor {
             {
               val n = ^(
                 "_id" -> item ~> h("fullname"),
+                "name" -> item ~> h("fullname"),
                 "_type" -> "vertex",
                 "source" -> "Metasploit",
                 "vertexType" -> "malware",
@@ -60,6 +61,8 @@ object MetasploitExtractor extends Extractor {
                   {
                     val n = ^(
                       "_id" -> cve.asString.trim(),
+                      "name" -> cve.asString.trim(),
+                      "description" -> cve.asString.trim(),
                       "_type" -> "vertex",
                       "source" -> "Metasploit",
                       "vertexType" -> "vulnerability"

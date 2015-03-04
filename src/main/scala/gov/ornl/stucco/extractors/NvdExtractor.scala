@@ -12,12 +12,46 @@ import gov.ornl.stucco.morph.extractor.Extractor
 object NvdExtractor extends Extractor {
 
   val format = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+  
+  def makeCpeDesc(node: Option[ValueNode]): Option[ValueNode] = {
+    val substrings = node.asString split ":"
+    val vendor = (substrings lift 2)
+    val product = (substrings lift 3)
+    val version = (substrings lift 4)
+    val update = (substrings lift 5)
+    val edition = (substrings lift 6)
+    val language = (substrings lift 7)
+    var res = ""
+    if(vendor.isDefined){
+      res = vendor.get + " "
+    }
+    if(product.isDefined){
+      res += product.get
+      if(version.isDefined){
+        res += " version " + version.get
+        if(update.isDefined){
+          res += " " + update.get
+          if(edition.isDefined){
+            res += " " + edition.get
+          }
+        }
+      }
+      if(language.isDefined){
+        res += ", " + language.get + " language version"
+      }
+    }
+    if(res != "")
+      Some(res)
+    else
+      None
+  }
 
   def extract(node: ValueNode): ValueNode = ^(
     "vertices" -> (node ~> "nvd" ~> "entry" %%-> { item =>
       *(
         ^(
           "_id" -> item ~> "@id",
+          "name" -> item ~> "@id",
           "_type" -> "vertex",
           "vertexType" -> "vulnerability",
           "source" -> "NVD",
@@ -46,6 +80,8 @@ object NvdExtractor extends Extractor {
         (item ~> "vuln:vulnerable-software-list" ~> "vuln:product" %%-> { cpeItem =>
           ^(
             "_id" -> (cpeItem.asString),
+            "name" -> (cpeItem.asString),
+            "description" -> makeCpeDesc(cpeItem),
             "_type" -> "vertex",
             "vertexType" -> "software",
             "source" -> "NVD"

@@ -48,6 +48,7 @@ class NvdExtractorSuite extends FunSuite {
     val nvd = NvdExtractor(node)
     //print(nvd)
     assert(nvd ~> "vertices" ~> 0 ~> "_id" === Some(S("CVE-2013-2361")))
+    assert(nvd ~> "vertices" ~> 0 ~> "name" === Some(S("CVE-2013-2361")))
     assert(nvd ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(nvd ~> "vertices" ~> 0 ~> "source" === Some(S("NVD")))
     assert(nvd ~> "vertices" ~> 0 ~> "vertexType" === Some(S("vulnerability")))
@@ -58,6 +59,8 @@ class NvdExtractorSuite extends FunSuite {
     assert((nvd get "vertices" get 0 get "modifiedDate") === Some(N(1374491976253L)))
 
     assert(nvd ~> "vertices" ~> 1 ~> "_id" === Some(S("cpe:/a:HP:System_Management_Homepage:7.2.0")))
+    assert(nvd ~> "vertices" ~> 1 ~> "name" === Some(S("cpe:/a:HP:System_Management_Homepage:7.2.0")))
+    assert(nvd ~> "vertices" ~> 1 ~> "description" === Some(S("HP System_Management_Homepage version 7.2.0")))
     assert(nvd ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
     assert(nvd ~> "vertices" ~> 1 ~> "vertexType" === Some(S("software")))
     assert(nvd ~> "vertices" ~> 1 ~> "source" === Some(S("NVD")))
@@ -129,6 +132,7 @@ class NvdExtractorSuite extends FunSuite {
     val nvd = NvdExtractor(node)
     //print(nvd)
     assert(nvd ~> "vertices" ~> 0 ~> "_id" === Some(S("CVE-2013-4878")))
+    assert(nvd ~> "vertices" ~> 0 ~> "name" === Some(S("CVE-2013-4878")))
     assert(nvd ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(nvd ~> "vertices" ~> 0 ~> "source" === Some(S("NVD")))
     assert(nvd ~> "vertices" ~> 0 ~> "vertexType" === Some(S("vulnerability")))
@@ -147,6 +151,7 @@ class NvdExtractorSuite extends FunSuite {
     assert(nvd ~> "vertices" ~> 0 ~> "availabilityImpact" === Some(S("PARTIAL")))
 
     assert(nvd ~> "vertices" ~> 1 ~> "_id" === Some(S("CVE-2013-5217")))
+    assert(nvd ~> "vertices" ~> 1 ~> "name" === Some(S("CVE-2013-5217")))
     assert(nvd ~> "vertices" ~> 1 ~> "_type" === Some(S("vertex")))
     assert(nvd ~> "vertices" ~> 1 ~> "source" === Some(S("NVD")))
     assert(nvd ~> "vertices" ~> 0 ~> "vertexType" === Some(S("vulnerability")))

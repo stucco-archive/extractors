@@ -28,6 +28,8 @@ object CleanMxVirusExtractor extends Extractor {
         {
           ^(
             "_id" -> Safely{ "CleanMx_" + (item ~> "id").asNumber},
+            "name" -> Safely{ "CleanMx_" + (item ~> "id").asNumber},
+            "description" -> Safely{ "CleanMx entry " + (item ~> "id").asNumber},
             "_type" -> "vertex",
             "vertexType" -> "malware",
             "source" -> "CleanMx(virus)",
@@ -38,6 +40,8 @@ object CleanMxVirusExtractor extends Extractor {
         {
           ^(
             "_id" -> Safely{ (item ~> "ip").asString + ":80"}, //TODO extract port from URL string, if present.  a few are non-default.
+            "name" -> Safely{ (item ~> "ip").asString + ":80"}, 
+            "description" -> Safely{ (item ~> "ip").asString + ", port 80"}, 
             "_type" -> "vertex",
             "vertexType" -> "address",
             "source" -> "CleanMx(virus)"
@@ -46,6 +50,8 @@ object CleanMxVirusExtractor extends Extractor {
         {
           ^(
             "_id" -> "80", //TODO extract port from URL string, if present.  a few are non-default.
+            "name" -> "80", 
+            "description" -> "80", 
             "_type" -> "vertex",
             "vertexType" -> "port",
             "source" -> "CleanMx(virus)"
@@ -54,6 +60,8 @@ object CleanMxVirusExtractor extends Extractor {
         {
           val n = ^(
             "_id" -> item ~> "domain", //TODO keep subdomain?  (This field does not have subdomain, URL field does)
+            "name" -> item ~> "domain",
+            "description" -> item ~> "domain",
             "_type" -> "vertex",
             "vertexType" -> "DNSName",
             "source" -> "CleanMx(virus)",
@@ -67,7 +75,9 @@ object CleanMxVirusExtractor extends Extractor {
         },
         {
           ^(
-            "_id" -> item ~> "ip", 
+            "_id" -> item ~> "ip",
+            "name" -> item ~> "ip",
+            "description" -> item ~> "ip",
             "_type" -> "vertex",
             "vertexType" -> "IP",
             "source" -> "CleanMx(virus)"
@@ -78,6 +88,7 @@ object CleanMxVirusExtractor extends Extractor {
           val ips = if(inetnum.contains(" - ")) inetnum.split(" - ") else inetnum.split("-")
           val n = ^(
             "_id" -> Safely { ips(0) + "_through_" + ips(1) },
+            "name" -> Safely { ips(0) + "_through_" + ips(1) },
             "_type" -> "vertex",
             "vertexType" -> "addressRange",
             "source" -> "CleanMx(virus)",

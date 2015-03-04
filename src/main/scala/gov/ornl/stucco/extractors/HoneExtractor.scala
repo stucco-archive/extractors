@@ -37,6 +37,8 @@ object HoneExtractor extends Extractor {
               if (hostName.nonEmpty)
               ^(
                 "_id" -> hostName,
+                "name" -> hostName,
+                "description" -> hostName,
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "host"
@@ -47,6 +49,8 @@ object HoneExtractor extends Extractor {
               if ((item ~> h("path")).nodeNonEmpty)
               ^(
                 "_id" -> item ~> h("path"),
+                "name" -> item ~> h("path"),
+                "description" -> item ~> h("path"),
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "software",
@@ -61,6 +65,8 @@ object HoneExtractor extends Extractor {
               if ((item ~> hostName).nodeNonEmpty)
               ^(
                 "_id" -> item ~> hostName,
+                "name" -> item ~> hostName,
+                "description" -> item ~> hostName,
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "host",
@@ -72,6 +78,8 @@ object HoneExtractor extends Extractor {
               if ((item ~> h("source_ip")).nodeNonEmpty && (item ~> h("source_port")).nodeNonEmpty)
               ^(
                 "_id" -> Safely { (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString },
+                "name" -> Safely { (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString },
+                "description" -> Safely { (item ~> h("source_ip")).asString + ", port " + (item ~> h("source_port")).asString },
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "address"
@@ -82,6 +90,8 @@ object HoneExtractor extends Extractor {
               if ((item ~> h("dest_ip")).nodeNonEmpty && (item ~> h("dest_port")).nodeNonEmpty)
               ^(
                 "_id" -> Safely { (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString },
+                "name" -> Safely { (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString },
+                "description" -> Safely { (item ~> h("dest_ip")).asString + ", port " + (item ~> h("dest_port")).asString },
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "address"
@@ -92,6 +102,8 @@ object HoneExtractor extends Extractor {
               if ((item ~> h("source_ip")).nodeNonEmpty)
               ^(
                 "_id" -> item ~> h("source_ip"),
+                "name" -> item ~> h("source_ip"),
+                "description" -> item ~> h("source_ip"),
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "IP"
@@ -102,6 +114,8 @@ object HoneExtractor extends Extractor {
               if ((item ~> h("dest_ip")).nodeNonEmpty)
               ^(
                 "_id" -> item ~> h("dest_ip"),
+                "name" -> item ~> h("dest_ip"),
+                "description" -> item ~> h("dest_ip"),
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "IP"
@@ -112,6 +126,8 @@ object HoneExtractor extends Extractor {
               if ((item ~> h("source_port")).nodeNonEmpty)
               ^(
                 "_id" -> item ~> h("source_port"),
+                "name" -> item ~> h("source_port"),
+                "description" -> item ~> h("source_port"),
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "port"
@@ -122,6 +138,8 @@ object HoneExtractor extends Extractor {
               if ((item ~> h("dest_port")).nodeNonEmpty)
               ^(
                 "_id" -> item ~> h("dest_port"),
+                "name" -> item ~> h("dest_port"),
+                "description" -> item ~> h("dest_port"),
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "port"
@@ -136,6 +154,14 @@ object HoneExtractor extends Extractor {
                   (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
                     (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString
                 },
+                "name" -> Safely {
+                  (item ~> h("source_ip")).asString + ":" + (item ~> h("source_port")).asString + "::" +
+                    (item ~> h("dest_ip")).asString + ":" + (item ~> h("dest_port")).asString
+                },
+                "description" -> Safely {
+                  (item ~> h("source_ip")).asString + ", port " + (item ~> h("source_port")).asString + " to " +
+                    (item ~> h("dest_ip")).asString + ", port " + (item ~> h("dest_port")).asString
+                },
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "flow",
@@ -149,6 +175,8 @@ object HoneExtractor extends Extractor {
               if (hostName.nonEmpty && (item ~> h("uid")).nodeNonEmpty)
               ^(
                 "_id" -> Safely { hostName + ":" + (item ~> h("uid")).asString },
+                "name" -> Safely { hostName + ":" + (item ~> h("uid")).asString },
+                "description" -> Safely { "uid " + (item ~> h("uid")).asString + " on host " + hostName },
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "account",

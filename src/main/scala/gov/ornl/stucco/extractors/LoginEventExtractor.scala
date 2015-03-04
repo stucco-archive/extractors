@@ -64,6 +64,8 @@ object LoginEventExtractor extends Extractor {
               if ((item ~> h("hostname")).nodeNonEmpty)
               ^(
                 "_id" -> item ~> h("hostname"),
+                "name" -> item ~> h("hostname"),
+                "description" -> item ~> h("hostname"),
                 "_type" -> "vertex",
                 "source" -> "LoginEvent",
                 "vertexType" -> "host"
@@ -74,6 +76,8 @@ object LoginEventExtractor extends Extractor {
               if ((item ~> h("user")).nodeNonEmpty)
               ^(
                 "_id" -> item ~> h("user"),
+                "name" -> item ~> h("user"),
+                "description" -> item ~> h("user"),
                 "_type" -> "vertex",
                 "source" -> "LoginEvent",
                 "vertexType" -> "account"
@@ -84,6 +88,8 @@ object LoginEventExtractor extends Extractor {
               if ((item ~> h("login_software")).nodeNonEmpty)
               ^(
                 "_id" -> item ~> h("login_software"),
+                "name" -> item ~> h("login_software"),
+                "description" -> item ~> h("login_software"),
                 "_type" -> "vertex",
                 "source" -> "LoginEvent",
                 "vertexType" -> "software",
@@ -95,6 +101,8 @@ object LoginEventExtractor extends Extractor {
               if ((item ~> h("from_ip")).nodeNonEmpty)
               ^(
                 "_id" -> item ~> h("from_ip"),
+                "name" -> item ~> h("from_ip"),
+                "description" -> item ~> h("from_ip"),
                 "_type" -> "vertex",
                 "source" -> "LoginEvent",
                 "vertexType" -> "ip"
@@ -105,6 +113,8 @@ object LoginEventExtractor extends Extractor {
               if ((item ~> h("from_ip")).nodeNonEmpty)
               ^(
                 "_id" -> Safely { "host_at_" + (item ~> h("from_ip")).asString },
+                "name" -> Safely { "host_at_" + (item ~> h("from_ip")).asString },
+                "description" -> Safely { "host at " + (item ~> h("from_ip")).asString },
                 "_type" -> "vertex",
                 "source" -> "LoginEvent",
                 "vertexType" -> "host"
