@@ -165,7 +165,7 @@ object HoneExtractor extends Extractor {
                 "_type" -> "vertex",
                 "source" -> "Hone",
                 "vertexType" -> "flow",
-                "startTime" -> item ~> h("timestamp_epoch_ms"),
+                "startTime" -> Safely{ (item ~> h("timestamp_epoch_ms")).asString.toLong },
                 "totalBytes" -> item ~> h("byte_cnt"),
                 "totalPkts" -> item ~> h("packet_cnt")
               )

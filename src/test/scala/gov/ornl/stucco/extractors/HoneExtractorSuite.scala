@@ -193,7 +193,7 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "vertices" ~> 8 ~> "_type" === Some(S("vertex")))
     assert(hone ~> "vertices" ~> 8 ~> "source" === Some(S("Hone")))
     assert(hone ~> "vertices" ~> 8 ~> "vertexType" === Some(S("flow")))
-    assert(hone ~> "vertices" ~> 8 ~> "startTime" === Some(S("1371797596390")))
+    assert(hone ~> "vertices" ~> 8 ~> "startTime" === Some(N(1371797596390L)))
     assert(hone ~> "vertices" ~> 8 ~> "totalPkts" === Some(S("2")))
     assert(hone ~> "vertices" ~> 8 ~> "totalBytes" === Some(S("2068")))
 
