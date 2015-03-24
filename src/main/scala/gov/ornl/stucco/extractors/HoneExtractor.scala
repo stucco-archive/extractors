@@ -3,6 +3,8 @@ package gov.ornl.stucco.extractors
 import gov.ornl.stucco.morph.ast._
 import gov.ornl.stucco.morph.extractor.Extractor
 
+//import scala.collection.JavaConversions._
+
 object HoneExtractor extends Extractor {
 
   // to make testing easier
@@ -17,6 +19,8 @@ object HoneExtractor extends Extractor {
   }
 
   def extract(node: ValueNode): ValueNode = extract(node, Map[String, String]("hostName" -> ""))
+
+  def extract(node: ValueNode, metaData: java.util.HashMap[java.lang.String, java.lang.String]): ValueNode = extract(node, Map[String, String]("hostName" -> metaData.get("hostName")))
 
   //hostName will come from the metadata, is not included in the data itself
   def extract(node: ValueNode, metaData: Map[String, String]): ValueNode = {

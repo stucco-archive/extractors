@@ -52,6 +52,27 @@ class HoneExtractorSuite extends FunSuite {
     assert(hone ~> "edges" ~> 0 === None)
   }
 
+    test("parse an empty Hone element (using java map)") {
+    var text = """user,uid,proc_pid,proc_ppid,path,argv,conn_id,timestamp_epoch_ms,source_port,dest_port,ip_version,source_ip,dest_ip,byte_cnt,packet_cnt
+,,,,,,,,,,,,,,,,,,,,,
+"""
+    var map = new java.util.HashMap[java.lang.String, java.lang.String]
+    //map += "hostName" -> "Mary"
+    map.put("hostName", "Mary")
+    val node = CsvParser(text)
+    val hone = HoneExtractor.extract(node, map)
+
+    assert(hone ~> "vertices" ~> 0 ~> "_id" === Some(S("Mary")))
+    assert(hone ~> "vertices" ~> 0 ~> "name" === Some(S("Mary")))
+    assert(hone ~> "vertices" ~> 0 ~> "description" === Some(S("Mary")))
+    assert(hone ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
+    assert(hone ~> "vertices" ~> 0 ~> "source" === Some(S("Hone")))
+    assert(hone ~> "vertices" ~> 0 ~> "vertexType" === Some(S("host")))
+
+    assert(hone ~> "vertices" ~> 1 === None)
+    assert(hone ~> "edges" ~> 0 === None)
+  }
+
   test("parse 1 Hone element - missing: user, argv, source_ip, dest_ip") {
     var text = """,0,3476,3470,/sbin/ttymon,,10000,1371770584002,63112,37632,0,,,,
 """
