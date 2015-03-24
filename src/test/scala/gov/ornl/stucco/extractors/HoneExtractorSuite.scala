@@ -60,7 +60,7 @@ class HoneExtractorSuite extends FunSuite {
     //map += "hostName" -> "Mary"
     map.put("hostName", "Mary")
     val node = CsvParser(text)
-    val hone = HoneExtractor.extract(node, map)
+    val hone = HoneExtractor.extract(node, map.asInstanceOf[java.util.Map[java.lang.String, java.lang.String]])
 
     assert(hone ~> "vertices" ~> 0 ~> "_id" === Some(S("Mary")))
     assert(hone ~> "vertices" ~> 0 ~> "name" === Some(S("Mary")))
