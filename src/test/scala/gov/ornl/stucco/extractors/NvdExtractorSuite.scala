@@ -143,7 +143,7 @@ class NvdExtractorSuite extends FunSuite {
 
     assert(nvd ~> "vertices" ~> 0 ~> "cweNumber" === Some(S("CWE-264")))
     assert(nvd ~> "vertices" ~> 0 ~> "cvssScore" === Some(N(6.8)))
-    assert(nvd ~> "vertices" ~> 0 ~> "cvssDate" === Some(S("2013-07-19T16:37:00.000-04:00")))
+    assert(nvd ~> "vertices" ~> 0 ~> "cvssDate" === Some(N(1374266220000L)))
     assert(nvd ~> "vertices" ~> 0 ~> "accessVector" === Some(S("NETWORK")))
     assert(nvd ~> "vertices" ~> 0 ~> "accessComplexity" === Some(S("MEDIUM")))
     assert(nvd ~> "vertices" ~> 0 ~> "accessAuthentication" === Some(S("NONE")))

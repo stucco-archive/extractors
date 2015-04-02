@@ -67,7 +67,7 @@ object NvdExtractor extends Extractor {
           "confidentialityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:confidentiality-impact",
           "integrityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:integrity-impact",
           "availabilityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:availability-impact",
-          "cvssDate" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:generated-on-datetime",
+          "cvssDate" -> Safely{ format.parse( (item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:generated-on-datetime").asString ).getTime() },
 
           "references" -> (
             item ~> "vuln:references" %%-> { obj =>
