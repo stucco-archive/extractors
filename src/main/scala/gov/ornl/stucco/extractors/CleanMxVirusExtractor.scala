@@ -100,7 +100,7 @@ object CleanMxVirusExtractor extends Extractor {
             //"countryName"
             "netname" -> item ~> "netname",
             "description" -> item ~> "descr",
-            "asNum" -> item ~> "as",
+            "asNum" -> Safely{ (item ~> "as").asString.drop(2).toInt },
             "assignedBy" -> item ~> "source"
           )
           if (notEmpty(n ~> "_id")) n
