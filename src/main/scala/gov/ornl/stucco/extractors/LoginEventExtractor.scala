@@ -105,7 +105,7 @@ object LoginEventExtractor extends Extractor {
                 "description" -> item ~> h("from_ip"),
                 "_type" -> "vertex",
                 "source" -> "LoginEvent",
-                "vertexType" -> "ip"
+                "vertexType" -> "IP"
               )
               else None
             },
@@ -173,7 +173,7 @@ object LoginEventExtractor extends Extractor {
                 "_label" -> "hasIP",
                 "source" -> "LoginEvent",
                 "outVType" -> "host",
-                "inVType" -> "ip"
+                "inVType" -> "IP"
               )
               else None
             },

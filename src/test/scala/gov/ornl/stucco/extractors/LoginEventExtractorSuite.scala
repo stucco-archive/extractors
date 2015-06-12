@@ -76,7 +76,7 @@ class LoginEventExtractorSuite extends FunSuite {
     assert(loginEvent ~> "vertices" ~> 3 ~> "description" === Some(S("192.168.10.11")))
     assert(loginEvent ~> "vertices" ~> 3 ~> "_type" === Some(S("vertex")))
     assert(loginEvent ~> "vertices" ~> 3 ~> "source" === Some(S("LoginEvent")))
-    assert(loginEvent ~> "vertices" ~> 3 ~> "vertexType" === Some(S("ip")))
+    assert(loginEvent ~> "vertices" ~> 3 ~> "vertexType" === Some(S("IP")))
 
     assert(loginEvent ~> "vertices" ~> 4 ~> "_id" === Some(S("host_at_192.168.10.11")))
     assert(loginEvent ~> "vertices" ~> 4 ~> "name" === Some(S("host_at_192.168.10.11")))
@@ -119,7 +119,7 @@ class LoginEventExtractorSuite extends FunSuite {
     assert(loginEvent ~> "edges" ~> 2 ~> "_label" === Some(S("hasIP")))
     assert(loginEvent ~> "edges" ~> 2 ~> "source" === Some(S("LoginEvent")))
     assert(loginEvent ~> "edges" ~> 2 ~> "outVType" === Some(S("host")))
-    assert(loginEvent ~> "edges" ~> 2 ~> "inVType" === Some(S("ip")))
+    assert(loginEvent ~> "edges" ~> 2 ~> "inVType" === Some(S("IP")))
 
     assert(loginEvent ~> "edges" ~> 3 ~> "_id" === Some(S("StuccoHost_runs_sshd")))
     assert(loginEvent ~> "edges" ~> 3 ~> "description" === Some(S("StuccoHost runs sshd")))
