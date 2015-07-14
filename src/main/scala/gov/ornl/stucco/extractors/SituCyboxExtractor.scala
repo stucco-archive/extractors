@@ -47,9 +47,9 @@ object SituCyboxExtractor extends Extractor {
                     },
             "_type" -> "vertex",
             "vertexType" -> "flow",
-            "source" -> "SITU",
+            "source" -> "situ",
             "proto" -> item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:IP_Protocol",
-            "SITUScore" -> item ~> "cybox:Properties" ~> "NetFlowObj:SITU_Score"
+            "situScore" -> item ~> "cybox:Properties" ~> "NetFlowObj:SITU_Score"
           )
         },
         {
@@ -68,7 +68,7 @@ object SituCyboxExtractor extends Extractor {
                     },
             "_type" -> "vertex",
             "vertexType" -> "address",
-            "source" -> "SITU"
+            "source" -> "situ"
           )
         },
         {
@@ -87,7 +87,7 @@ object SituCyboxExtractor extends Extractor {
                     },
             "_type" -> "vertex",
             "vertexType" -> "address",
-            "source" -> "SITU"
+            "source" -> "situ"
           )
         },
         {
@@ -97,7 +97,7 @@ object SituCyboxExtractor extends Extractor {
             "description" -> item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Source_Socket_Address" ~> "SocketAddressObj:IP_Address" ~> "AddressObj:Address_Value",
             "_type" -> "vertex",
             "vertexType" -> "IP",
-            "source" -> "SITU"
+            "source" -> "situ"
           )
         },
         {
@@ -107,7 +107,7 @@ object SituCyboxExtractor extends Extractor {
             "description" -> item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Destination_Socket_Address" ~> "SocketAddressObj:IP_Address" ~> "AddressObj:Address_Value",
             "_type" -> "vertex",
             "vertexType" -> "IP",
-            "source" -> "SITU"
+            "source" -> "situ"
           )
         },
         {
@@ -123,7 +123,7 @@ object SituCyboxExtractor extends Extractor {
                     },
             "_type" -> "vertex",
             "vertexType" -> "port",
-            "source" -> "SITU"
+            "source" -> "situ"
           )
         },
         {
@@ -139,7 +139,7 @@ object SituCyboxExtractor extends Extractor {
                     },
             "_type" -> "vertex",
             "vertexType" -> "port",
-            "source" -> "SITU"
+            "source" -> "situ"
           )
         }
       )
@@ -167,7 +167,7 @@ object SituCyboxExtractor extends Extractor {
             "_type" -> "edge",
             "inVType" -> "address",
             "outVType" -> "flow",
-            "source" -> "SITU",
+            "source" -> "situ",
             "_inV" -> Safely {
                       (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Source_Socket_Address" ~> "SocketAddressObj:IP_Address" ~> "AddressObj:Address_Value").asString + ":" + 
                       (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Source_Socket_Address" ~> "SocketAddressObj:Port" ~> "PortObj:Port_Value").asNumber
@@ -202,7 +202,7 @@ object SituCyboxExtractor extends Extractor {
             "_type" -> "edge",
             "inVType" -> "address",
             "outVType" -> "flow",
-            "source" -> "SITU",
+            "source" -> "situ",
             "_inV" -> Safely {
                       (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Destination_Socket_Address" ~> "SocketAddressObj:IP_Address" ~> "AddressObj:Address_Value").asString + ":" + 
                       (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Destination_Socket_Address" ~> "SocketAddressObj:Port" ~> "PortObj:Port_Value").asNumber
@@ -231,7 +231,7 @@ object SituCyboxExtractor extends Extractor {
             "_type" -> "edge",
             "inVType" -> "IP",
             "outVType" -> "address",
-            "source" -> "SITU",
+            "source" -> "situ",
             "_inV" -> item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Source_Socket_Address" ~> "SocketAddressObj:IP_Address" ~> "AddressObj:Address_Value",
             "_outV" -> Safely {
                       (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Source_Socket_Address" ~> "SocketAddressObj:IP_Address" ~> "AddressObj:Address_Value").asString + ":" + 
@@ -255,7 +255,7 @@ object SituCyboxExtractor extends Extractor {
             "_type" -> "edge",
             "inVType" -> "IP",
             "outVType" -> "address",
-            "source" -> "SITU",
+            "source" -> "situ",
             "_inV" -> item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Destination_Socket_Address" ~> "SocketAddressObj:IP_Address" ~> "AddressObj:Address_Value",
             "_outV" -> Safely {
                       (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Destination_Socket_Address" ~> "SocketAddressObj:IP_Address" ~> "AddressObj:Address_Value").asString + ":" + 
@@ -279,7 +279,7 @@ object SituCyboxExtractor extends Extractor {
             "_type" -> "edge",
             "inVType" -> "port",
             "outVType" -> "address",
-            "source" -> "SITU",
+            "source" -> "situ",
             "_inV" -> Safely {
                       (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Source_Socket_Address" ~> "SocketAddressObj:Port" ~> "PortObj:Port_Value").asNumber.toString
                     },
@@ -305,7 +305,7 @@ object SituCyboxExtractor extends Extractor {
             "_type" -> "edge",
             "inVType" -> "port",
             "outVType" -> "address",
-            "source" -> "SITU",
+            "source" -> "situ",
             "_inV" -> Safely {
                       (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Destination_Socket_Address" ~> "SocketAddressObj:Port" ~> "PortObj:Port_Value").asNumber.toString
                     },
