@@ -49,7 +49,17 @@ object SituCyboxExtractor extends Extractor {
             "vertexType" -> "flow",
             "source" -> "situ",
             "proto" -> item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:IP_Protocol",
-            "situScore" -> item ~> "cybox:Properties" ~> "NetFlowObj:SITU_Score"
+            "situScore" -> item ~> "cybox:Properties" ~> "NetFlowObj:SITU_Score",
+            "duration" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Duration",
+            "srcAppBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:SrcAppBytes",
+            "dstAppBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:DstAppBytes",
+            "appBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:AppBytes",
+            "srcBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:SrcBytes",
+            "dstBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:DstBytes",
+            "bytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Bytes",
+            "srcPackets" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:SrcPackets",
+            "dstPackets" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:DstPackets",
+            "packets" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Packets"
           )
         },
         {
