@@ -50,6 +50,7 @@ object SituCyboxExtractor extends Extractor {
             "source" -> "situ",
             "proto" -> item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:IP_Protocol",
             "situScore" -> item ~> "cybox:Properties" ~> "NetFlowObj:SITU_Score",
+            "site" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Site",
             "duration" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Duration",
             "srcAppBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:SrcAppBytes",
             "dstAppBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:DstAppBytes",

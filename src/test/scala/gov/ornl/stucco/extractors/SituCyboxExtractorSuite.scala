@@ -202,6 +202,7 @@ class SituCyboxExtractorSuite extends FunSuite {
                             <NetFlowObj:IP_Protocol>proto</NetFlowObj:IP_Protocol>
                         </NetFlowObj:Network_Flow_Label>
                         <NetFlowObj:Cooperative_Protection_Program_Record>
+                            <Cooperative_Protection_Program:Site>site</Cooperative_Protection_Program:Site>
                             <Cooperative_Protection_Program:Duration>100</Cooperative_Protection_Program:Duration>
                             <Cooperative_Protection_Program:SrcAppBytes>101</Cooperative_Protection_Program:SrcAppBytes>
                             <Cooperative_Protection_Program:DstAppBytes>102</Cooperative_Protection_Program:DstAppBytes>
@@ -232,6 +233,7 @@ class SituCyboxExtractorSuite extends FunSuite {
     assert(entries ~> "vertices" ~> 0 ~> "proto" === Some(S("proto")))
     assert(entries ~> "vertices" ~> 0 ~> "situScore" === Some(N(9.876543)))
 
+    assert(entries ~> "vertices" ~> 0 ~> "site" === Some(S("site")))
     assert(entries ~> "vertices" ~> 0 ~> "duration" === Some(N(100)))
     assert(entries ~> "vertices" ~> 0 ~> "srcAppBytes" === Some(N(101)))
     assert(entries ~> "vertices" ~> 0 ~> "dstAppBytes" === Some(N(102)))
