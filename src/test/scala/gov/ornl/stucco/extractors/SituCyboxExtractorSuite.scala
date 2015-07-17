@@ -201,19 +201,23 @@ class SituCyboxExtractorSuite extends FunSuite {
                             </NetFlowObj:Destination_Socket_Address>
                             <NetFlowObj:IP_Protocol>proto</NetFlowObj:IP_Protocol>
                         </NetFlowObj:Network_Flow_Label>
-                        <NetFlowObj:Cooperative_Protection_Program_Record>
-                            <Cooperative_Protection_Program:Site>site</Cooperative_Protection_Program:Site>
-                            <Cooperative_Protection_Program:Duration>100</Cooperative_Protection_Program:Duration>
-                            <Cooperative_Protection_Program:SrcAppBytes>101</Cooperative_Protection_Program:SrcAppBytes>
-                            <Cooperative_Protection_Program:DstAppBytes>102</Cooperative_Protection_Program:DstAppBytes>
-                            <Cooperative_Protection_Program:AppBytes>103</Cooperative_Protection_Program:AppBytes>
-                            <Cooperative_Protection_Program:SrcBytes>104</Cooperative_Protection_Program:SrcBytes>
-                            <Cooperative_Protection_Program:DstBytes>105</Cooperative_Protection_Program:DstBytes>
-                            <Cooperative_Protection_Program:Bytes>106</Cooperative_Protection_Program:Bytes>
-                            <Cooperative_Protection_Program:SrcPackets>107</Cooperative_Protection_Program:SrcPackets>
-                            <Cooperative_Protection_Program:DstPackets>108</Cooperative_Protection_Program:DstPackets>
-                            <Cooperative_Protection_Program:Packets>109</Cooperative_Protection_Program:Packets>
-                        </NetFlowObj:Cooperative_Protection_Program_Record>
+                        <NetFlowObj:Unidirectional_Flow_Record>
+                            <NetFlowObj:Cooperative_Protection_Program_Record>
+                                <Cooperative_Protection_Program:Site>site</Cooperative_Protection_Program:Site>
+                                <Cooperative_Protection_Program:Time>2006-01-02T15:04:05.999999999Z07:00</Cooperative_Protection_Program:Time>
+                                <Cooperative_Protection_Program:Duration>100</Cooperative_Protection_Program:Duration>
+                                <Cooperative_Protection_Program:SrcAppBytes>101</Cooperative_Protection_Program:SrcAppBytes>
+                                <Cooperative_Protection_Program:DstAppBytes>102</Cooperative_Protection_Program:DstAppBytes>
+                                <Cooperative_Protection_Program:AppBytes>103</Cooperative_Protection_Program:AppBytes>
+                                <Cooperative_Protection_Program:SrcBytes>104</Cooperative_Protection_Program:SrcBytes>
+                                <Cooperative_Protection_Program:DstBytes>105</Cooperative_Protection_Program:DstBytes>
+                                <Cooperative_Protection_Program:Bytes>106</Cooperative_Protection_Program:Bytes>
+                                <Cooperative_Protection_Program:SrcPackets>107</Cooperative_Protection_Program:SrcPackets>
+                                <Cooperative_Protection_Program:DstPackets>108</Cooperative_Protection_Program:DstPackets>
+                                <Cooperative_Protection_Program:Packets>109</Cooperative_Protection_Program:Packets>
+                                <Cooperative_Protection_Program:Flags>+a +b -c +d -e</Cooperative_Protection_Program:Flags>
+                            </NetFlowObj:Cooperative_Protection_Program_Record>
+                        </NetFlowObj:Unidirectional_Flow_Record>
                         <NetFlowObj:SITU_Score>9.876543</NetFlowObj:SITU_Score>
                     </cybox:Properties>
                 </cybox:Object>
@@ -245,9 +249,9 @@ class SituCyboxExtractorSuite extends FunSuite {
     assert(entries ~> "vertices" ~> 0 ~> "dstPackets" === Some(N(108)))
     assert(entries ~> "vertices" ~> 0 ~> "packets" === Some(N(109)))
     
-    //assert(entries ~> "vertices" ~> 0 ~> "startTime" === Some(N(1373553586136L)))
+    //assert(entries ~> "vertices" ~> 0 ~> "startTime" === Some(N(1136189046000L)))
     //assert(entries ~> "vertices" ~> 0 ~> "dir" === Some(S("   ->")))
-    //assert(entries ~> "vertices" ~> 0 ~> "flags" === Some(S(" e s      ")))
+    assert(entries ~> "vertices" ~> 0 ~> "flags" === Some(S("+a +b -c +d -e")))
     //assert(entries ~> "vertices" ~> 0 ~> "state" === Some(S("REQ")))
 
     assert(entries ~> "vertices" ~> 1 ~> "_id" === Some(S("1.2.3.4:1000")))

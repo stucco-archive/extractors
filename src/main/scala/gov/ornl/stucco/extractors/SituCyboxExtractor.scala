@@ -22,6 +22,17 @@ object SituCyboxExtractor extends Extractor {
     node != None && node != Some(S(""))
   }
 
+  def getTime(node: Option[ValueNode]): Option[ValueNode] = {
+    if(notEmpty(node)){
+      val dateString = node.asString
+      val format = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSXXX")
+      if(dateString != ""){
+        return format.parse(dateString).getTime()
+      }
+    }
+    return None
+  }
+
   def extract(node: ValueNode): ValueNode = ^(
     "vertices" -> (node ~> "cybox:Observables" ~> "cybox:Observable" ~> "cybox:Object" %%-> { item =>
       *(
@@ -50,17 +61,20 @@ object SituCyboxExtractor extends Extractor {
             "source" -> "situ",
             "proto" -> item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:IP_Protocol",
             "situScore" -> item ~> "cybox:Properties" ~> "NetFlowObj:SITU_Score",
-            "site" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Site",
-            "duration" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Duration",
-            "srcAppBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:SrcAppBytes",
-            "dstAppBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:DstAppBytes",
-            "appBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:AppBytes",
-            "srcBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:SrcBytes",
-            "dstBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:DstBytes",
-            "bytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Bytes",
-            "srcPackets" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:SrcPackets",
-            "dstPackets" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:DstPackets",
-            "packets" -> item ~> "cybox:Properties" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Packets"
+            "startTime" -> getTime(item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Time"),
+            //"startTime" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Time", //TODO convert
+            "site" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Site",
+            "duration" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Duration",
+            "srcAppBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:SrcAppBytes",
+            "dstAppBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:DstAppBytes",
+            "appBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:AppBytes",
+            "srcBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:SrcBytes",
+            "dstBytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:DstBytes",
+            "bytes" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Bytes",
+            "srcPackets" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:SrcPackets",
+            "dstPackets" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:DstPackets",
+            "packets" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Packets",
+            "flags" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Flags"
           )
         },
         {
