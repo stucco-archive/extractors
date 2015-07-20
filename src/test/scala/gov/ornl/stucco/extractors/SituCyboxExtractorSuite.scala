@@ -249,7 +249,7 @@ class SituCyboxExtractorSuite extends FunSuite {
     assert(entries ~> "vertices" ~> 0 ~> "dstPackets" === Some(N(108)))
     assert(entries ~> "vertices" ~> 0 ~> "packets" === Some(N(109)))
     
-    //assert(entries ~> "vertices" ~> 0 ~> "startTime" === Some(N(1136189046000L)))
+    assert(entries ~> "vertices" ~> 0 ~> "startTime" === Some(N(1136239445999L)))
     //assert(entries ~> "vertices" ~> 0 ~> "dir" === Some(S("   ->")))
     assert(entries ~> "vertices" ~> 0 ~> "flags" === Some(S("+a +b -c +d -e")))
     //assert(entries ~> "vertices" ~> 0 ~> "state" === Some(S("REQ")))

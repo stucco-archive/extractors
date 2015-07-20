@@ -24,8 +24,17 @@ object SituCyboxExtractor extends Extractor {
 
   def getTime(node: Option[ValueNode]): Option[ValueNode] = {
     if(notEmpty(node)){
-      val dateString = node.asString
-      val format = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSXXX")
+      var dateString = node.asString
+      //This pattern strips any micro/nano seconds, leaving ms only.  (SimpleDateFormat would otherwise interpret it as thousands/millions of ms)
+      val msPattern = "(?<=\\.[0-9]{3})[0-9]+(?=[Z])".r
+      dateString = msPattern.replaceFirstIn(dateString,"")
+      //timezones in Go's RFC3339Nano output are debatably-compliant, but they are different than what anyone else uses.
+      //We need to clean it up so SimpleDateFormat can handle it.
+      val tzPattern = "(?<=\\.[0-9]{3})Z\\-(?=[0-9]{2}\\:[0-9]{2})".r
+      dateString = tzPattern.replaceFirstIn(dateString,"+")
+      val tzPattern2 = "(?<=\\.[0-9]{3})Z(?=[0-9]{2}\\:[0-9]{2})".r
+      dateString = tzPattern2.replaceFirstIn(dateString,"-")
+      val format = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
       if(dateString != ""){
         return format.parse(dateString).getTime()
       }
