@@ -46,7 +46,7 @@ class NvdExtractorSuite extends FunSuite {
     </nvd>
       """)
     val nvd = NvdExtractor(node)
-    //print(nvd)
+	
     assert(nvd ~> "vertices" ~> 0 ~> "_id" === Some(S("CVE-2013-2361")))
     assert(nvd ~> "vertices" ~> 0 ~> "name" === Some(S("CVE-2013-2361")))
     assert(nvd ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
@@ -131,7 +131,7 @@ class NvdExtractorSuite extends FunSuite {
     </nvd>
       """)
     val nvd = NvdExtractor(node)
-    //print(nvd)
+    print(nvd)
     assert(nvd ~> "vertices" ~> 0 ~> "_id" === Some(S("CVE-2013-4878")))
     assert(nvd ~> "vertices" ~> 0 ~> "name" === Some(S("CVE-2013-4878")))
     assert(nvd ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
