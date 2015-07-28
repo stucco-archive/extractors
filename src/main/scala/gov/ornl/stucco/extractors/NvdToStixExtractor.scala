@@ -3,113 +3,140 @@ package gov.ornl.stucco.extractors
 import gov.ornl.stucco.morph.ast._
 import gov.ornl.stucco.morph.extractor.Extractor
 
-import org.mitre.stix.stix_1.STIXPackage
-import org.mitre.stix.stix_1.STIXHeaderType
-import org.mitre.stix.common_1.ExploitTargetsType
-import org.mitre.stix.exploittarget_1.ExploitTarget
-
-import org.mitre.stix.exploittarget_1.VulnerabilityType
-import org.mitre.stix.common_1.StructuredTextType
-import org.mitre.stix.exploittarget_1.CVSSVectorType
-import org.mitre.stix.common_1.DateTimeWithPrecisionType
-import org.mitre.stix.exploittarget_1.AffectedSoftwareType
-import org.mitre.stix.common_1.ReferencesType
-import org.mitre.stix.common_1.RelatedObservableType
-import org.mitre.cybox.cybox_2.Observables
-import org.mitre.cybox.cybox_2.Observable
-import org.mitre.cybox.cybox_2.ObjectType
-import org.mitre.cybox.common_2.MeasureSourceType
+import org.mitre.stix.stix_1.{	STIXPackage,
+				STIXHeaderType, 
+				IndicatorsType }
+import org.mitre.stix.common_1.{ ExploitTargetsType,
+				 StructuredTextType,
+				 DateTimeWithPrecisionType,
+				 ControlledVocabularyStringType,
+				 RelatedPackageRefsType,
+				 RelatedPackageRefType,
+				 RelatedExploitTargetType, 
+				 RelatedObservableType,
+				 ReferencesType }
+import org.mitre.stix.exploittarget_1.{ ExploitTarget,
+					VulnerabilityType,
+					CVSSVectorType,
+					AffectedSoftwareType }
+import org.mitre.stix.indicator_2.Indicator
+import org.mitre.cybox.common_2.{ MeasureSourceType,
+				  StringObjectPropertyType }
+import org.mitre.cybox.cybox_2.{ Observables,
+				 Observable,
+				 ObjectType }
 import org.mitre.cybox.objects.Product
-import org.mitre.cybox.common_2.StringObjectPropertyType
 
-import javax.xml.datatype.XMLGregorianCalendar
-import javax.xml.datatype.DatatypeFactory
-import javax.xml.datatype.DatatypeConfigurationException
+import javax.xml.datatype.{ XMLGregorianCalendar,
+			    DatatypeFactory,
+			    DatatypeConfigurationException }
 import javax.xml.namespace.QName				
 import javax.xml.parsers.ParserConfigurationException
 
-import java.util.GregorianCalendar
-
-import STIX._
+import java.util.{ GregorianCalendar,
+		   UUID,
+		   TimeZone }
 
 /**								
  * NVD data extractor.
  *
  * @author Mike Iannacone
  * @author Anish Athalye
+ * @author Maria Vincent
  */
 object NvdToStixExtractor extends Extractor {
 
- val O = ObjectNode
- val A = ArrayNode
- val S = StringNode
- val N = NumberNode
+	val O = ObjectNode
+ 	val A = ArrayNode
+ 	val S = StringNode
+ 	val N = NumberNode
 
-  val format = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	val stixPackage = new STIXPackage
+  	val format = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
   
-  def makeCpeDesc(node: Option[ValueNode]): Option[ValueNode] = {
-    val substrings = node.asString split ":"
-    val vendor = (substrings lift 2)
-    val product = (substrings lift 3)
-    val version = (substrings lift 4)
-    val update = (substrings lift 5)
-    val edition = (substrings lift 6)
-    val language = (substrings lift 7)
-    var res = ""
+  	def makeCpeDesc(node: Option[ValueNode]): Option[ValueNode] = {
+		val substrings = node.asString split ":"
+		val vendor = (substrings lift 2)
+		val product = (substrings lift 3)
+		val version = (substrings lift 4)
+		val update = (substrings lift 5)
+		val edition = (substrings lift 6)
+		val language = (substrings lift 7)
+		var res = ""
+	
+    		if(vendor.isDefined)	{
+      			res = vendor.get + " "
+    		}
+    		if(product.isDefined)	{
+      			res += product.get
+      			if(version.isDefined)	{
+        			res += " version " + version.get
+        			if(update.isDefined)	{
+          				res += " " + update.get
+          				if(edition.isDefined)	{
+            					res += " " + edition.get
+          				}
+        			}
+      			}
+      			if(language.isDefined)	{
+        			res += ", " + language.get + " language version"
+      			}
+    		}
+    		if(res != "")
+      			Some(res)
+    		else
+      			None
+  	}
 
+	def extract (node: ValueNode): ValueNode = {
+		extractSTIXPackage(node)
+		println(stixPackage.toXMLString(true))
+		if (validate(stixPackage))
+			println("STIX Package is valid")
+		return node
+	}
 	
-    if(vendor.isDefined){
-      res = vendor.get + " "
-    }
-    if(product.isDefined){
-      res += product.get
-      if(version.isDefined){
-        res += " version " + version.get
-        if(update.isDefined){
-          res += " " + update.get
-          if(edition.isDefined){
-            res += " " + edition.get
-          }
-        }
-      }
-      if(language.isDefined){
-        res += ", " + language.get + " language version"
-      }
-    }
-    if(res != "")
-      Some(res)
-    else
-      None
-  }
-	
-	def extractStixPackage(node: ValueNode): STIXPackage = {
+	def validate(stixPackage: STIXPackage): Boolean = {
+		stixPackage.validate()
+	}				
+
+	def extractSTIXPackage (node: ValueNode): STIXPackage = {
 		
+		var indicator = new Indicator()
 		var calendar = new GregorianCalendar()
-		var stixPackage = new STIXPackage()
 		var ets = new ExploitTargetsType()
 		
 		node ~> "nvd" ~> "entry" %%->	{ item => 
 				
 			var et = new ExploitTarget()
 			var vulnerability = new VulnerabilityType()
-
+			var exploitTargetId = new QName("gov.ornl.stucco", "vulnerability-" + UUID.randomUUID().toString(), "stucco")
+			
+			//assigning id to the vulnerability	
+			et
+				.withId(exploitTargetId)
 			//description
 			if ((item ~> "vuln:summary").isDefined)	
 				vulnerability
 					.withDescriptions(new StructuredTextType()              //list
  						.withValue((item ~> "vuln:summary").asString))
-
+			//publishedDate
+			if ((Safely{ format.parse( (item ~> "vuln:published-datetime").asString ).getTime() }).isDefined)	{
+			
+				calendar.setTimeInMillis(((Safely{ format.parse( (item ~> "vuln:published-datetime").asString ).getTime() }).asNumber).longValue)	
+				vulnerability
+					.withPublishedDateTime(new DateTimeWithPrecisionType()
+					.withValue(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar)))
+			}
 			//CVE number
 			if ((item ~> "@id").isDefined)
 				vulnerability
  					.withCVEID((item ~> "@id").asString)
-			
 			//CVSS Score
 			if ((item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:score").isDefined)	
 				vulnerability
  					.withCVSSScore(new CVSSVectorType()
-						.withBaseScore((item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:score" ).asNumber.toString))
-				
+						.withBaseScore((item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:score" ).asNumber.doubleValue.toString))
 			//References
 			if ((item ~> "vuln:references").isDefined)	{
 				
@@ -128,30 +155,31 @@ object NvdToStixExtractor extends Extractor {
 				vulnerability
 					.withReferences(references)
 			}
-	
-			//packing vulnerability into Exploit Target and adding to the Exploit Targets list
-			ets
-				.withExploitTargets(et
-					.withTitle("Vulnerability")
-					.withVulnerabilities(vulnerability
- 						.withSource("NVD")))
-
-			//software vertices
-        	//	if ((item ~> "vuln:vulnerable-software-list" ~> "vuln:product").isDefined)	{
 			
+			//software vertices
+        		if ((item ~> "vuln:vulnerable-software-list" ~> "vuln:product").isDefined)	{
+			
+				var indicators = new IndicatorsType()
 				var observables = new Observables()
+					.withCyboxMajorVersion("2.0")
+					.withCyboxMinorVersion("1.0")
 			 
 				item ~> "vuln:vulnerable-software-list" ~> "vuln:product"  %%-> { cpeItem =>
 			
-					val observable = new Observable() 	
 					val obj = new ObjectType()
 					
-					if (makeCpeDesc(cpeItem).isDefined)
+					if (makeCpeDesc(cpeItem).isDefined)	{
+
+						val observable = new Observable() 	
+						var softwareId = new QName("gov.ornl.stucco", "software-" + UUID.randomUUID().toString(), "stucco")
+
 						obj			
 							.withDescription(new org.mitre.cybox.common_2.StructuredTextType()
 								.withValue((makeCpeDesc(cpeItem)).asString))
-					
-					observable	//-> description
+						//software observable
+						observable	//-> description
+							.withTitle("Software")
+							.withId(softwareId)
 							.withObservableSources(new MeasureSourceType()
 								.withName("NVD")
 								.withInformationSourceType(new org.mitre.cybox.common_2.ControlledVocabularyStringType()
@@ -160,104 +188,54 @@ object NvdToStixExtractor extends Extractor {
 								.withProperties(new Product() 	//-> customFields
 									.withProduct(new StringObjectPropertyType()
 										.withValue(cpeItem.asString))))
-					observables
-						.withObservables(observable)
+						//packing software observable into observables
+						observables
+							.withObservables(observable)
+						//creating a software indicator
+						indicators
+							.withIndicators(new Indicator()
+								.withId(softwareId)
+								.withTitle("Software")
+								.withObservable(new Observable()
+									.withIdref(softwareId))
+								.withRelatedPackages(new RelatedPackageRefsType()
+									.withPackageReferences(new RelatedPackageRefType()
+										.withIdref(exploitTargetId)
+										.withRelationship(new ControlledVocabularyStringType()
+											.withValue("Has vulnerability")))))
+						//adding a reference to the affected software
+						vulnerability
+							.withAffectedSoftware(new AffectedSoftwareType()
+								.withAffectedSoftwares(new RelatedObservableType()
+                        						.withObservable(new Observable()
+										.withIdref(softwareId))))
+						None
+					}
 					None
 				}
-			
+				//packing software indicators and observables into package
 				stixPackage
-					.withObservables(observables)		
+					.withIndicators(indicators)		
+					.withObservables(observables)
 				None
-		//	}
-		}
+			}
+			//packing vulnerability into Exploit Target and adding to the Exploit Targets list
+			ets
+				.withExploitTargets(et
+					.withTitle("Vulnerability")
+					.withVulnerabilities(vulnerability
+ 						.withSource("NVD")))
+			None
 
+		}
 		stixPackage
+			.withId(new QName("gov.ornl.stucco", "NVD-" + UUID.randomUUID().toString(), "stucco"))
+			.withTimestamp(DatatypeFactory.newInstance().newXMLGregorianCalendar(				
+				new GregorianCalendar(TimeZone.getTimeZone("UTC"))))
 			.withSTIXHeader(new STIXHeaderType()
-				.withTitle("Vulnerability"))            //list -> add ip, malware, dns, etc
+				.withTitle("NVD"))            //list -> add ip, malware, dns, etc
 			.withExploitTargets(ets)
 
-		println(stixPackage.toXMLString(true))
-		return stixPackage;
-	}
-
-  	def extract(node: ValueNode): ValueNode = {
-		extractStixPackage(node)
-
-	^("vertices" -> (node ~> "nvd" ~> "entry" %%-> { item =>
-      *(
-        ^(
-          "_id" -> item ~> "@id",
-          "name" -> item ~> "@id",
-          "_type" -> "vertex",
-          "vertexType" -> "vulnerability",
-          "source" -> "NVD",
-          "description" -> item ~> "vuln:summary",
-          "publishedDate" -> Safely{ format.parse( (item ~> "vuln:published-datetime").asString ).getTime() },
-          "modifiedDate" -> Safely{ format.parse( (item ~> "vuln:last-modified-datetime").asString ).getTime() },
-          "cweNumber" -> item ~> "vuln:cwe" ~> "@id",
-
-          "cvssScore" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:score",
-          "accessVector" -> {item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:access-vector" ~> "#text" orElse item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:access-vector"},
-          "accessComplexity" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:access-complexity",
-          "accessAuthentication" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:authentication",
-          "confidentialityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:confidentiality-impact",
-          "integrityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:integrity-impact",
-          "availabilityImpact" -> item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:availability-impact",
-          "cvssDate" -> Safely{ format.parse( (item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:generated-on-datetime").asString ).getTime() },
-
-          "references" -> (
-            item ~> "vuln:references" %%-> { obj =>
-              obj ~> "vuln:reference" ~> "@href" orElse Safely {
-                (obj ~> "vuln:source").asString + ":" +
-                  (obj ~> "vuln:reference" ~> "#text").asString
-              }
-            }).encapsulate
-        ),
-        (item ~> "vuln:vulnerable-software-list" ~> "vuln:product" %%-> { cpeItem =>
-          ^(
-            "_id" -> (cpeItem.asString),
-            "name" -> (cpeItem.asString),
-            "description" -> makeCpeDesc(cpeItem),
-            "_type" -> "vertex",
-            "vertexType" -> "software",
-            "source" -> "NVD"
-          )
-        })
-      )
-    }).autoFlatten.autoFlatten,
-
-    "edges" -> (node ~> "nvd" ~> "entry" %%-> { nvdItem =>
-      (nvdItem ~> "vuln:vulnerable-software-list" ~> "vuln:product" %%-> { cpeItem =>
-        ^(
-          "_id" -> (cpeItem.asString + "_to_" + (nvdItem ~> "@id").asString),
-          "description" -> (makeCpeDesc(cpeItem).asString + " to " + (nvdItem ~> "@id").asString),
-          "_type" -> "edge",
-          "inVType" -> "vulnerability",
-          "outVType" -> "software",
-          "source" -> "NVD",
-          "_inV" -> nvdItem ~> "@id",
-          "_outV" -> cpeItem,
-          "_label" -> "hasVulnerability"
-        )
-      }).encapsulate
-    }).autoFlatten
-  )
+		return stixPackage
 	}
 }
-/*
-
-					.withVulnerabilities(new VulnerabilityType()
-						.withDescriptions(new StructuredTextType()              //list
- 							.withValue((item ~> "vuln:summary").asString))
- 						.withCVEID((item ~> "@id").asString)
- 						.withSource("NVD")
- 						.withCVSSScore(new CVSSVectorType()
-							.withBaseScore((item ~> "vuln:cvss" ~> "cvss:base_metrics" ~> "cvss:score" ).asString))
-				//		.withPublishedDateTime(new DateTimeWithPrecisionType()
- 				//			.withValue(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar.setTimeInMillis((
-				//				Safely{ format.parse( (item ~> "vuln:published-datetime").asString ).getTime() }).asLong))))
- 				//		.withAffectedSoftware(new AffectedSoftwareType())
- 				//			.withAffectedSoftwares(relatedObservable))      //construct observable
- 						.withReferences(new ReferencesType()
- 							.withReferences("refString"))))
-*/
