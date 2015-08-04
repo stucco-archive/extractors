@@ -43,7 +43,8 @@ class SituCyboxExtractorSuite extends FunSuite {
                             </NetFlowObj:Destination_Socket_Address>
                             <NetFlowObj:IP_Protocol>tcp</NetFlowObj:IP_Protocol>
                         </NetFlowObj:Network_Flow_Label>
-                        <NetFlowObj:SITU_Score>0</NetFlowObj:SITU_Score>
+                        <NetFlowObj:SITU_Anomaly_Score>0</NetFlowObj:SITU_Anomaly_Score>
+                        <NetFlowObj:SITU_Maliciousness_Score>0</NetFlowObj:SITU_Maliciousness_Score>
                     </cybox:Properties>
                 </cybox:Object>
             </cybox:Observable>
@@ -60,7 +61,8 @@ class SituCyboxExtractorSuite extends FunSuite {
     assert(entries ~> "vertices" ~> 0 ~> "vertexType" === Some(S("flow")))
     assert(entries ~> "vertices" ~> 0 ~> "source" === Some(S("situ")))
     assert(entries ~> "vertices" ~> 0 ~> "proto" === Some(S("tcp")))
-    assert(entries ~> "vertices" ~> 0 ~> "situScore" === Some(N(0)))
+    assert(entries ~> "vertices" ~> 0 ~> "situAnomalyScore" === Some(N(0)))
+    assert(entries ~> "vertices" ~> 0 ~> "situMaliciousnessScore" === Some(N(0)))
     //assert(entries ~> "vertices" ~> 0 ~> "appBytes" === Some(S("585")))
     //assert(entries ~> "vertices" ~> 0 ~> "startTime" === Some(N(1373553586136L)))
     //assert(entries ~> "vertices" ~> 0 ~> "dir" === Some(S("   ->")))
@@ -218,7 +220,8 @@ class SituCyboxExtractorSuite extends FunSuite {
                                 <Cooperative_Protection_Program:Flags>+a +b -c +d -e</Cooperative_Protection_Program:Flags>
                             </NetFlowObj:Cooperative_Protection_Program_Record>
                         </NetFlowObj:Unidirectional_Flow_Record>
-                        <NetFlowObj:SITU_Score>9.876543</NetFlowObj:SITU_Score>
+                        <NetFlowObj:SITU_Anomaly_Score>1.5378046</NetFlowObj:SITU_Anomaly_Score>
+                        <NetFlowObj:SITU_Maliciousness_Score>1</NetFlowObj:SITU_Maliciousness_Score>
                     </cybox:Properties>
                 </cybox:Object>
             </cybox:Observable>
@@ -235,7 +238,8 @@ class SituCyboxExtractorSuite extends FunSuite {
     assert(entries ~> "vertices" ~> 0 ~> "vertexType" === Some(S("flow")))
     assert(entries ~> "vertices" ~> 0 ~> "source" === Some(S("situ")))
     assert(entries ~> "vertices" ~> 0 ~> "proto" === Some(S("proto")))
-    assert(entries ~> "vertices" ~> 0 ~> "situScore" === Some(N(9.876543)))
+    assert(entries ~> "vertices" ~> 0 ~> "situAnomalyScore" === Some(N(1.5378046)))
+    assert(entries ~> "vertices" ~> 0 ~> "situMaliciousnessScore" === Some(N(1)))
 
     assert(entries ~> "vertices" ~> 0 ~> "site" === Some(S("site")))
     assert(entries ~> "vertices" ~> 0 ~> "duration" === Some(N(100)))

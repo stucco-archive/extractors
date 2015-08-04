@@ -69,7 +69,8 @@ object SituCyboxExtractor extends Extractor {
             "vertexType" -> "flow",
             "source" -> "situ",
             "proto" -> item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:IP_Protocol",
-            "situScore" -> item ~> "cybox:Properties" ~> "NetFlowObj:SITU_Score",
+            "situAnomalyScore" -> item ~> "cybox:Properties" ~> "NetFlowObj:SITU_Anomaly_Score",
+            "situMaliciousnessScore" -> item ~> "cybox:Properties" ~> "NetFlowObj:SITU_Maliciousness_Score",
             "startTime" -> getTime(item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Time"),
             //"startTime" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Time", //TODO convert
             "site" -> item ~> "cybox:Properties" ~> "NetFlowObj:Unidirectional_Flow_Record" ~> "NetFlowObj:Cooperative_Protection_Program_Record" ~> "Cooperative_Protection_Program:Site",
