@@ -4,7 +4,9 @@ import gov.ornl.stucco.morph.ast._
 import gov.ornl.stucco.morph.extractor.Extractor
 
 /**
- * CIF1d4 data extractor.
+ * CIF 1d4 data extractor.
+ *
+ * see https://github.com/csirtgadgets/massive-octo-spice/blob/develop/src/rules/default/1d4_us.yml
  *
  * @author Mike Iannacone
  */
