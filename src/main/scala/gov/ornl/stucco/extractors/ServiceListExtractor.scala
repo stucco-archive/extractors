@@ -6,6 +6,8 @@ import gov.ornl.stucco.morph.extractor.Extractor
 /**
  * services list extractor.
  *
+ * will parse csv linked from http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml (or matching format).
+ *
  * @author Mike Iannacone
  */
 object ServiceListExtractor extends Extractor {
