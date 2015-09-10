@@ -63,7 +63,8 @@ object SituCyboxExtractor extends Extractor {
                       (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Source_Socket_Address" ~> "SocketAddressObj:IP_Address" ~> "AddressObj:Address_Value").asString + ", port " + 
                       (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Source_Socket_Address" ~> "SocketAddressObj:Port" ~> "PortObj:Port_Value").asNumber + " to " +
                       (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Destination_Socket_Address" ~> "SocketAddressObj:IP_Address" ~> "AddressObj:Address_Value").asString + ", port " + 
-                      (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Destination_Socket_Address" ~> "SocketAddressObj:Port" ~> "PortObj:Port_Value").asNumber
+                      (item ~> "cybox:Properties" ~> "NetFlowObj:Network_Flow_Label" ~> "NetFlowObj:Destination_Socket_Address" ~> "SocketAddressObj:Port" ~> "PortObj:Port_Value").asNumber + 
+                      ".  Anomaly Score: " + (item ~> "cybox:Properties" ~> "NetFlowObj:SITU_Anomaly_Score").asNumber  + "  Maliciousness Score: " + (item ~> "cybox:Properties" ~> "NetFlowObj:SITU_Maliciousness_Score").asNumber
                     },
             "_type" -> "vertex",
             "vertexType" -> "flow",

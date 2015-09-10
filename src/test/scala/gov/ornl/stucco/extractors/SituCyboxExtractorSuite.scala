@@ -56,7 +56,7 @@ class SituCyboxExtractorSuite extends FunSuite {
 
     assert(entries ~> "vertices" ~> 0 ~> "_id" === Some(S("128.219.49.14:48980::52.5.45.166:80")))
     assert(entries ~> "vertices" ~> 0 ~> "name" === Some(S("128.219.49.14:48980::52.5.45.166:80")))
-    assert(entries ~> "vertices" ~> 0 ~> "description" === Some(S("128.219.49.14, port 48980 to 52.5.45.166, port 80")))
+    assert(entries ~> "vertices" ~> 0 ~> "description" === Some(S("128.219.49.14, port 48980 to 52.5.45.166, port 80.  Anomaly Score: 0  Maliciousness Score: 0")))
     assert(entries ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(entries ~> "vertices" ~> 0 ~> "vertexType" === Some(S("flow")))
     assert(entries ~> "vertices" ~> 0 ~> "source" === Some(S("situ")))
@@ -233,7 +233,7 @@ class SituCyboxExtractorSuite extends FunSuite {
 
     assert(entries ~> "vertices" ~> 0 ~> "_id" === Some(S("1.2.3.4:1000::5.6.7.8:1001")))
     assert(entries ~> "vertices" ~> 0 ~> "name" === Some(S("1.2.3.4:1000::5.6.7.8:1001")))
-    assert(entries ~> "vertices" ~> 0 ~> "description" === Some(S("1.2.3.4, port 1000 to 5.6.7.8, port 1001")))
+    assert(entries ~> "vertices" ~> 0 ~> "description" === Some(S("1.2.3.4, port 1000 to 5.6.7.8, port 1001.  Anomaly Score: 1.5378046  Maliciousness Score: 1")))
     assert(entries ~> "vertices" ~> 0 ~> "_type" === Some(S("vertex")))
     assert(entries ~> "vertices" ~> 0 ~> "vertexType" === Some(S("flow")))
     assert(entries ~> "vertices" ~> 0 ~> "source" === Some(S("situ")))
