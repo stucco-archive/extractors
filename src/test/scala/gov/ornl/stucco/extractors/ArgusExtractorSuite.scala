@@ -38,6 +38,20 @@ class ArgusExtractorSuite extends FunSuite {
     assert(argus ~> "edges" ~> 0 === None)
   }
 
+  //these are no longer included in out current dataset, but should still be handled.
+  test("parse some 'man' entries, confirm they are omitted ") {
+    var text = """StartTime,Flgs,Proto,SrcAddr,Sport,Dir,DstAddr,Dport,TotPkts,TotBytes,State
+1373553586.136399,          ,man,0,0,,0,0,0,0,STA
+1373553646.192747,          ,man,0,0,,51,1,224,9901152,CON
+
+"""
+    val node = CsvParser(text)
+    val argus = ArgusExtractor(node)
+
+    assert(argus ~> "vertices" ~> 0 === None)
+    assert(argus ~> "edges" ~> 0 === None)
+  }
+
   test("parse one argus entries") {
     val node = CsvParser("1373553586.136399, e s      ,6,10.10.10.1,56867,   ->,10.10.10.100,22,8,585,REQ")
     val argus = ArgusExtractor(node)

@@ -40,7 +40,7 @@ object ArgusExtractor extends Extractor {
     ^(
       "vertices" -> (node mapPartial {
         //this will ignore header row and will ignore last row if it is just an empty string.
-        case item if (item ~> 0 != headers ~> 0) && (item ~> 1 != None) =>
+        case item if (item ~> 0 != headers ~> 0) && (item ~> 1 != None)  && (item ~> h("Proto") != Some(S("man"))) =>
           *(
             {
               val n = ^(
@@ -171,7 +171,7 @@ object ArgusExtractor extends Extractor {
 
       "edges" -> (node mapPartial {
         //this will ignore header row and will ignore last row if it is just an empty string.
-        case item if (item ~> 0 != headers ~> 0) && (item ~> 1 != None) =>
+        case item if (item ~> 0 != headers ~> 0) && (item ~> 1 != None)   && (item ~> h("Proto") != Some(S("man")))=>
           *(
             {
               val n = ^(
