@@ -55,7 +55,7 @@ object ServerBannerExtractor extends Extractor {
                     },
                 "_type" -> "vertex",
                 "vertexType" -> "address",
-                "source" -> "client_banner"
+                "source" -> "server_banner"
               )
               if ((item ~> h("addr")).nodeNonEmpty && (item ~> h("app_protocol")).nodeNonEmpty &&
                   notEmpty(n ~> "_id")) n
@@ -68,7 +68,7 @@ object ServerBannerExtractor extends Extractor {
                 "description" -> item ~> h("addr"),
                 "_type" -> "vertex",
                 "vertexType" -> "IP",
-                "source" -> "client_banner"
+                "source" -> "server_banner"
               )
               if ((item ~> h("addr")).nodeNonEmpty &&
                   notEmpty(n ~> "_id")) n
@@ -81,7 +81,7 @@ object ServerBannerExtractor extends Extractor {
                 "description" -> Safely{(item ~> h("app_protocol")).asString},
                 "_type" -> "vertex",
                 "vertexType" -> "port",
-                "source" -> "client_banner"
+                "source" -> "server_banner"
               )
               if ((item ~> h("app_protocol")).nodeNonEmpty &&
                   notEmpty(n ~> "_id")) n
@@ -94,7 +94,7 @@ object ServerBannerExtractor extends Extractor {
                 "description" -> Safely{(item ~> h("banner")).asString},
                 "_type" -> "vertex",
                 "vertexType" -> "service",
-                "source" -> "client_banner"
+                "source" -> "server_banner"
               )
               if ((item ~> h("banner")).nodeNonEmpty &&
                   notEmpty(n ~> "_id")) n
@@ -123,7 +123,7 @@ object ServerBannerExtractor extends Extractor {
                 "_inV" -> item ~> h("addr"),
                 "_type" -> "edge",
                 "_label" -> "hasIP",
-                "source" -> "client_banner",
+                "source" -> "server_banner",
                 "outVType" -> "address",
                 "inVType" -> "IP"
               )
@@ -147,7 +147,7 @@ object ServerBannerExtractor extends Extractor {
                 "_inV" -> Safely{(item ~> h("app_protocol")).asString},
                 "_type" -> "edge",
                 "_label" -> "hasPort",
-                "source" -> "client_banner",
+                "source" -> "server_banner",
                 "outVType" -> "address",
                 "inVType" -> "port"
               )
@@ -171,7 +171,7 @@ object ServerBannerExtractor extends Extractor {
                 "_inV" -> Safely{(item ~> h("banner")).asString.replace(' ', '_')},
                 "_type" -> "edge",
                 "_label" -> "hasKnownService",
-                "source" -> "client_banner",
+                "source" -> "server_banner",
                 "outVType" -> "address",
                 "inVType" -> "service"
               )
@@ -195,7 +195,7 @@ object ServerBannerExtractor extends Extractor {
                 "_inV" -> Safely{(item ~> h("banner")).asString.replace(' ', '_')},
                 "_type" -> "edge",
                 "_label" -> "hasKnownService",
-                "source" -> "client_banner",
+                "source" -> "server_banner",
                 "outVType" -> "port",
                 "inVType" -> "service"
               )
